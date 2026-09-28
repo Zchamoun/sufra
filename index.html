@@ -1,26 +1,147 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sufra</title>
-  <style>
-    body { font-family: system-ui, sans-serif; font-size: 20px; margin: 0; padding: 24px;
-           background: #FAF7F2; color: #1F2A2E; line-height: 1.5; }
-    h1 { font-size: 40px; margin: 0 0 8px; color: #2E6B5E; }
-    section { background: #fff; border-radius: 16px; padding: 20px; margin: 16px 0; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sufra</title>
+<link rel="stylesheet" href="css/sufra.css">
 </head>
 <body>
-  <h1>Sufra · سفرة</h1>
-  <section lang="en" dir="ltr">
-    <p>Welcome. Sufra is being built. It will help you enjoy food and daily life on dialysis.</p>
-  </section>
-  <section lang="ar" dir="rtl">
-    <p>أهلاً بك. تطبيق سفرة قيد الإنشاء، وسيساعدك على الاستمتاع بالطعام والحياة اليومية أثناء الغسيل الكلوي.</p>
-  </section>
-  <section lang="fr" dir="ltr">
-    <p>Bienvenue. Sufra est en construction. L'application vous aidera à profiter des repas et du quotidien sous dialyse.</p>
-  </section>
+
+<div class="row" style="justify-content:space-between">
+  <div class="seg" role="group" aria-label="Language">
+    <button type="button" data-lang="en" aria-pressed="true">EN</button>
+    <button type="button" data-lang="ar" aria-pressed="false">ع</button>
+    <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+  </div>
+  <div class="seg" role="group" aria-label="Text size">
+    <button type="button" data-size="1" aria-pressed="true">A</button>
+    <button type="button" data-size="2" aria-pressed="false" style="font-size:1.1em">A</button>
+    <button type="button" data-size="3" aria-pressed="false" style="font-size:1.25em">A</button>
+  </div>
+</div>
+
+<h1>Sufra · سفرة</h1>
+<p class="muted" data-t="intro"></p>
+
+<div class="card">
+  <div class="row" style="justify-content:space-between">
+    <strong data-t="fluid_title"></strong><span class="tag" data-t="sample"></span>
+  </div>
+  <div class="bar" role="img" data-t-aria="fluid_aria"><span style="width:45%"></span></div>
+  <p data-t="fluid_value"></p>
+  <p class="muted" data-t="next_session"></p>
+</div>
+
+<div class="cups">
+  <button class="btn cup" type="button">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 9h10l-1 9H8z"/></svg>
+    <span data-t="cup_small"></span><span class="muted" dir="ltr">100 ml</span></button>
+  <button class="btn cup" type="button">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 4h12l-2 16H8z"/></svg>
+    <span data-t="cup_glass"></span><span class="muted" dir="ltr">200 ml</span></button>
+  <button class="btn cup" type="button">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 6h11v12H5zM16 9h2a2 2 0 0 1 0 4h-2"/></svg>
+    <span data-t="cup_mug"></span><span class="muted" dir="ltr">250 ml</span></button>
+</div>
+
+<div class="card">
+  <div class="row" style="justify-content:space-between">
+    <div class="row">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--accent)"><path d="M4 8l8-4 8 4v8l-8 4-8-4z"/><path d="M4 8l8 4 8-4M12 12v8"/></svg>
+      <div><strong data-t="ice_title"></strong><div class="muted" id="iceMl" aria-live="polite"></div></div>
+    </div>
+    <div class="stepper">
+      <button type="button" id="iceMinus" data-t-aria="ice_less">−</button>
+      <output id="iceCount"></output>
+      <button type="button" id="icePlus" data-t-aria="ice_more">+</button>
+    </div>
+  </div>
+  <button class="btn btn-primary" type="button" style="margin-top:.75rem" data-t="ice_add"></button>
+  <p class="muted" style="margin-top:.6rem" data-t="ice_tip"></p>
+</div>
+
+<div class="card">
+  <div class="row" style="justify-content:space-between">
+    <strong data-t="sample_dish"></strong><span class="tag" data-t="sample"></span>
+  </div>
+  <div class="nut"><span data-t="n_k"></span>
+    <span class="badge low"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><span data-t="lvl_low"></span></span></div>
+  <div class="nut"><span data-t="n_p"></span>
+    <span class="badge mid"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg><span data-t="lvl_mid"></span></span></div>
+  <div class="nut"><span data-t="n_na"></span>
+    <span class="badge high"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.5"/></svg><span data-t="lvl_high"></span></span></div>
+</div>
+
+<div class="alert" role="note">
+  <strong data-t="alert_title"></strong>
+  <span data-t="alert_body"></span>
+</div>
+
+<nav class="tabs" data-t-aria="tabs_aria">
+  <button class="tab" type="button" aria-current="page">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/></svg>
+    <span data-t="tab_today"></span></button>
+  <button class="tab" type="button">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11h18a9 9 0 0 1-18 0zM8 7c0-2 2-2 2-4M13 7c0-2 2-2 2-4"/></svg>
+    <span data-t="tab_meals"></span></button>
+  <button class="tab" type="button">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></svg>
+    <span data-t="tab_track"></span></button>
+  <button class="tab" type="button">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 21V5"/></svg>
+    <span data-t="tab_learn"></span></button>
+</nav>
+
+<script>
+const T={
+en:{intro:"Design preview. Everything marked SAMPLE is an example, not advice.",
+ sample:"SAMPLE",fluid_title:"Fluid today",fluid_value:"450 of 1,000 ml (example limit)",
+ fluid_aria:"Fluid today: 450 of 1,000 millilitres",next_session:"Next dialysis: Tuesday, 7:00 AM",
+ cup_small:"Small cup",cup_glass:"Glass",cup_mug:"Mug",
+ ice_title:"Ice cubes",ice_less:"One less ice cube",ice_more:"One more ice cube",ice_add:"Add ice cubes",ice_ml:"≈ {ml} ml (estimate)",
+ ice_tip:"Ice counts as fluid. To know your own cube size, melt 5 of your usual cubes in a measuring cup once and save the amount in Settings.",
+ sample_dish:"Sample dish, one portion",n_k:"Potassium",n_p:"Phosphorus",n_na:"Sodium",lvl_low:"Low",lvl_mid:"Moderate",lvl_high:"High",
+ alert_title:"Feeling unwell?",alert_body:"Chest pain, severe breathlessness, sudden swelling or a missed session: call emergency services or your dialysis center now.",
+ tabs_aria:"Main sections",tab_today:"Today",tab_meals:"Meals",tab_track:"Track",tab_learn:"Learn"},
+ar:{intro:"معاينة التصميم. كل ما عليه كلمة «نموذج» مثال فقط وليس نصيحة.",
+ sample:"نموذج",fluid_title:"السوائل اليوم",fluid_value:"٤٥٠ من ١٠٠٠ مل (حد على سبيل المثال)",
+ fluid_aria:"السوائل اليوم: ٤٥٠ من ١٠٠٠ مليلتر",next_session:"جلسة الغسيل القادمة: الثلاثاء، ٧:٠٠ صباحًا",
+ cup_small:"فنجان صغير",cup_glass:"كوب",cup_mug:"كوب كبير",
+ ice_title:"مكعبات ثلج",ice_less:"مكعب ثلج أقل",ice_more:"مكعب ثلج إضافي",ice_add:"أضف مكعبات الثلج",ice_ml:"≈ {ml} مل (تقديري)",
+ ice_tip:"الثلج يُحسب من السوائل. لمعرفة حجم مكعباتك، ذوّب ٥ مكعبات من التي تستخدمها عادةً في كوب قياس مرة واحدة، واحفظ الكمية في الإعدادات.",
+ sample_dish:"طبق نموذجي، حصة واحدة",n_k:"البوتاسيوم",n_p:"الفوسفور",n_na:"الصوديوم",lvl_low:"منخفض",lvl_mid:"متوسط",lvl_high:"مرتفع",
+ alert_title:"هل تشعر بتوعك؟",alert_body:"ألم في الصدر، أو ضيق شديد في التنفس، أو تورّم مفاجئ، أو فوات جلسة غسيل: اتصل بالطوارئ أو بمركز الغسيل فورًا.",
+ tabs_aria:"الأقسام الرئيسية",tab_today:"اليوم",tab_meals:"الوجبات",tab_track:"المتابعة",tab_learn:"إرشادات"},
+fr:{intro:"Aperçu du design. Tout ce qui porte la mention EXEMPLE est un exemple, pas un conseil.",
+ sample:"EXEMPLE",fluid_title:"Liquides aujourd'hui",fluid_value:"450 sur 1 000 ml (limite d'exemple)",
+ fluid_aria:"Liquides aujourd'hui : 450 sur 1 000 millilitres",next_session:"Prochaine dialyse : mardi, 7 h 00",
+ cup_small:"Petite tasse",cup_glass:"Verre",cup_mug:"Mug",
+ ice_title:"Glaçons",ice_less:"Un glaçon de moins",ice_more:"Un glaçon de plus",ice_add:"Ajouter les glaçons",ice_ml:"≈ {ml} ml (estimation)",
+ ice_tip:"La glace compte comme liquide. Pour connaître la taille de vos glaçons, faites fondre 5 glaçons habituels dans un verre doseur une fois, puis enregistrez la quantité dans les Réglages.",
+ sample_dish:"Plat d'exemple, une portion",n_k:"Potassium",n_p:"Phosphore",n_na:"Sodium",lvl_low:"Faible",lvl_mid:"Modéré",lvl_high:"Élevé",
+ alert_title:"Vous ne vous sentez pas bien ?",alert_body:"Douleur thoracique, essoufflement sévère, gonflement soudain ou séance manquée : appelez les urgences ou votre centre de dialyse maintenant.",
+ tabs_aria:"Sections principales",tab_today:"Aujourd'hui",tab_meals:"Repas",tab_track:"Suivi",tab_learn:"Conseils"}
+};
+let lang="en",ice=2;const ML_PER_CUBE=15; // placeholder until the user measures their own cubes
+const $=id=>document.getElementById(id);
+const fmt=n=>new Intl.NumberFormat(lang==="ar"?"ar-EG":lang).format(n);
+function drawIce(){$("iceCount").textContent=fmt(ice);
+ $("iceMl").textContent=T[lang].ice_ml.replace("{ml}",fmt(ice*ML_PER_CUBE));$("iceMinus").disabled=ice<=1;}
+function setLang(l){lang=l;const d=T[l];
+ document.documentElement.lang=l;document.documentElement.dir=l==="ar"?"rtl":"ltr";
+ document.querySelectorAll("[data-t]").forEach(e=>e.textContent=d[e.dataset.t]);
+ document.querySelectorAll("[data-t-aria]").forEach(e=>e.setAttribute("aria-label",d[e.dataset.tAria]));
+ document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===l));
+ drawIce();}
+document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>setLang(b.dataset.lang));
+document.querySelectorAll("[data-size]").forEach(b=>b.onclick=()=>{
+ document.documentElement.classList.remove("size-2","size-3");
+ if(b.dataset.size!=="1")document.documentElement.classList.add("size-"+b.dataset.size);
+ document.querySelectorAll("[data-size]").forEach(x=>x.setAttribute("aria-pressed",x===b));});
+$("iceMinus").onclick=()=>{if(ice>1){ice--;drawIce();}};
+$("icePlus").onclick=()=>{if(ice<20){ice++;drawIce();}};
+setLang("en");
+</script>
 </body>
 </html>
