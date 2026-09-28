@@ -1,0 +1,75 @@
+/* Sufra design system v1 — Mist blue (soft, calm, WCAG AA contrast) */
+:root{
+  --bg:#F4F6F8; --surface:#FFFFFF; --soft:#DFE8EF; --accent:#3F5B72; --line:#E1E6EB;
+  --text:#2F3A3D; --muted:#5E6A6E;
+  --low-bg:#E8F3EC; --low-text:#2F6B4A;
+  --mid-bg:#FBF1DE; --mid-text:#7A5212;
+  --high-bg:#F9E7E3; --high-text:#8A3B30;
+  --alert-bg:#FBEDEA; --alert-text:#7F2E24; --alert-line:#E3A69C;
+  --radius:18px; --tap:56px; --shadow:0 1px 3px rgba(40,50,60,.06);
+}
+html{font-size:112.5%;} /* 18px base */
+html.size-2{font-size:125%;} html.size-3{font-size:137.5%;}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text);line-height:1.6;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Noto Sans Arabic",Tahoma,sans-serif;
+  padding:1rem 1rem 6rem;}
+h1{font-size:1.7rem;font-weight:600;color:var(--accent);margin:.5rem 0 1rem;}
+h2{font-size:1.15rem;font-weight:600;margin:2rem 0 .6rem;}
+p{margin:.3rem 0;}
+.muted{color:var(--muted);font-size:.9rem;}
+.card{background:var(--surface);border-radius:var(--radius);padding:1.1rem;margin:.75rem 0;
+  box-shadow:var(--shadow);border:1px solid var(--line);}
+.row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;}
+
+/* Segmented choice (language, text size) */
+.seg{display:flex;gap:.35rem;background:var(--surface);padding:.25rem;border-radius:14px;border:1px solid var(--line);}
+.seg button{min-width:3rem;min-height:48px;border-radius:11px;border:0;background:transparent;
+  color:var(--muted);font:inherit;font-weight:600;}
+.seg button[aria-pressed="true"]{background:var(--soft);color:var(--accent);}
+
+/* Buttons */
+.btn{min-height:var(--tap);padding:0 1.25rem;border-radius:14px;font:inherit;font-weight:600;
+  border:1px solid var(--line);display:inline-flex;align-items:center;gap:.5rem;cursor:pointer;}
+.btn-primary{background:var(--soft);color:var(--accent);border-color:transparent;width:100%;justify-content:center;}
+.btn-secondary{background:var(--surface);color:var(--accent);}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:3px;}
+.cups{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;}
+.cup{min-height:5.5rem;flex-direction:column;justify-content:center;background:var(--surface);
+  color:var(--text);box-shadow:var(--shadow);}
+.cup svg{color:var(--accent);}
+
+/* Fluid bar */
+.bar{height:.9rem;background:var(--soft);border-radius:999px;overflow:hidden;margin:.6rem 0;}
+.bar span{display:block;height:100%;background:var(--accent);border-radius:999px;}
+
+/* Ice cube stepper */
+.stepper{display:flex;align-items:center;gap:.5rem;}
+.stepper button{width:56px;height:56px;border-radius:50%;border:1px solid var(--line);background:var(--soft);
+  color:var(--accent);font:inherit;font-size:1.5rem;font-weight:600;}
+.stepper button:disabled{opacity:.4;}
+.stepper output{min-width:2.5rem;text-align:center;font-size:1.4rem;font-weight:600;}
+
+/* Nutrient labels: colour + icon + word */
+.nut{display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--line);}
+.nut:last-child{border-bottom:0;}
+.badge{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border-radius:999px;font-weight:600;font-size:.95rem;}
+.low{background:var(--low-bg);color:var(--low-text);}
+.mid{background:var(--mid-bg);color:var(--mid-text);}
+.high{background:var(--high-bg);color:var(--high-text);}
+.tag{display:inline-block;font-size:.75rem;font-weight:600;background:var(--bg);color:var(--muted);
+  padding:.1rem .5rem;border-radius:6px;}
+
+/* Safety banner */
+.alert{background:var(--alert-bg);color:var(--alert-text);border-inline-start:5px solid var(--alert-line);
+  border-radius:var(--radius);padding:1rem;}
+.alert strong{display:block;font-size:1.1rem;margin-bottom:.25rem;}
+
+/* Bottom tabs */
+nav.tabs{position:fixed;inset-inline:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom);}
+.tab{min-height:4.25rem;background:none;border:0;font:inherit;font-size:.85rem;color:var(--muted);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem;}
+.tab[aria-current="page"]{color:var(--accent);font-weight:600;}
+.tab[aria-current="page"] svg{background:var(--soft);border-radius:999px;padding:3px 14px;box-sizing:content-box;}
+svg{flex-shrink:0;}
