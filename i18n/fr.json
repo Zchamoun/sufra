@@ -38,6 +38,9 @@
 
   "ob_diet_title": "Vos habitudes alimentaires",
   "ob_diet_hint": "Touchez ce qui vous concerne.",
+  "ob_diet_eat": "Ce que vous mangez",
+  "ob_diet_fast": "Les jeûnes que vous observez",
+  "ob_diet_fast_hint": "Sufra adaptera les idées de repas pour vos jours de jeûne. Jeûner sous dialyse demande de l'organisation : parlez-en à votre équipe soignante avant de jeûner.",
   "diet_halal": "Halal",
   "diet_veg": "Végétarien",
   "diet_ramadan": "Je jeûne pendant le Ramadan",
