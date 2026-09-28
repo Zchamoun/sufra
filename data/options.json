@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "countries": [
+    {"id": "SA", "names": {"en": "Saudi Arabia", "ar": "السعودية", "fr": "Arabie saoudite"}},
+    {"id": "AE", "names": {"en": "UAE", "ar": "الإمارات", "fr": "Émirats arabes unis"}},
+    {"id": "QA", "names": {"en": "Qatar", "ar": "قطر", "fr": "Qatar"}},
+    {"id": "KW", "names": {"en": "Kuwait", "ar": "الكويت", "fr": "Koweït"}},
+    {"id": "OM", "names": {"en": "Oman", "ar": "عُمان", "fr": "Oman"}},
+    {"id": "IQ", "names": {"en": "Iraq", "ar": "العراق", "fr": "Irak"}},
+    {"id": "JO", "names": {"en": "Jordan", "ar": "الأردن", "fr": "Jordanie"}},
+    {"id": "LB", "names": {"en": "Lebanon", "ar": "لبنان", "fr": "Liban"}},
+    {"id": "SY", "names": {"en": "Syria", "ar": "سوريا", "fr": "Syrie"}},
+    {"id": "EG", "names": {"en": "Egypt", "ar": "مصر", "fr": "Égypte"}},
+    {"id": "MA", "names": {"en": "Morocco", "ar": "المغرب", "fr": "Maroc"}},
+    {"id": "DZ", "names": {"en": "Algeria", "ar": "الجزائر", "fr": "Algérie"}},
+    {"id": "TN", "names": {"en": "Tunisia", "ar": "تونس", "fr": "Tunisie"}},
+    {"id": "LY", "names": {"en": "Libya", "ar": "ليبيا", "fr": "Libye"}},
+    {"id": "OTHER", "names": {"en": "Another country", "ar": "دولة أخرى", "fr": "Autre pays"}}
+  ],
+  "cuisines": [
+    {"id": "gulf", "names": {"en": "Gulf", "ar": "خليجي", "fr": "Du Golfe"}},
+    {"id": "levantine", "names": {"en": "Levantine", "ar": "شامي", "fr": "Levantine"}},
+    {"id": "egyptian", "names": {"en": "Egyptian", "ar": "مصري", "fr": "Égyptienne"}},
+    {"id": "iraqi", "names": {"en": "Iraqi", "ar": "عراقي", "fr": "Irakienne"}},
+    {"id": "maghrebi", "names": {"en": "North African", "ar": "مغاربي", "fr": "Maghrébine"}},
+    {"id": "south_asian", "names": {"en": "South Asian", "ar": "جنوب آسيوي", "fr": "Sud-asiatique"}},
+    {"id": "filipino", "names": {"en": "Filipino", "ar": "فلبيني", "fr": "Philippine"}},
+    {"id": "western", "names": {"en": "Western", "ar": "غربي", "fr": "Occidentale"}},
+    {"id": "east_asian", "names": {"en": "East Asian", "ar": "شرق آسيوي", "fr": "Est-asiatique"}},
+    {"id": "mixed", "names": {"en": "A bit of everything", "ar": "من كل شيء", "fr": "Un peu de tout"}}
+  ]
+}
