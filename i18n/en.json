@@ -38,6 +38,9 @@
 
   "ob_diet_title": "Your food customs",
   "ob_diet_hint": "Tap any that apply to you.",
+  "ob_diet_eat": "What you eat",
+  "ob_diet_fast": "Fasting you observe",
+  "ob_diet_fast_hint": "Sufra will adapt meal ideas for your fasting days. Fasting on dialysis needs planning, so please talk to your care team before you fast.",
   "diet_halal": "Halal",
   "diet_veg": "Vegetarian",
   "diet_ramadan": "I fast in Ramadan",
