@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "1.1",
   "countries": [
     {"id": "SA", "names": {"en": "Saudi Arabia", "ar": "السعودية", "fr": "Arabie saoudite"}},
     {"id": "AE", "names": {"en": "UAE", "ar": "الإمارات", "fr": "Émirats arabes unis"}},
@@ -19,6 +19,7 @@
   ],
   "cuisines": [
     {"id": "gulf", "names": {"en": "Gulf", "ar": "خليجي", "fr": "Du Golfe"}},
+    {"id": "lebanese", "names": {"en": "Lebanese", "ar": "لبناني", "fr": "Libanaise"}},
     {"id": "levantine", "names": {"en": "Levantine", "ar": "شامي", "fr": "Levantine"}},
     {"id": "egyptian", "names": {"en": "Egyptian", "ar": "مصري", "fr": "Égyptienne"}},
     {"id": "iraqi", "names": {"en": "Iraqi", "ar": "عراقي", "fr": "Irakienne"}},
@@ -28,5 +29,25 @@
     {"id": "western", "names": {"en": "Western", "ar": "غربي", "fr": "Occidentale"}},
     {"id": "east_asian", "names": {"en": "East Asian", "ar": "شرق آسيوي", "fr": "Est-asiatique"}},
     {"id": "mixed", "names": {"en": "A bit of everything", "ar": "من كل شيء", "fr": "Un peu de tout"}}
+  ],
+  "diets": [
+    {"id": "halal", "names": {"en": "Halal", "ar": "حلال", "fr": "Halal"}},
+    {"id": "kosher", "names": {"en": "Kosher", "ar": "كوشر", "fr": "Casher"}},
+    {"id": "vegetarian", "names": {"en": "Vegetarian", "ar": "نباتي", "fr": "Végétarien"}},
+    {"id": "vegan", "names": {"en": "Vegan (no animal products)", "ar": "نباتي صِرف (بدون منتجات حيوانية)", "fr": "Végétalien (aucun produit animal)"}},
+    {"id": "no_dairy", "names": {"en": "No dairy", "ar": "بدون ألبان ومشتقاتها", "fr": "Sans produits laitiers"}},
+    {"id": "no_pork", "names": {"en": "No pork", "ar": "بدون لحم خنزير", "fr": "Sans porc"}},
+    {"id": "no_beef", "names": {"en": "No beef", "ar": "بدون لحم بقر", "fr": "Sans bœuf"}},
+    {"id": "no_alcohol", "names": {"en": "No alcohol", "ar": "بدون كحول", "fr": "Sans alcool"}}
+  ],
+  "fasts": [
+    {"id": "ramadan", "names": {"en": "Ramadan", "ar": "صيام رمضان", "fr": "Ramadan"}},
+    {"id": "orthodox", "names": {"en": "Orthodox fasts (Great Lent, Wednesdays and Fridays)", "ar": "أصوام الأرثوذكس (الصوم الكبير، الأربعاء والجمعة)", "fr": "Jeûnes orthodoxes (Grand Carême, mercredis et vendredis)"}},
+    {"id": "coptic", "names": {"en": "Coptic fasts", "ar": "أصوام الأقباط", "fr": "Jeûnes coptes"}},
+    {"id": "catholic", "names": {"en": "Catholic Lent (including Maronite and Melkite)", "ar": "الصوم عند الكاثوليك (ومنهم الموارنة والروم الكاثوليك)", "fr": "Carême catholique (y compris maronite et melkite)"}},
+    {"id": "other_christian", "names": {"en": "Other Christian fasts (such as Armenian or Assyrian)", "ar": "أصوام مسيحية أخرى (مثل الأرمن أو الآشوريين)", "fr": "Autres jeûnes chrétiens (comme arméniens ou assyriens)"}},
+    {"id": "jewish", "names": {"en": "Jewish fast days (such as Yom Kippur)", "ar": "أيام الصوم اليهودية (مثل يوم الغفران)", "fr": "Jeûnes juifs (comme Yom Kippour)"}},
+    {"id": "hindu", "names": {"en": "Hindu fasting days (such as Navratri or Ekadashi)", "ar": "أيام الصيام الهندوسية (مثل نافراتري أو إيكاداشي)", "fr": "Jeûnes hindous (comme Navratri ou Ekadashi)"}},
+    {"id": "other", "names": {"en": "Other fasting days", "ar": "أيام صيام أخرى", "fr": "Autres jours de jeûne"}}
   ]
 }
