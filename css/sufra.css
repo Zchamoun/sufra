@@ -1,4 +1,4 @@
-/* Sufra design system v1 — Mist blue (soft, calm, WCAG AA contrast) */
+/* Sufra design system v1.1 — Mist blue (soft, calm, WCAG AA contrast) */
 :root{
   --bg:#F4F6F8; --surface:#FFFFFF; --soft:#DFE8EF; --accent:#3F5B72; --line:#E1E6EB;
   --text:#2F3A3D; --muted:#5E6A6E;
@@ -34,9 +34,9 @@ p{margin:.3rem 0;}
 .btn-primary{background:var(--soft);color:var(--accent);border-color:transparent;width:100%;justify-content:center;}
 .btn-secondary{background:var(--surface);color:var(--accent);}
 button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:3px;}
-.cups{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;}
+.cups{display:grid;grid-template-columns:repeat(auto-fit,minmax(6.5rem,1fr));gap:.6rem;}
 .cup{min-height:5.5rem;flex-direction:column;justify-content:center;background:var(--surface);
-  color:var(--text);box-shadow:var(--shadow);}
+  color:var(--text);box-shadow:var(--shadow);padding:.5rem;text-align:center;}
 .cup svg{color:var(--accent);}
 
 /* Fluid bar */
