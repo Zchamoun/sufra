@@ -1,4 +1,4 @@
-/* Sufra app v0.3 — onboarding + Today. All data stays on this device. */
+/* Sufra app v0.3.1 — onboarding + Today. All data stays on this device. */
 "use strict";
 
 const LANGS = ["en", "ar", "fr"];
@@ -21,7 +21,7 @@ function blank() {
     profile: {
       lang: null, size: 1, country: null, dialysisType: null,
       schedule: { days: [], time: "", place: null, centerPhone: "" },
-      cuisines: [], diet: { halal: false, vegetarian: false, ramadan: false, allergies: "" },
+      cuisines: [], diet: { rules: [], fasts: [], allergies: "" },
       diabetes: null, disclaimerAccepted: null
     },
     targets: { fluid: tgt("ml"), potassium: tgt("mg"), phosphorus: tgt("mg"), sodium: tgt("mg"), protein: tgt("g") },
@@ -31,7 +31,13 @@ function blank() {
 function load() {
   try {
     const s = JSON.parse(localStorage.getItem(KEY));
-    if (s && s.profile) { const b = blank(); return { ...b, ...s, profile: { ...b.profile, ...s.profile }, targets: { ...b.targets, ...s.targets } }; }
+    if (s && s.profile) {
+      const b = blank(), d = s.profile.diet || {};
+      if (!Array.isArray(d.rules)) { // upgrade answers saved by v0.3
+        s.profile.diet = { rules: [d.halal && "halal", d.vegetarian && "vegetarian"].filter(Boolean), fasts: d.ramadan ? ["ramadan"] : [], allergies: d.allergies || "" };
+      }
+      return { ...b, ...s, profile: { ...b.profile, ...s.profile }, targets: { ...b.targets, ...s.targets } };
+    }
   } catch (e) {}
   return blank();
 }
@@ -72,9 +78,6 @@ function radio(field, v, label, hint = "") {
 function chip(field, v, label, isNum = false) {
   const on = (getPath(field) || []).includes(isNum ? Number(v) : v);
   return `<button type="button" class="chip" aria-pressed="${on}" data-act="toggle" data-field="${field}" data-v="${esc(v)}"${isNum ? " data-num" : ""}>${esc(label)}</button>`;
-}
-function flag(field, label) {
-  return `<button type="button" class="chip" aria-pressed="${!!getPath(field)}" data-act="flag" data-field="${field}">${esc(label)}</button>`;
 }
 function fluidToday() {
   const d = new Date().toDateString();
@@ -126,7 +129,11 @@ const OB = {
   cuis: () => `<h1 tabindex="-1">${t("ob_cuis_title")}</h1><p class="muted">${t("ob_cuis_hint")}</p>
     <div class="chips">${OPT.cuisines.map(c => chip("profile.cuisines", c.id, nm(c))).join("")}</div>`,
   diet: () => `<h1 tabindex="-1">${t("ob_diet_title")}</h1><p class="muted">${t("ob_diet_hint")}</p>
-    <div class="chips">${flag("profile.diet.halal", t("diet_halal"))}${flag("profile.diet.vegetarian", t("diet_veg"))}${flag("profile.diet.ramadan", t("diet_ramadan"))}</div>
+    <h2 class="field">${t("ob_diet_eat")}</h2>
+    <div class="chips">${(OPT.diets || []).map(o => chip("profile.diet.rules", o.id, nm(o))).join("")}</div>
+    <h2 class="field">${t("ob_diet_fast")}</h2>
+    <p class="muted">${t("ob_diet_fast_hint")}</p>
+    <div class="chips">${(OPT.fasts || []).map(o => chip("profile.diet.fasts", o.id, nm(o))).join("")}</div>
     <label class="field" for="f-all">${t("allergies")}</label>
     <input id="f-all" type="text" data-field="profile.diet.allergies" placeholder="${esc(t("allergies_ph"))}" value="${esc(S.profile.diet.allergies)}">`,
   targets: () => `<h1 tabindex="-1">${t("ob_targets_title")}</h1><p class="muted">${t("ob_targets_hint")}</p>
@@ -248,7 +255,6 @@ document.addEventListener("click", async e => {
       const i = arr.indexOf(val); if (i >= 0) arr.splice(i, 1); else arr.push(val);
       save(); b.setAttribute("aria-pressed", i < 0); break;
     }
-    case "flag": setPath(f, !getPath(f)); b.setAttribute("aria-pressed", !!getPath(f)); break;
     case "tab": view.tab = v; view.page = null; render(); break;
     case "page": view.page = v || null; render(); break;
     case "size": S.profile.size = Number(v); save(); await loadLang(lang()); render(false); break;
