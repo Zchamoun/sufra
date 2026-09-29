@@ -1,4 +1,4 @@
-/* Sufra app v0.3.1 — onboarding + Today. All data stays on this device. */
+/* Sufra app v0.4 — onboarding, Today, fluid tracker. All data stays on this device. */
 "use strict";
 
 const LANGS = ["en", "ar", "fr"];
@@ -12,6 +12,9 @@ const WEEK = [6, 0, 1, 2, 3, 4, 5]; // Saturday first
 let S = load();
 let T = {}, TE = {}, OPT = { countries: [], cuisines: [] };
 let view = { name: "loading", step: 0, tab: "today", page: null };
+let ice = 2, toastTimer = null;
+const CUPS = ["small", "glass", "mug"];
+const ICE_EST = 15; // placeholder ml per cube until the user measures their own
 
 /* ---------- storage ---------- */
 function tgt(unit) { return { value: null, unit, status: "unsure", lastUpdated: null }; }
@@ -22,7 +25,8 @@ function blank() {
       lang: null, size: 1, country: null, dialysisType: null,
       schedule: { days: [], time: "", place: null, centerPhone: "" },
       cuisines: [], diet: { rules: [], fasts: [], allergies: "" },
-      diabetes: null, disclaimerAccepted: null
+      diabetes: null, disclaimerAccepted: null,
+      cups: { small: 100, glass: 200, mug: 250, ice5: null } // ice5 = ml from 5 melted cubes
     },
     targets: { fluid: tgt("ml"), potassium: tgt("mg"), phosphorus: tgt("mg"), sodium: tgt("mg"), protein: tgt("g") },
     logs: { fluid: [], meal: [] }
@@ -79,10 +83,30 @@ function chip(field, v, label, isNum = false) {
   const on = (getPath(field) || []).includes(isNum ? Number(v) : v);
   return `<button type="button" class="chip" aria-pressed="${on}" data-act="toggle" data-field="${field}" data-v="${esc(v)}"${isNum ? " data-num" : ""}>${esc(label)}</button>`;
 }
-function fluidToday() {
-  const d = new Date().toDateString();
-  return S.logs.fluid.filter(x => new Date(x.time).toDateString() === d).reduce((a, x) => a + (x.ml || 0), 0);
+function fluidOn(day) {
+  const d = day.toDateString();
+  return S.logs.fluid.filter(x => new Date(x.time).toDateString() === d);
 }
+function fluidToday() { return fluidOn(new Date()).reduce((a, x) => a + (x.ml || 0), 0); }
+function cubeMl() { const v = S.profile.cups.ice5; return v > 0 ? Math.round((v / 5) * 10) / 10 : ICE_EST; }
+function addFluid(ml, container, count = 1) {
+  ml = Math.round(ml);
+  if (!(ml > 0)) return;
+  const id = Date.now() + "-" + Math.floor(Math.random() * 1000);
+  S.logs.fluid.push({ id, time: new Date().toISOString(), ml, container, count });
+  save(); render(false);
+  toast(t("added", { ml: num(ml), unit: t("ml") }), id);
+}
+function removeFluid(id) { S.logs.fluid = S.logs.fluid.filter(x => x.id !== id); save(); render(false); }
+function toast(msg, undoId) {
+  let el = document.getElementById("toast");
+  if (!el) { el = document.createElement("div"); el.id = "toast"; el.setAttribute("role", "status"); el.setAttribute("aria-live", "polite"); document.body.appendChild(el); }
+  el.innerHTML = `<span>${esc(msg)}</span>${undoId ? `<button type="button" class="btn-link" data-act="undo" data-v="${esc(undoId)}">${t("undo")}</button>` : ""}`;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("show"), 10000);
+}
+function hideToast() { const el = document.getElementById("toast"); if (el) el.classList.remove("show"); clearTimeout(toastTimer); }
 function nextSession() {
   const s = S.profile.schedule;
   if (!s.days.length) return null;
@@ -106,6 +130,11 @@ const ICON = {
   today: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/></svg>',
   meals: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11h18a9 9 0 0 1-18 0zM8 7c0-2 2-2 2-4M13 7c0-2 2-2 2-4"/></svg>',
   track: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></svg>',
+  small: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 9h10l-1 9H8z"/></svg>',
+  glass: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 4h12l-2 16H8z"/></svg>',
+  mug: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 6h11v12H5zM16 9h2a2 2 0 0 1 0 4h-2"/></svg>',
+  ice: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 8l8-4 8 4v8l-8 4-8-4z"/><path d="M4 8l8 4 8-4M12 12v8"/></svg>',
+  x: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
   learn: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 21V5"/></svg>'
 };
 
@@ -161,7 +190,10 @@ function renderOb() {
 }
 
 /* ---------- main app ---------- */
-function renderToday() {
+function cupButtons() {
+  return `<div class="cups">${CUPS.map(k => `<button type="button" class="btn cup" data-act="addcup" data-v="${k}">${ICON[k]}<span>${t("cup_" + k)}</span><span class="muted">${num(S.profile.cups[k])} ${t("ml")}</span></button>`).join("")}</div>`;
+}
+function fluidSummary() {
   const used = fluidToday(), f = S.targets.fluid, u = t("ml");
   const lim = f.status === "set" ? f.value : null;
   let fluid;
@@ -174,6 +206,9 @@ function renderToday() {
   } else {
     fluid = `<p class="big">${t("fluid_used", { used: num(used), unit: u })}</p><p class="muted">${t("fluid_nolimit")}</p>`;
   }
+  return fluid;
+}
+function renderToday() {
   const ns = nextSession();
   let next = `<p class="muted">${t("next_none")}</p>`;
   if (ns) {
@@ -186,7 +221,9 @@ function renderToday() {
   return `<div class="head"><h1 tabindex="-1">${t("today")}</h1>
       <button type="button" class="icon-btn" data-act="page" data-v="settings" aria-label="${esc(t("settings"))}">${ICON.gear}</button></div>
     <p class="muted">${esc(new Intl.DateTimeFormat(loc(), { weekday: "long", day: "numeric", month: "long" }).format(new Date()))}</p>
-    <section class="card" aria-labelledby="h-fluid"><h2 id="h-fluid" class="card-title">${t("fluid_title")}</h2>${fluid}<p class="muted small">${t("log_soon")}</p></section>
+    <section class="card" aria-labelledby="h-fluid"><h2 id="h-fluid" class="card-title">${t("fluid_title")}</h2>${fluidSummary()}</section>
+    ${cupButtons()}
+    <button type="button" class="btn btn-secondary wide" data-act="tab" data-v="track">${ICON.ice}<span>${t("more_options")}</span></button>
     <section class="card" aria-labelledby="h-next"><h2 id="h-next" class="card-title">${t("next_title")}</h2>${next}</section>
     <section class="card" aria-labelledby="h-meal"><h2 id="h-meal" class="card-title">${t("meal_title")}</h2>
       ${cz.length ? `<div class="chips">${cz.map(c => `<span class="tag">${esc(nm(c))}</span>`).join("")}</div>` : ""}<p class="muted">${t("meal_soon")}</p></section>
@@ -206,6 +243,13 @@ function renderSettings() {
     <div class="seg" role="group" aria-label="${esc(t("s_lang"))}">${LANGS.map(l => `<button type="button" lang="${l}" aria-pressed="${lang() === l}" data-act="setlang" data-v="${l}">${LANG_NAMES[l]}</button>`).join("")}</div>
     <p class="field">${t("s_size")}</p>
     <div class="seg" role="group" aria-label="${esc(t("s_size"))}">${[1, 2, 3].map(n => `<button type="button" aria-pressed="${p.size === n}" data-act="size" data-v="${n}" style="font-size:${1 + (n - 1) * 0.15}em">A</button>`).join("")}</div>
+    <h2>${t("s_cups")}</h2>
+    <p class="muted">${t("s_cups_hint")}</p>
+    ${CUPS.map(k => `<label class="field" for="c-${k}">${t("cup_" + k)}</label>
+      <div class="unit-input"><input id="c-${k}" type="number" inputmode="numeric" min="1" dir="ltr" data-field="profile.cups.${k}" data-num value="${p.cups[k]}"><span>${t("ml")}</span></div>`).join("")}
+    <label class="field" for="c-ice">${t("s_ice5")}</label>
+    <div class="unit-input"><input id="c-ice" type="number" inputmode="numeric" min="1" dir="ltr" data-field="profile.cups.ice5" data-num value="${p.cups.ice5 ?? ""}"><span>${t("ml")}</span></div>
+    <p class="muted" id="ice-result" aria-live="polite">${p.cups.ice5 > 0 ? t("s_ice_result", { ml: num(cubeMl()), unit: t("ml") }) : ""}</p>
     <div class="stack">
       <button type="button" class="btn btn-secondary" data-act="edit">${t("s_edit")}</button>
       <button type="button" class="btn btn-secondary" data-act="page" data-v="disclaimer">${t("s_disc")}</button>
@@ -217,6 +261,42 @@ function renderDisclaimer() { return `${pageHead(t("ob_disc_title"))}<div class=
 function pageHead(title) {
   return `<div class="head"><button type="button" class="icon-btn" data-act="page" data-v="" aria-label="${esc(t("back"))}">${ICON.back}</button>
     <h1 tabindex="-1" class="grow">${esc(title)}</h1></div>`;
+}
+function renderTrack() {
+  const u = t("ml"), cm = cubeMl(), measured = S.profile.cups.ice5 > 0;
+  const list = fluidOn(new Date()).slice().reverse();
+  const label = x => x.container === "ice" ? `${t("ice_title")} × ${num(x.count)}` : t("cup_" + x.container);
+  const week = [...Array(7)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() - i); return { d, total: fluidOn(d).reduce((a, x) => a + x.ml, 0) }; });
+  const lim = S.targets.fluid.status === "set" ? S.targets.fluid.value : null;
+  return `<h1 tabindex="-1">${t("tab_track")}</h1>
+    <section class="card" aria-labelledby="h-fl"><h2 id="h-fl" class="card-title">${t("fluid_title")}</h2>${fluidSummary()}</section>
+    <h2>${t("add_drink")}</h2>
+    ${cupButtons()}
+    <section class="card" aria-labelledby="h-ice">
+      <div class="row" style="justify-content:space-between">
+        <div class="row"><span style="color:var(--accent)">${ICON.ice}</span>
+          <div><h3 id="h-ice" class="big" style="margin:0">${t("ice_title")}</h3>
+          <div class="muted">${t(measured ? "ice_measured" : "ice_est", { ml: num(Math.round(ice * cm)), unit: u })}</div></div></div>
+        <div class="stepper">
+          <button type="button" data-act="iceminus" aria-label="${esc(t("ice_less"))}"${ice <= 1 ? " disabled" : ""}>−</button>
+          <output aria-live="polite">${num(ice)}</output>
+          <button type="button" data-act="iceplus" aria-label="${esc(t("ice_more"))}">+</button>
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary" style="margin-top:.75rem" data-act="addice">${t("ice_add")}</button>
+      ${measured ? "" : `<p class="muted small" style="margin-top:.5rem">${t("ice_tip")}</p>`}
+    </section>
+    <section class="card" aria-labelledby="h-cust"><h3 id="h-cust" class="big" style="margin:0 0 .4rem">${t("custom_title")}</h3>
+      <div class="unit-input wrap"><input id="f-custom" type="number" inputmode="numeric" min="1" dir="ltr" aria-labelledby="h-cust" placeholder="${esc(t("custom_ph"))}"><span>${u}</span>
+      <button type="button" class="btn btn-secondary" data-act="addcustom">${t("add")}</button></div>
+    </section>
+    <h2>${t("today_list")}</h2>
+    ${list.length ? `<ul class="log">${list.map(x => `<li><span class="muted">${esc(clock(new Date(x.time)))}</span><span class="grow">${esc(label(x))}</span><strong>${num(x.ml)} ${u}</strong>
+      <button type="button" class="icon-btn small-btn" data-act="rmlog" data-v="${esc(x.id)}" aria-label="${esc(t("remove_aria", { what: label(x) + " " + num(x.ml) + " " + u }))}">${ICON.x}</button></li>`).join("")}</ul>`
+      : `<p class="muted">${t("none_yet")}</p>`}
+    <h2>${t("week_title")}</h2>
+    <ul class="log">${week.map(w => `<li><span class="grow">${esc(w.d.toDateString() === new Date().toDateString() ? t("next_today") : new Intl.DateTimeFormat(loc(), { weekday: "long", day: "numeric" }).format(w.d))}</span>
+      <strong>${lim ? t("week_of", { used: num(w.total), limit: num(lim), unit: u }) : `${num(w.total)} ${u}`}</strong></li>`).join("")}</ul>`;
 }
 function renderSoon() { return `<h1 tabindex="-1">${t("tab_" + view.tab)}</h1><div class="card"><p>${t("soon")}</p></div>`; }
 function tabs() {
@@ -230,7 +310,8 @@ function render(focus = true) {
   if (view.name === "ob") app.innerHTML = renderOb();
   else {
     const pages = { settings: renderSettings, unwell: renderUnwell, disclaimer: renderDisclaimer };
-    app.innerHTML = (view.page ? pages[view.page]() : view.tab === "today" ? renderToday() : renderSoon()) + tabs();
+    const tabView = { today: renderToday, track: renderTrack }[view.tab] || renderSoon;
+    app.innerHTML = (view.page ? pages[view.page]() : tabView()) + tabs();
   }
   if (focus) { window.scrollTo(0, 0); const h = app.querySelector("h1"); if (h) h.focus({ preventScroll: true }); }
 }
@@ -255,7 +336,14 @@ document.addEventListener("click", async e => {
       const i = arr.indexOf(val); if (i >= 0) arr.splice(i, 1); else arr.push(val);
       save(); b.setAttribute("aria-pressed", i < 0); break;
     }
-    case "tab": view.tab = v; view.page = null; render(); break;
+    case "tab": view.tab = v; view.page = null; hideToast(); render(); break;
+    case "addcup": addFluid(S.profile.cups[v], v); break;
+    case "iceplus": if (ice < 30) { ice++; render(false); } break;
+    case "iceminus": if (ice > 1) { ice--; render(false); } break;
+    case "addice": addFluid(ice * cubeMl(), "ice", ice); break;
+    case "addcustom": { const el = document.getElementById("f-custom"); const n = Number(el && el.value); if (n > 0 && n <= 5000) addFluid(n, "custom"); else if (el) el.focus(); break; }
+    case "undo": removeFluid(v); hideToast(); toast(t("removed")); break;
+    case "rmlog": removeFluid(v); toast(t("removed")); break;
     case "page": view.page = v || null; render(); break;
     case "size": S.profile.size = Number(v); save(); await loadLang(lang()); render(false); break;
     case "edit": view = { name: "ob", step: 2, tab: "today", page: null }; render(); break;
@@ -277,7 +365,16 @@ document.addEventListener("input", e => {
   if ("target" in el.dataset) {
     const g = getPath(f), n = el.value === "" ? null : Math.max(0, Number(el.value));
     g.value = Number.isFinite(n) ? n : null; g.status = g.value ? "set" : "unsure"; g.lastUpdated = new Date().toISOString(); save();
+  } else if ("num" in el.dataset) {
+    const n = el.value === "" ? null : Number(el.value);
+    setPath(f, n > 0 ? n : (f.endsWith("ice5") ? null : getPath(f)));
+    const r = document.getElementById("ice-result");
+    if (r && f.endsWith("ice5")) r.textContent = S.profile.cups.ice5 > 0 ? t("s_ice_result", { ml: num(cubeMl()), unit: t("ml") }) : "";
   } else setPath(f, el.value);
+});
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter" && e.target.id === "f-custom") document.querySelector('[data-act="addcustom"]').click();
 });
 
 /* ---------- start ---------- */
