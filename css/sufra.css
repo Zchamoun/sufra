@@ -1,4 +1,4 @@
-/* Sufra design system v1.1 — Mist blue (soft, calm, WCAG AA contrast) */
+/* Sufra design system v1.6 — Mist blue (soft, calm, WCAG AA contrast) */
 :root{
   --bg:#F4F6F8; --surface:#FFFFFF; --soft:#DFE8EF; --accent:#3F5B72; --line:#E1E6EB;
   --text:#2F3A3D; --muted:#5E6A6E;
@@ -153,3 +153,31 @@ h3{font-size:1.05rem;font-weight:600;}
 .ib-small{background:#FBF1E4;} .ib-glass{background:#E7F2FB;} .ib-mug{background:#FCECE3;}
 .ib-ice{background:#E4F5FA;} .ib-custom{background:#EFECF8;}
 .cup .ib{margin-bottom:.15rem;}
+
+/* v1.6 — Meals: search, dish rows, level badges, dish page, steps, Track Drinks | Food */
+.block{display:block;}
+.badges{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.4rem;}
+.badges .badge{font-size:.8rem;padding:.15rem .55rem;gap:.25rem;}
+.nut .badge{flex-shrink:0;}
+.search{display:flex;align-items:center;gap:.5rem;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:0 .8rem;min-height:56px;margin:.75rem 0;}
+.search input{flex:1;min-width:0;border:0;background:transparent;font:inherit;color:var(--text);min-height:52px;padding:0;}
+.search input:focus{outline:none;}
+.search:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--soft);}
+.note-bar{display:flex;gap:.6rem;align-items:center;background:var(--mid-bg);color:var(--mid-text);border-radius:14px;padding:.7rem .9rem;margin:.75rem 0;}
+.draft-tag{display:inline-block;background:var(--mid-bg);color:var(--mid-text);font-size:.85rem;font-weight:600;padding:.2rem .75rem;border-radius:999px;margin:.25rem 0;}
+.dishes li{padding:.7rem 1rem;}
+.dishrow svg.flip{flex-shrink:0;}
+.steps{padding-inline-start:1.5rem;display:grid;gap:.85rem;margin:.5rem 0 1rem;}
+.steps li{line-height:1.55;}
+.steps li::marker{font-weight:700;color:var(--accent);}
+.tag.timer{display:inline-flex;align-items:center;gap:.25rem;margin-inline-start:.4rem;vertical-align:middle;background:#E7F2FB;color:#1F5A87;}
+.ing li{min-height:48px;}
+.seg.two{margin:.5rem 0 .75rem;}
+.seg.two button{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font:inherit;font-weight:600;}
+.seg.two .ib{width:36px;height:36px;border-radius:10px;}
+.seg.two .ib svg{width:24px;height:24px;}
+.ib-meal{background:#FCEDE3;} .ib-soup{background:#FDF3DC;}
+.bar.thin{height:.45rem;margin:.15rem 0 .45rem;}
+.chips.scroll{flex-wrap:nowrap;overflow-x:auto;padding-bottom:.35rem;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;}
+.chips.scroll .chip{flex-shrink:0;white-space:nowrap;scroll-snap-align:start;}
+.nut-right{display:flex;flex-direction:column;align-items:flex-end;gap:.25rem;text-align:end;}
