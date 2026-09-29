@@ -133,3 +133,17 @@ h3{font-size:1.05rem;font-weight:600;}
   transform:translateY(150%);opacity:0;transition:transform .25s,opacity .25s;pointer-events:none;z-index:10;}
 #toast.show{transform:none;opacity:1;pointer-events:auto;}
 #toast .btn-link{color:#fff;font-weight:700;}
+/* ---------- v1.4: editable entries (same pattern for drinks and, later, meals) ---------- */
+.daynav{display:flex;align-items:center;gap:.5rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:.4rem;margin:.5rem 0;}
+.daynav strong{font-size:1.05rem;}
+.icon-btn[disabled]{opacity:.35;}
+.entries li.entry{display:block;padding:.75rem 1rem;}
+.entry-top{display:flex;align-items:center;gap:.75rem;}
+.entry-top .ico{color:var(--accent);display:inline-flex;}
+.entry-top .big{margin:0;white-space:nowrap;}
+.entry-actions{display:flex;align-items:center;gap:.5rem;margin-top:.5rem;}
+.stepper.sm button{width:48px;height:48px;font-size:1.3rem;}
+.stepper.sm output{min-width:2rem;font-size:1.15rem;}
+.entry-edit{margin-top:.5rem;padding-top:.5rem;border-top:1px dashed var(--line);}
+.rowbtn{display:flex;align-items:center;gap:.75rem;width:100%;min-height:48px;background:none;border:0;font:inherit;color:inherit;text-align:start;padding:0;}
+.rowbtn[aria-current="date"]{color:var(--accent);font-weight:600;}
