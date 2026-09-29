@@ -1,0 +1,2139 @@
+{
+ "schema": "sufra.dishes/1",
+ "cuisine": "gulf",
+ "status": "draft",
+ "note": "Values are calculated per portion from USDA SR28 and a typical home recipe. DRAFT until a renal dietitian reviews them.",
+ "sources": [
+  "usda-sr28",
+  "sufra-recipes-v1"
+ ],
+ "updated": "2026-09-29",
+ "dishes": [
+  {
+   "id": "gulf_chicken_kabsa",
+   "cuisine": "gulf",
+   "tags": [
+    "gulf"
+   ],
+   "names": {
+    "en": "Chicken kabsa",
+    "ar": "كبسة دجاج",
+    "fr": "Kabsa au poulet"
+   },
+   "portion": {
+    "en": "1 plate",
+    "ar": "طبق واحد",
+    "fr": "1 assiette"
+   },
+   "portionGrams": 400,
+   "ingredients": [
+    {
+     "key": "rice",
+     "name": "White rice, long-grain, cooked",
+     "names": {
+      "en": "Long-grain rice (cooked weight)",
+      "ar": "أرز طويل الحبة (وزن مطبوخ)",
+      "fr": "Riz long (poids cuit)"
+     },
+     "ndb": "20045",
+     "g": 200
+    },
+    {
+     "key": "chicken_thigh",
+     "name": "Chicken thigh meat, roasted",
+     "names": {
+      "en": "Chicken thigh (cooked weight, no bone)",
+      "ar": "فخذ دجاج (وزن مطبوخ بدون عظم)",
+      "fr": "Cuisse de poulet (poids cuit, sans os)"
+     },
+     "ndb": "05098",
+     "g": 100
+    },
+    {
+     "key": "tomato",
+     "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
+     "ndb": "11529",
+     "g": 40
+    },
+    {
+     "key": "onion",
+     "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
+     "ndb": "11282",
+     "g": 25
+    },
+    {
+     "key": "carrot",
+     "name": "Carrot, raw",
+     "names": {
+      "en": "Carrot",
+      "ar": "جزر",
+      "fr": "Carotte"
+     },
+     "ndb": "11124",
+     "g": 15
+    },
+    {
+     "key": "tomato_paste",
+     "name": "Tomato paste, no salt added",
+     "names": {
+      "en": "Tomato paste",
+      "ar": "معجون طماطم",
+      "fr": "Concentré de tomate"
+     },
+     "ndb": "11546",
+     "g": 8
+    },
+    {
+     "key": "veg_oil",
+     "name": "Vegetable (corn) oil",
+     "names": {
+      "en": "Vegetable oil",
+      "ar": "زيت نباتي",
+      "fr": "Huile végétale"
+     },
+     "ndb": "04518",
+     "g": 8
+    },
+    {
+     "key": "garlic",
+     "name": "Garlic, raw",
+     "names": {
+      "en": "Garlic",
+      "ar": "ثوم",
+      "fr": "Ail"
+     },
+     "ndb": "11215",
+     "g": 3
+    },
+    {
+     "key": "cardamom",
+     "name": "Cardamom",
+     "names": {
+      "en": "Cardamom",
+      "ar": "هيل",
+      "fr": "Cardamome"
+     },
+     "ndb": "02006",
+     "g": 0.3
+    },
+    {
+     "key": "cinnamon",
+     "name": "Cinnamon",
+     "names": {
+      "en": "Cinnamon",
+      "ar": "قرفة",
+      "fr": "Cannelle"
+     },
+     "ndb": "02010",
+     "g": 0.3
+    },
+    {
+     "key": "black_pepper",
+     "name": "Black pepper",
+     "names": {
+      "en": "Black pepper",
+      "ar": "فلفل أسود",
+      "fr": "Poivre noir"
+     },
+     "ndb": "02030",
+     "g": 0.3
+    },
+    {
+     "key": "salt",
+     "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
+     "ndb": "02047",
+     "g": 1.2
+    }
+   ],
+   "nutrients": {
+    "potassium": {
+     "value": 620,
+     "unit": "mg",
+     "calc": 620.2,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "phosphorus": {
+     "value": 350,
+     "unit": "mg",
+     "calc": 350.5,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "sodium": {
+     "value": 590,
+     "unit": "mg",
+     "calc": 591.8,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "protein": {
+     "value": 32,
+     "unit": "g",
+     "calc": 31.5,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    }
+   },
+   "saltAddedG": 1.2,
+   "method": "recipe",
+   "recipeSourceId": "sufra-recipes-v1",
+   "gaps": [],
+   "note": null,
+   "contains": [
+    "meat"
+   ],
+   "main": [
+    "chicken",
+    "rice"
+   ],
+   "time": {
+    "prepMin": 20,
+    "cookMin": 50,
+    "aheadMin": 60
+   },
+   "ahead": [
+    {
+     "id": "thaw",
+     "leadMin": 1440,
+     "text": {
+      "en": "If your meat or chicken is frozen, move it to the fridge the night before so it thaws safely.",
+      "ar": "إذا كان اللحم أو الدجاج مجمّدًا، انقله إلى الثلاجة في الليلة السابقة لتذويبه بأمان.",
+      "fr": "Si votre viande ou votre poulet est congelé, mettez-le au réfrigérateur la veille pour qu'il décongèle en toute sécurité."
+     },
+     "optional": true
+    },
+    {
+     "id": "soak_rice",
+     "leadMin": 60,
+     "text": {
+      "en": "Rinse the rice until the water runs clear, then soak it for 30 minutes.",
+      "ar": "اغسل الأرز حتى يصبح الماء صافيًا، ثم انقعه ٣٠ دقيقة.",
+      "fr": "Rincez le riz jusqu'à ce que l'eau soit claire, puis faites-le tremper 30 minutes."
+     }
+    }
+   ],
+   "steps": [
+    {
+     "text": {
+      "en": "Heat the oil in a deep pot. Fry the chopped onion until golden, about 5 minutes.",
+      "ar": "سخّن الزيت في قدر عميق. اقلِ البصل المفروم حتى يصبح ذهبيًا، حوالي ٥ دقائق.",
+      "fr": "Chauffez l'huile dans une cocotte. Faites dorer l'oignon haché environ 5 minutes."
+     }
+    },
+    {
+     "text": {
+      "en": "Add the chicken, garlic and spices. Turn the pieces until browned on all sides.",
+      "ar": "أضف الدجاج والثوم والبهارات. قلّب القطع حتى تتحمّر من كل الجهات.",
+      "fr": "Ajoutez le poulet, l'ail et les épices. Retournez les morceaux pour les dorer de tous côtés."
+     }
+    },
+    {
+     "text": {
+      "en": "Stir in the tomato, tomato paste and carrot. Cover with water and simmer until the chicken is cooked, about 25 minutes.",
+      "ar": "أضف الطماطم ومعجون الطماطم والجزر. غطِّ بالماء واتركه على نار هادئة حتى ينضج الدجاج، حوالي ٢٥ دقيقة.",
+      "fr": "Ajoutez la tomate, le concentré et la carotte. Couvrez d'eau et laissez mijoter jusqu'à cuisson du poulet, environ 25 minutes."
+     },
+     "timer": 1500
+    },
+    {
+     "text": {
+      "en": "Lift out the chicken. Measure the broth: you need about 1½ cups for each cup of rice.",
+      "ar": "أخرج الدجاج. قِس المرق: تحتاج حوالي كوب ونصف لكل كوب أرز.",
+      "fr": "Retirez le poulet. Mesurez le bouillon : il faut environ 1 tasse ½ par tasse de riz."
+     }
+    },
+    {
+     "text": {
+      "en": "Add the drained rice to the broth. Bring to the boil, then cover and cook on low heat for 20 minutes.",
+      "ar": "أضف الأرز المصفّى إلى المرق. اتركه حتى يغلي ثم غطّه واطبخه على نار هادئة ٢٠ دقيقة.",
+      "fr": "Ajoutez le riz égoutté au bouillon. Portez à ébullition, couvrez et laissez cuire à feu doux 20 minutes."
+     },
+     "timer": 1200
+    },
+    {
+     "text": {
+      "en": "Brown the chicken under the grill or in a hot pan for a few minutes, then serve it on top of the rice.",
+      "ar": "حمّر الدجاج تحت شواية الفرن أو في مقلاة ساخنة لبضع دقائق، ثم قدّمه فوق الأرز.",
+      "fr": "Faites dorer le poulet quelques minutes au gril ou à la poêle, puis servez-le sur le riz."
+     }
+    },
+    {
+     "text": {
+      "en": "Taste before adding the salt from the list. Add it at the end, a little at a time.",
+      "ar": "تذوّق قبل إضافة الملح المذكور في القائمة. أضفه في النهاية وبالتدريج.",
+      "fr": "Goûtez avant d'ajouter le sel indiqué. Ajoutez-le à la fin, petit à petit."
+     }
+    }
+   ],
+   "stepsStatus": "draft",
+   "tips": [],
+   "status": "draft",
+   "reviewedBy": null,
+   "reviewedOn": null,
+   "calculatedOn": "2026-09-29"
+  },
+  {
+   "id": "gulf_lamb_machboos",
+   "cuisine": "gulf",
+   "tags": [
+    "gulf"
+   ],
+   "names": {
+    "en": "Lamb machboos",
+    "ar": "مجبوس لحم",
+    "fr": "Machboos d'agneau"
+   },
+   "portion": {
+    "en": "1 plate",
+    "ar": "طبق واحد",
+    "fr": "1 assiette"
+   },
+   "portionGrams": 370,
+   "ingredients": [
+    {
+     "key": "rice",
+     "name": "White rice, long-grain, cooked",
+     "names": {
+      "en": "Long-grain rice (cooked weight)",
+      "ar": "أرز طويل الحبة (وزن مطبوخ)",
+      "fr": "Riz long (poids cuit)"
+     },
+     "ndb": "20045",
+     "g": 200
+    },
+    {
+     "key": "lamb",
+     "name": "Lamb shoulder, lean, braised",
+     "names": {
+      "en": "Lamb, lean (cooked weight, no bone)",
+      "ar": "لحم غنم قليل الدهن (وزن مطبوخ بدون عظم)",
+      "fr": "Agneau maigre (poids cuit, sans os)"
+     },
+     "ndb": "17040",
+     "g": 90
+    },
+    {
+     "key": "onion",
+     "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
+     "ndb": "11282",
+     "g": 30
+    },
+    {
+     "key": "tomato",
+     "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
+     "ndb": "11529",
+     "g": 40
+    },
+    {
+     "key": "veg_oil",
+     "name": "Vegetable (corn) oil",
+     "names": {
+      "en": "Vegetable oil",
+      "ar": "زيت نباتي",
+      "fr": "Huile végétale"
+     },
+     "ndb": "04518",
+     "g": 8
+    },
+    {
+     "key": "turmeric",
+     "name": "Turmeric",
+     "names": {
+      "en": "Turmeric",
+      "ar": "كركم",
+      "fr": "Curcuma"
+     },
+     "ndb": "02043",
+     "g": 0.5
+    },
+    {
+     "key": "cardamom",
+     "name": "Cardamom",
+     "names": {
+      "en": "Cardamom",
+      "ar": "هيل",
+      "fr": "Cardamome"
+     },
+     "ndb": "02006",
+     "g": 0.3
+    },
+    {
+     "key": "curry",
+     "name": "Mixed spice (bzar / curry)",
+     "names": {
+      "en": "Spice mix (bzar)",
+      "ar": "بهارات مشكلة (بزار)",
+      "fr": "Mélange d'épices (bzar)"
+     },
+     "ndb": "02015",
+     "g": 0.5
+    },
+    {
+     "key": "salt",
+     "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
+     "ndb": "02047",
+     "g": 1.2
+    }
+   ],
+   "nutrients": {
+    "potassium": {
+     "value": 460,
+     "unit": "mg",
+     "calc": 463.2,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "phosphorus": {
+     "value": 290,
+     "unit": "mg",
+     "calc": 291.8,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "sodium": {
+     "value": 540,
+     "unit": "mg",
+     "calc": 541.8,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "protein": {
+     "value": 36,
+     "unit": "g",
+     "calc": 35.7,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    }
+   },
+   "saltAddedG": 1.2,
+   "method": "recipe",
+   "recipeSourceId": "sufra-recipes-v1",
+   "gaps": [
+    "Dried lime (loomi) is used in most homes but has no USDA entry; not included."
+   ],
+   "note": {
+    "en": "Dried lime (loomi) is not counted: no verified data yet.",
+    "ar": "اللومي (الليمون الأسود) غير محسوب: لا توجد بيانات موثّقة بعد.",
+    "fr": "Le citron séché (loomi) n'est pas compté : pas encore de données vérifiées."
+   },
+   "contains": [
+    "meat"
+   ],
+   "main": [
+    "lamb",
+    "rice"
+   ],
+   "time": {
+    "prepMin": 20,
+    "cookMin": 110,
+    "aheadMin": 60
+   },
+   "ahead": [
+    {
+     "id": "thaw",
+     "leadMin": 1440,
+     "text": {
+      "en": "If your meat or chicken is frozen, move it to the fridge the night before so it thaws safely.",
+      "ar": "إذا كان اللحم أو الدجاج مجمّدًا، انقله إلى الثلاجة في الليلة السابقة لتذويبه بأمان.",
+      "fr": "Si votre viande ou votre poulet est congelé, mettez-le au réfrigérateur la veille pour qu'il décongèle en toute sécurité."
+     },
+     "optional": true
+    },
+    {
+     "id": "soak_rice",
+     "leadMin": 60,
+     "text": {
+      "en": "Rinse the rice until the water runs clear, then soak it for 30 minutes.",
+      "ar": "اغسل الأرز حتى يصبح الماء صافيًا، ثم انقعه ٣٠ دقيقة.",
+      "fr": "Rincez le riz jusqu'à ce que l'eau soit claire, puis faites-le tremper 30 minutes."
+     }
+    }
+   ],
+   "steps": [
+    {
+     "text": {
+      "en": "Fry the sliced onion in the oil until soft and golden.",
+      "ar": "اقلِ البصل المقطّع شرائح في الزيت حتى يذبل ويصبح ذهبيًا.",
+      "fr": "Faites revenir l'oignon émincé dans l'huile jusqu'à ce qu'il soit tendre et doré."
+     }
+    },
+    {
+     "text": {
+      "en": "Add the lamb, turmeric and spice mix. Stir for 3–4 minutes.",
+      "ar": "أضف اللحم والكركم وخلطة البهارات. قلّب ٣–٤ دقائق.",
+      "fr": "Ajoutez l'agneau, le curcuma et le mélange d'épices. Remuez 3 à 4 minutes."
+     }
+    },
+    {
+     "text": {
+      "en": "Add the tomato and enough water to cover. Simmer covered until the lamb is tender, about 1 hour 15 minutes.",
+      "ar": "أضف الطماطم وماءً يكفي لتغطية اللحم. اتركه مغطّى على نار هادئة حتى يطرى، حوالي ساعة وربع.",
+      "fr": "Ajoutez la tomate et de l'eau à hauteur. Laissez mijoter à couvert jusqu'à ce que l'agneau soit tendre, environ 1 h 15."
+     },
+     "timer": 4500
+    },
+    {
+     "text": {
+      "en": "Lift out the lamb. Add the drained rice to the broth (about 1½ cups broth per cup of rice).",
+      "ar": "أخرج اللحم. أضف الأرز المصفّى إلى المرق (حوالي كوب ونصف مرق لكل كوب أرز).",
+      "fr": "Retirez l'agneau. Ajoutez le riz égoutté au bouillon (environ 1 tasse ½ de bouillon par tasse de riz)."
+     }
+    },
+    {
+     "text": {
+      "en": "Cover and cook on low heat for 20 minutes. Put the lamb back on top for the last 5 minutes to warm through.",
+      "ar": "غطِّ القدر واطبخ على نار هادئة ٢٠ دقيقة. أعد اللحم فوق الأرز في آخر ٥ دقائق ليسخن.",
+      "fr": "Couvrez et laissez cuire à feu doux 20 minutes. Remettez l'agneau dessus pendant les 5 dernières minutes."
+     },
+     "timer": 1200
+    },
+    {
+     "text": {
+      "en": "Taste before adding the salt from the list. Add it at the end, a little at a time.",
+      "ar": "تذوّق قبل إضافة الملح المذكور في القائمة. أضفه في النهاية وبالتدريج.",
+      "fr": "Goûtez avant d'ajouter le sel indiqué. Ajoutez-le à la fin, petit à petit."
+     }
+    }
+   ],
+   "stepsStatus": "draft",
+   "tips": [],
+   "status": "draft",
+   "reviewedBy": null,
+   "reviewedOn": null,
+   "calculatedOn": "2026-09-29"
+  },
+  {
+   "id": "gulf_harees",
+   "cuisine": "gulf",
+   "tags": [
+    "gulf"
+   ],
+   "names": {
+    "en": "Harees",
+    "ar": "هريس",
+    "fr": "Harees"
+   },
+   "portion": {
+    "en": "1 bowl",
+    "ar": "صحن واحد",
+    "fr": "1 bol"
+   },
+   "portionGrams": 350,
+   "ingredients": [
+    {
+     "key": "wheat",
+     "name": "Whole wheat grain, dry",
+     "names": {
+      "en": "Whole wheat grain (dry weight)",
+      "ar": "حب قمح كامل (وزن جاف)",
+      "fr": "Blé entier (poids sec)"
+     },
+     "ndb": "20072",
+     "g": 50
+    },
+    {
+     "key": "chicken_stew",
+     "name": "Chicken leg meat, stewed",
+     "names": {
+      "en": "Chicken (cooked weight, no bone)",
+      "ar": "دجاج (وزن مطبوخ بدون عظم)",
+      "fr": "Poulet (poids cuit, sans os)"
+     },
+     "ndb": "05083",
+     "g": 70
+    },
+    {
+     "key": "ghee",
+     "name": "Ghee (butter oil)",
+     "names": {
+      "en": "Ghee",
+      "ar": "سمن",
+      "fr": "Ghee (beurre clarifié)"
+     },
+     "ndb": "01003",
+     "g": 8
+    },
+    {
+     "key": "cinnamon",
+     "name": "Cinnamon",
+     "names": {
+      "en": "Cinnamon",
+      "ar": "قرفة",
+      "fr": "Cannelle"
+     },
+     "ndb": "02010",
+     "g": 0.3
+    },
+    {
+     "key": "salt",
+     "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
+     "ndb": "02047",
+     "g": 1.0
+    },
+    {
+     "key": "water",
+     "name": "Tap water",
+     "names": {
+      "en": "Water",
+      "ar": "ماء",
+      "fr": "Eau"
+     },
+     "ndb": "14411",
+     "g": 220
+    }
+   ],
+   "nutrients": {
+    "potassium": {
+     "value": 320,
+     "unit": "mg",
+     "calc": 316.3,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "phosphorus": {
+     "value": 250,
+     "unit": "mg",
+     "calc": 248.7,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "sodium": {
+     "value": 450,
+     "unit": "mg",
+     "calc": 452.2,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "protein": {
+     "value": 25,
+     "unit": "g",
+     "calc": 24.7,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    }
+   },
+   "saltAddedG": 1.0,
+   "method": "recipe",
+   "recipeSourceId": "sufra-recipes-v1",
+   "gaps": [],
+   "note": null,
+   "contains": [
+    "meat",
+    "dairy",
+    "meat_dairy"
+   ],
+   "main": [
+    "wheat",
+    "chicken"
+   ],
+   "time": {
+    "prepMin": 15,
+    "cookMin": 180,
+    "aheadMin": 900
+   },
+   "ahead": [
+    {
+     "id": "soak_wheat",
+     "leadMin": 900,
+     "text": {
+      "en": "Rinse the whole wheat and soak it in water overnight (8–12 hours).",
+      "ar": "اغسل حبّ القمح وانقعه في الماء طوال الليل (٨–١٢ ساعة).",
+      "fr": "Rincez le blé entier et faites-le tremper dans l'eau toute la nuit (8 à 12 heures)."
+     }
+    },
+    {
+     "id": "thaw",
+     "leadMin": 1440,
+     "text": {
+      "en": "If your meat or chicken is frozen, move it to the fridge the night before so it thaws safely.",
+      "ar": "إذا كان اللحم أو الدجاج مجمّدًا، انقله إلى الثلاجة في الليلة السابقة لتذويبه بأمان.",
+      "fr": "Si votre viande ou votre poulet est congelé, mettez-le au réfrigérateur la veille pour qu'il décongèle en toute sécurité."
+     },
+     "optional": true
+    }
+   ],
+   "steps": [
+    {
+     "text": {
+      "en": "Drain the wheat. Put it in a heavy pot with the chicken and the water.",
+      "ar": "صفِّ القمح. ضعه في قدر ثقيل مع الدجاج والماء.",
+      "fr": "Égouttez le blé. Mettez-le dans une cocotte avec le poulet et l'eau."
+     }
+    },
+    {
+     "text": {
+      "en": "Bring to the boil, skim the foam, then cook covered on very low heat for about 2½ hours. Stir now and then and add hot water if it gets dry.",
+      "ar": "اتركه حتى يغلي وأزِل الرغوة، ثم اطبخه مغطّى على نار هادئة جدًا حوالي ساعتين ونصف. حرّك من وقت لآخر وأضف ماءً ساخنًا إذا جفّ.",
+      "fr": "Portez à ébullition, écumez, puis laissez cuire à couvert à feu très doux environ 2 h 30. Remuez de temps en temps et ajoutez de l'eau chaude si nécessaire."
+     },
+     "timer": 9000
+    },
+    {
+     "text": {
+      "en": "Remove any chicken bones. Beat the mixture with a wooden spoon (or a hand blender) until smooth and stretchy.",
+      "ar": "أزِل عظام الدجاج إن وجدت. اضرب الخليط بملعقة خشبية (أو خلاط يدوي) حتى يصبح ناعمًا ومطّاطيًا.",
+      "fr": "Retirez les os éventuels. Battez le mélange à la cuillère en bois (ou au mixeur plongeant) jusqu'à ce qu'il soit lisse et élastique."
+     }
+    },
+    {
+     "text": {
+      "en": "Serve in a bowl with the ghee on top and a pinch of cinnamon.",
+      "ar": "قدّمه في صحن مع السمن على الوجه ورشة قرفة.",
+      "fr": "Servez dans un bol avec le ghee dessus et une pincée de cannelle."
+     }
+    },
+    {
+     "text": {
+      "en": "Taste before adding the salt from the list. Add it at the end, a little at a time.",
+      "ar": "تذوّق قبل إضافة الملح المذكور في القائمة. أضفه في النهاية وبالتدريج.",
+      "fr": "Goûtez avant d'ajouter le sel indiqué. Ajoutez-le à la fin, petit à petit."
+     }
+    }
+   ],
+   "stepsStatus": "draft",
+   "tips": [],
+   "status": "draft",
+   "reviewedBy": null,
+   "reviewedOn": null,
+   "calculatedOn": "2026-09-29"
+  },
+  {
+   "id": "gulf_jareesh",
+   "cuisine": "gulf",
+   "tags": [
+    "gulf"
+   ],
+   "names": {
+    "en": "Jareesh",
+    "ar": "جريش",
+    "fr": "Jareesh"
+   },
+   "portion": {
+    "en": "1 bowl",
+    "ar": "صحن واحد",
+    "fr": "1 bol"
+   },
+   "portionGrams": 380,
+   "ingredients": [
+    {
+     "key": "wheat",
+     "name": "Whole wheat grain, dry",
+     "names": {
+      "en": "Whole wheat grain (dry weight)",
+      "ar": "حب قمح كامل (وزن جاف)",
+      "fr": "Blé entier (poids sec)"
+     },
+     "ndb": "20072",
+     "g": 45
+    },
+    {
+     "key": "yogurt",
+     "name": "Yogurt, plain, whole milk",
+     "names": {
+      "en": "Plain yogurt",
+      "ar": "لبن زبادي",
+      "fr": "Yaourt nature"
+     },
+     "ndb": "01116",
+     "g": 60
+    },
+    {
+     "key": "chicken_stew",
+     "name": "Chicken leg meat, stewed",
+     "names": {
+      "en": "Chicken (cooked weight, no bone)",
+      "ar": "دجاج (وزن مطبوخ بدون عظم)",
+      "fr": "Poulet (poids cuit, sans os)"
+     },
+     "ndb": "05083",
+     "g": 50
+    },
+    {
+     "key": "onion",
+     "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
+     "ndb": "11282",
+     "g": 20
+    },
+    {
+     "key": "ghee",
+     "name": "Ghee (butter oil)",
+     "names": {
+      "en": "Ghee",
+      "ar": "سمن",
+      "fr": "Ghee (beurre clarifié)"
+     },
+     "ndb": "01003",
+     "g": 6
+    },
+    {
+     "key": "cumin",
+     "name": "Cumin",
+     "names": {
+      "en": "Cumin",
+      "ar": "كمون",
+      "fr": "Cumin"
+     },
+     "ndb": "02014",
+     "g": 0.5
+    },
+    {
+     "key": "salt",
+     "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
+     "ndb": "02047",
+     "g": 1.0
+    },
+    {
+     "key": "water",
+     "name": "Tap water",
+     "names": {
+      "en": "Water",
+      "ar": "ماء",
+      "fr": "Eau"
+     },
+     "ndb": "14411",
+     "g": 200
+    }
+   ],
+   "nutrients": {
+    "potassium": {
+     "value": 390,
+     "unit": "mg",
+     "calc": 389.9,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "phosphorus": {
+     "value": 270,
+     "unit": "mg",
+     "calc": 269.6,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "sodium": {
+     "value": 460,
+     "unit": "mg",
+     "calc": 464.8,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "protein": {
+     "value": 21,
+     "unit": "g",
+     "calc": 21.2,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    }
+   },
+   "saltAddedG": 1.0,
+   "method": "recipe",
+   "recipeSourceId": "sufra-recipes-v1",
+   "gaps": [
+    "Crushed whole wheat; USDA has no separate entry for jareesh, so whole wheat grain is used."
+   ],
+   "note": null,
+   "contains": [
+    "meat",
+    "dairy",
+    "meat_dairy"
+   ],
+   "main": [
+    "wheat",
+    "yogurt"
+   ],
+   "time": {
+    "prepMin": 15,
+    "cookMin": 90,
+    "aheadMin": 180
+   },
+   "ahead": [
+    {
+     "id": "soak_wheat",
+     "leadMin": 180,
+     "text": {
+      "en": "Rinse the crushed wheat (jareesh) and soak it in water for 1 hour.",
+      "ar": "اغسل الجريش وانقعه في الماء ساعة واحدة.",
+      "fr": "Rincez le blé concassé (jareesh) et faites-le tremper dans l'eau 1 heure."
+     }
+    },
+    {
+     "id": "thaw",
+     "leadMin": 1440,
+     "text": {
+      "en": "If your meat or chicken is frozen, move it to the fridge the night before so it thaws safely.",
+      "ar": "إذا كان اللحم أو الدجاج مجمّدًا، انقله إلى الثلاجة في الليلة السابقة لتذويبه بأمان.",
+      "fr": "Si votre viande ou votre poulet est congelé, mettez-le au réfrigérateur la veille pour qu'il décongèle en toute sécurité."
+     },
+     "optional": true
+    }
+   ],
+   "steps": [
+    {
+     "text": {
+      "en": "Drain the wheat and put it in a pot with the chicken and water. Simmer covered for about 1 hour, stirring now and then.",
+      "ar": "صفِّ الجريش وضعه في قدر مع الدجاج والماء. اتركه على نار هادئة مغطّى حوالي ساعة، مع التحريك من وقت لآخر.",
+      "fr": "Égouttez le blé et mettez-le dans une casserole avec le poulet et l'eau. Laissez mijoter à couvert environ 1 heure en remuant de temps en temps."
+     },
+     "timer": 3600
+    },
+    {
+     "text": {
+      "en": "Stir in the yogurt and cook 10 more minutes on low heat until creamy.",
+      "ar": "أضف اللبن الزبادي وحرّك، واطبخ ١٠ دقائق أخرى على نار هادئة حتى يصبح كريميًا.",
+      "fr": "Incorporez le yaourt et laissez cuire encore 10 minutes à feu doux jusqu'à obtenir une texture crémeuse."
+     },
+     "timer": 600
+    },
+    {
+     "text": {
+      "en": "Fry the onion in the ghee with the cumin until golden. Spoon it over the jareesh to serve.",
+      "ar": "اقلِ البصل في السمن مع الكمون حتى يصبح ذهبيًا. ضعه فوق الجريش عند التقديم.",
+      "fr": "Faites dorer l'oignon dans le ghee avec le cumin. Versez-le sur le jareesh au moment de servir."
+     }
+    },
+    {
+     "text": {
+      "en": "Taste before adding the salt from the list. Add it at the end, a little at a time.",
+      "ar": "تذوّق قبل إضافة الملح المذكور في القائمة. أضفه في النهاية وبالتدريج.",
+      "fr": "Goûtez avant d'ajouter le sel indiqué. Ajoutez-le à la fin, petit à petit."
+     }
+    }
+   ],
+   "stepsStatus": "draft",
+   "tips": [],
+   "status": "draft",
+   "reviewedBy": null,
+   "reviewedOn": null,
+   "calculatedOn": "2026-09-29"
+  },
+  {
+   "id": "gulf_chicken_saloona",
+   "cuisine": "gulf",
+   "tags": [
+    "gulf"
+   ],
+   "names": {
+    "en": "Chicken saloona (vegetable stew)",
+    "ar": "صالونة دجاج",
+    "fr": "Saloona au poulet (ragoût de légumes)"
+   },
+   "portion": {
+    "en": "1 bowl, without rice",
+    "ar": "صحن واحد بدون أرز",
+    "fr": "1 bol, sans riz"
+   },
+   "portionGrams": 370,
+   "ingredients": [
+    {
+     "key": "chicken_stew",
+     "name": "Chicken leg meat, stewed",
+     "names": {
+      "en": "Chicken (cooked weight, no bone)",
+      "ar": "دجاج (وزن مطبوخ بدون عظم)",
+      "fr": "Poulet (poids cuit, sans os)"
+     },
+     "ndb": "05083",
+     "g": 80
+    },
+    {
+     "key": "potato_raw",
+     "name": "Potato, raw weight (stewed in its broth)",
+     "names": {
+      "en": "Potato (raw weight)",
+      "ar": "بطاطس (وزن نيء)",
+      "fr": "Pomme de terre (poids cru)"
+     },
+     "ndb": "11352",
+     "g": 60
+    },
+    {
+     "key": "zucchini",
+     "name": "Zucchini, raw",
+     "names": {
+      "en": "Zucchini",
+      "ar": "كوسة",
+      "fr": "Courgette"
+     },
+     "ndb": "11477",
+     "g": 50
+    },
+    {
+     "key": "carrot",
+     "name": "Carrot, raw",
+     "names": {
+      "en": "Carrot",
+      "ar": "جزر",
+      "fr": "Carotte"
+     },
+     "ndb": "11124",
+     "g": 30
+    },
+    {
+     "key": "tomato",
+     "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
+     "ndb": "11529",
+     "g": 50
+    },
+    {
+     "key": "tomato_paste",
+     "name": "Tomato paste, no salt added",
+     "names": {
+      "en": "Tomato paste",
+      "ar": "معجون طماطم",
+      "fr": "Concentré de tomate"
+     },
+     "ndb": "11546",
+     "g": 8
+    },
+    {
+     "key": "onion",
+     "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
+     "ndb": "11282",
+     "g": 25
+    },
+    {
+     "key": "veg_oil",
+     "name": "Vegetable (corn) oil",
+     "names": {
+      "en": "Vegetable oil",
+      "ar": "زيت نباتي",
+      "fr": "Huile végétale"
+     },
+     "ndb": "04518",
+     "g": 6
+    },
+    {
+     "key": "curry",
+     "name": "Mixed spice (bzar / curry)",
+     "names": {
+      "en": "Spice mix (bzar)",
+      "ar": "بهارات مشكلة (بزار)",
+      "fr": "Mélange d'épices (bzar)"
+     },
+     "ndb": "02015",
+     "g": 1
+    },
+    {
+     "key": "salt",
+     "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
+     "ndb": "02047",
+     "g": 1.0
+    },
+    {
+     "key": "water",
+     "name": "Tap water",
+     "names": {
+      "en": "Water",
+      "ar": "ماء",
+      "fr": "Eau"
+     },
+     "ndb": "14411",
+     "g": 60
+    }
+   ],
+   "nutrients": {
+    "potassium": {
+     "value": 880,
+     "unit": "mg",
+     "calc": 881.4,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "phosphorus": {
+     "value": 210,
+     "unit": "mg",
+     "calc": 212.5,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "sodium": {
+     "value": 490,
+     "unit": "mg",
+     "calc": 489.4,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "protein": {
+     "value": 24,
+     "unit": "g",
+     "calc": 24.3,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    }
+   },
+   "saltAddedG": 1.0,
+   "method": "recipe",
+   "recipeSourceId": "sufra-recipes-v1",
+   "gaps": [
+    "Broth-based stew: should its broth count toward the fluid limit? Question for the reviewer."
+   ],
+   "note": null,
+   "contains": [
+    "meat"
+   ],
+   "main": [
+    "chicken",
+    "potato",
+    "zucchini"
+   ],
+   "time": {
+    "prepMin": 20,
+    "cookMin": 45,
+    "aheadMin": 0
+   },
+   "ahead": [
+    {
+     "id": "thaw",
+     "leadMin": 1440,
+     "text": {
+      "en": "If your meat or chicken is frozen, move it to the fridge the night before so it thaws safely.",
+      "ar": "إذا كان اللحم أو الدجاج مجمّدًا، انقله إلى الثلاجة في الليلة السابقة لتذويبه بأمان.",
+      "fr": "Si votre viande ou votre poulet est congelé, mettez-le au réfrigérateur la veille pour qu'il décongèle en toute sécurité."
+     },
+     "optional": true
+    }
+   ],
+   "steps": [
+    {
+     "text": {
+      "en": "Fry the onion in the oil until soft. Add the chicken and spice mix and brown lightly.",
+      "ar": "اقلِ البصل في الزيت حتى يذبل. أضف الدجاج والبهارات وحمّره قليلًا.",
+      "fr": "Faites revenir l'oignon dans l'huile. Ajoutez le poulet et les épices et faites dorer légèrement."
+     }
+    },
+    {
+     "text": {
+      "en": "Add the tomato and tomato paste and cook for 5 minutes.",
+      "ar": "أضف الطماطم ومعجون الطماطم واطبخ ٥ دقائق.",
+      "fr": "Ajoutez la tomate et le concentré et laissez cuire 5 minutes."
+     }
+    },
+    {
+     "text": {
+      "en": "Add the potato, carrot and water. Cover and simmer for 20 minutes.",
+      "ar": "أضف البطاطس والجزر والماء. غطِّ القدر واتركه على نار هادئة ٢٠ دقيقة.",
+      "fr": "Ajoutez la pomme de terre, la carotte et l'eau. Couvrez et laissez mijoter 20 minutes."
+     },
+     "timer": 1200
+    },
+    {
+     "text": {
+      "en": "Add the zucchini and cook 10 more minutes, until all the vegetables are soft.",
+      "ar": "أضف الكوسة واطبخ ١٠ دقائق أخرى حتى تنضج كل الخضار.",
+      "fr": "Ajoutez la courgette et laissez cuire encore 10 minutes, jusqu'à ce que tous les légumes soient tendres."
+     },
+     "timer": 600
+    },
+    {
+     "text": {
+      "en": "Taste before adding the salt from the list. Add it at the end, a little at a time.",
+      "ar": "تذوّق قبل إضافة الملح المذكور في القائمة. أضفه في النهاية وبالتدريج.",
+      "fr": "Goûtez avant d'ajouter le sel indiqué. Ajoutez-le à la fin, petit à petit."
+     }
+    }
+   ],
+   "stepsStatus": "draft",
+   "tips": [],
+   "status": "draft",
+   "reviewedBy": null,
+   "reviewedOn": null,
+   "calculatedOn": "2026-09-29"
+  },
+  {
+   "id": "gulf_luqaimat",
+   "cuisine": "gulf",
+   "tags": [
+    "gulf"
+   ],
+   "names": {
+    "en": "Luqaimat",
+    "ar": "لقيمات",
+    "fr": "Luqaimat"
+   },
+   "portion": {
+    "en": "5 pieces",
+    "ar": "٥ حبات",
+    "fr": "5 pièces"
+   },
+   "portionGrams": 70,
+   "ingredients": [
+    {
+     "key": "flour",
+     "name": "White flour",
+     "names": {
+      "en": "White flour",
+      "ar": "طحين أبيض",
+      "fr": "Farine blanche"
+     },
+     "ndb": "20081",
+     "g": 25
+    },
+    {
+     "key": "sugar",
+     "name": "Sugar",
+     "names": {
+      "en": "Sugar",
+      "ar": "سكر",
+      "fr": "Sucre"
+     },
+     "ndb": "19335",
+     "g": 3
+    },
+    {
+     "key": "veg_oil",
+     "name": "Vegetable (corn) oil",
+     "names": {
+      "en": "Vegetable oil",
+      "ar": "زيت نباتي",
+      "fr": "Huile végétale"
+     },
+     "ndb": "04518",
+     "g": 10
+    },
+    {
+     "key": "honey",
+     "name": "Honey",
+     "names": {
+      "en": "Honey",
+      "ar": "عسل",
+      "fr": "Miel"
+     },
+     "ndb": "19296",
+     "g": 15
+    },
+    {
+     "key": "cardamom",
+     "name": "Cardamom",
+     "names": {
+      "en": "Cardamom",
+      "ar": "هيل",
+      "fr": "Cardamome"
+     },
+     "ndb": "02006",
+     "g": 0.2
+    },
+    {
+     "key": "yeast",
+     "name": "Dry yeast",
+     "names": {
+      "en": "Dry yeast",
+      "ar": "خميرة جافة",
+      "fr": "Levure sèche"
+     },
+     "ndb": "18375",
+     "g": 0.5
+    },
+    {
+     "key": "salt",
+     "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
+     "ndb": "02047",
+     "g": 0.1
+    },
+    {
+     "key": "water",
+     "name": "Tap water",
+     "names": {
+      "en": "Water",
+      "ar": "ماء",
+      "fr": "Eau"
+     },
+     "ndb": "14411",
+     "g": 15
+    }
+   ],
+   "nutrients": {
+    "potassium": {
+     "value": 40,
+     "unit": "mg",
+     "calc": 41.6,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "phosphorus": {
+     "value": 30,
+     "unit": "mg",
+     "calc": 31.1,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "sodium": {
+     "value": 40,
+     "unit": "mg",
+     "calc": 40.8,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "protein": {
+     "value": 3,
+     "unit": "g",
+     "calc": 2.9,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    }
+   },
+   "saltAddedG": 0.1,
+   "method": "recipe",
+   "recipeSourceId": "sufra-recipes-v1",
+   "gaps": [
+    "Topping calculated as honey/sugar syrup. Date syrup (dibs) is common but has no verified USDA entry; potassium would be higher with dibs."
+   ],
+   "note": {
+    "en": "Calculated with honey. Date syrup (dibs) has more potassium: no verified data yet.",
+    "ar": "محسوب مع العسل. دبس التمر فيه بوتاسيوم أكثر: لا توجد بيانات موثّقة بعد.",
+    "fr": "Calculé avec du miel. Le sirop de dattes (dibs) contient plus de potassium : pas encore de données vérifiées."
+   },
+   "contains": [
+    "honey"
+   ],
+   "main": [
+    "flour",
+    "sweet"
+   ],
+   "time": {
+    "prepMin": 15,
+    "cookMin": 20,
+    "aheadMin": 100
+   },
+   "ahead": [
+    {
+     "id": "rise",
+     "leadMin": 100,
+     "text": {
+      "en": "Mix the batter (flour, sugar, cardamom, water and a little yeast) and leave it covered in a warm place for 1 hour until bubbly.",
+      "ar": "اخلط العجينة (الطحين والسكر والهيل والماء وقليل من الخميرة) واتركها مغطّاة في مكان دافئ ساعة واحدة حتى تنتفخ.",
+      "fr": "Préparez la pâte (farine, sucre, cardamome, eau et un peu de levure) et laissez-la reposer à couvert 1 heure au chaud jusqu'à ce que des bulles apparaissent."
+     }
+    }
+   ],
+   "steps": [
+    {
+     "text": {
+      "en": "Heat the oil in a small deep pan. Test with a drop of batter: it should rise and sizzle.",
+      "ar": "سخّن الزيت في قدر صغير عميق. جرّب بنقطة من العجين: يجب أن تطفو وتفور.",
+      "fr": "Chauffez l'huile dans une petite casserole profonde. Testez avec une goutte de pâte : elle doit remonter en grésillant."
+     }
+    },
+    {
+     "text": {
+      "en": "Drop small balls of batter with a wet spoon. Turn them until golden all over, 3–4 minutes.",
+      "ar": "ضع كرات صغيرة من العجين بملعقة مبللة. قلّبها حتى تصبح ذهبية من كل الجهات، ٣–٤ دقائق.",
+      "fr": "Déposez de petites boules de pâte avec une cuillère mouillée. Retournez-les jusqu'à ce qu'elles soient dorées, 3 à 4 minutes."
+     }
+    },
+    {
+     "text": {
+      "en": "Drain on paper, then drizzle with the honey. A portion is 5 pieces.",
+      "ar": "صفّها على ورق، ثم رشّ عليها العسل. الحصة ٥ حبات.",
+      "fr": "Égouttez sur du papier, puis arrosez de miel. Une portion = 5 pièces."
+     }
+    }
+   ],
+   "stepsStatus": "draft",
+   "tips": [],
+   "status": "draft",
+   "reviewedBy": null,
+   "reviewedOn": null,
+   "calculatedOn": "2026-09-29"
+  },
+  {
+   "id": "gulf_balaleet",
+   "cuisine": "gulf",
+   "tags": [
+    "gulf"
+   ],
+   "names": {
+    "en": "Balaleet",
+    "ar": "بلاليط",
+    "fr": "Balaleet"
+   },
+   "portion": {
+    "en": "1 plate with egg",
+    "ar": "طبق واحد مع بيض",
+    "fr": "1 assiette avec œuf"
+   },
+   "portionGrams": 190,
+   "ingredients": [
+    {
+     "key": "pasta",
+     "name": "Pasta / vermicelli, cooked",
+     "names": {
+      "en": "Pasta or vermicelli (cooked weight)",
+      "ar": "معكرونة أو شعيرية (وزن مطبوخ)",
+      "fr": "Pâtes ou vermicelles (poids cuit)"
+     },
+     "ndb": "20121",
+     "g": 120
+    },
+    {
+     "key": "sugar",
+     "name": "Sugar",
+     "names": {
+      "en": "Sugar",
+      "ar": "سكر",
+      "fr": "Sucre"
+     },
+     "ndb": "19335",
+     "g": 10
+    },
+    {
+     "key": "ghee",
+     "name": "Ghee (butter oil)",
+     "names": {
+      "en": "Ghee",
+      "ar": "سمن",
+      "fr": "Ghee (beurre clarifié)"
+     },
+     "ndb": "01003",
+     "g": 5
+    },
+    {
+     "key": "cardamom",
+     "name": "Cardamom",
+     "names": {
+      "en": "Cardamom",
+      "ar": "هيل",
+      "fr": "Cardamome"
+     },
+     "ndb": "02006",
+     "g": 0.3
+    },
+    {
+     "key": "egg",
+     "name": "Egg, whole",
+     "names": {
+      "en": "Egg",
+      "ar": "بيض",
+      "fr": "Œuf"
+     },
+     "ndb": "01123",
+     "g": 50
+    },
+    {
+     "key": "veg_oil",
+     "name": "Vegetable (corn) oil",
+     "names": {
+      "en": "Vegetable oil",
+      "ar": "زيت نباتي",
+      "fr": "Huile végétale"
+     },
+     "ndb": "04518",
+     "g": 3
+    },
+    {
+     "key": "salt",
+     "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
+     "ndb": "02047",
+     "g": 0.3
+    }
+   ],
+   "nutrients": {
+    "potassium": {
+     "value": 125,
+     "unit": "mg",
+     "calc": 125.6,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "phosphorus": {
+     "value": 170,
+     "unit": "mg",
+     "calc": 169.3,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "sodium": {
+     "value": 190,
+     "unit": "mg",
+     "calc": 188.7,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "protein": {
+     "value": 13,
+     "unit": "g",
+     "calc": 13.3,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    }
+   },
+   "saltAddedG": 0.3,
+   "method": "recipe",
+   "recipeSourceId": "sufra-recipes-v1",
+   "gaps": [],
+   "note": null,
+   "contains": [
+    "dairy",
+    "egg"
+   ],
+   "main": [
+    "pasta",
+    "egg"
+   ],
+   "time": {
+    "prepMin": 5,
+    "cookMin": 20,
+    "aheadMin": 0
+   },
+   "ahead": [],
+   "steps": [
+    {
+     "text": {
+      "en": "Boil the vermicelli for 3–4 minutes until just soft, then drain.",
+      "ar": "اسلق الشعيرية ٣–٤ دقائق حتى تطرى، ثم صفّها.",
+      "fr": "Faites cuire les vermicelles 3 à 4 minutes à l'eau bouillante, puis égouttez."
+     },
+     "timer": 240
+    },
+    {
+     "text": {
+      "en": "Warm the ghee in a pan. Add the vermicelli, sugar and cardamom and stir for 3 minutes.",
+      "ar": "سخّن السمن في مقلاة. أضف الشعيرية والسكر والهيل وقلّب ٣ دقائق.",
+      "fr": "Faites chauffer le ghee dans une poêle. Ajoutez les vermicelles, le sucre et la cardamome et remuez 3 minutes."
+     }
+    },
+    {
+     "text": {
+      "en": "Cook the egg as a thin omelette in the oil and lay it on top of the vermicelli.",
+      "ar": "اطبخ البيضة كعجّة رقيقة في الزيت وضعها فوق الشعيرية.",
+      "fr": "Faites cuire l'œuf en omelette fine dans l'huile et posez-la sur les vermicelles."
+     }
+    }
+   ],
+   "stepsStatus": "draft",
+   "tips": [],
+   "status": "draft",
+   "reviewedBy": null,
+   "reviewedOn": null,
+   "calculatedOn": "2026-09-29"
+  },
+  {
+   "id": "gulf_thareed",
+   "cuisine": "gulf",
+   "tags": [
+    "gulf"
+   ],
+   "names": {
+    "en": "Thareed",
+    "ar": "ثريد",
+    "fr": "Thareed"
+   },
+   "portion": {
+    "en": "1 bowl",
+    "ar": "صحن واحد",
+    "fr": "1 bol"
+   },
+   "portionGrams": 470,
+   "ingredients": [
+    {
+     "key": "pita",
+     "name": "Pita / flatbread, white",
+     "names": {
+      "en": "Flatbread (pita)",
+      "ar": "خبز عربي",
+      "fr": "Pain pita"
+     },
+     "ndb": "18041",
+     "g": 50
+    },
+    {
+     "key": "lamb",
+     "name": "Lamb shoulder, lean, braised",
+     "names": {
+      "en": "Lamb, lean (cooked weight, no bone)",
+      "ar": "لحم غنم قليل الدهن (وزن مطبوخ بدون عظم)",
+      "fr": "Agneau maigre (poids cuit, sans os)"
+     },
+     "ndb": "17040",
+     "g": 70
+    },
+    {
+     "key": "potato_raw",
+     "name": "Potato, raw weight (stewed in its broth)",
+     "names": {
+      "en": "Potato (raw weight)",
+      "ar": "بطاطس (وزن نيء)",
+      "fr": "Pomme de terre (poids cru)"
+     },
+     "ndb": "11352",
+     "g": 60
+    },
+    {
+     "key": "zucchini",
+     "name": "Zucchini, raw",
+     "names": {
+      "en": "Zucchini",
+      "ar": "كوسة",
+      "fr": "Courgette"
+     },
+     "ndb": "11477",
+     "g": 50
+    },
+    {
+     "key": "carrot",
+     "name": "Carrot, raw",
+     "names": {
+      "en": "Carrot",
+      "ar": "جزر",
+      "fr": "Carotte"
+     },
+     "ndb": "11124",
+     "g": 30
+    },
+    {
+     "key": "tomato",
+     "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
+     "ndb": "11529",
+     "g": 50
+    },
+    {
+     "key": "tomato_paste",
+     "name": "Tomato paste, no salt added",
+     "names": {
+      "en": "Tomato paste",
+      "ar": "معجون طماطم",
+      "fr": "Concentré de tomate"
+     },
+     "ndb": "11546",
+     "g": 8
+    },
+    {
+     "key": "onion",
+     "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
+     "ndb": "11282",
+     "g": 25
+    },
+    {
+     "key": "veg_oil",
+     "name": "Vegetable (corn) oil",
+     "names": {
+      "en": "Vegetable oil",
+      "ar": "زيت نباتي",
+      "fr": "Huile végétale"
+     },
+     "ndb": "04518",
+     "g": 6
+    },
+    {
+     "key": "curry",
+     "name": "Mixed spice (bzar / curry)",
+     "names": {
+      "en": "Spice mix (bzar)",
+      "ar": "بهارات مشكلة (بزار)",
+      "fr": "Mélange d'épices (bzar)"
+     },
+     "ndb": "02015",
+     "g": 1
+    },
+    {
+     "key": "salt",
+     "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
+     "ndb": "02047",
+     "g": 1.2
+    },
+    {
+     "key": "water",
+     "name": "Tap water",
+     "names": {
+      "en": "Water",
+      "ar": "ماء",
+      "fr": "Eau"
+     },
+     "ndb": "14411",
+     "g": 120
+    }
+   ],
+   "nutrients": {
+    "potassium": {
+     "value": 970,
+     "unit": "mg",
+     "calc": 972.1,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "phosphorus": {
+     "value": 280,
+     "unit": "mg",
+     "calc": 284.6,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "sodium": {
+     "value": 830,
+     "unit": "mg",
+     "calc": 830.2,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "protein": {
+     "value": 31,
+     "unit": "g",
+     "calc": 30.8,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    }
+   },
+   "saltAddedG": 1.2,
+   "method": "recipe",
+   "recipeSourceId": "sufra-recipes-v1",
+   "gaps": [
+    "Bread soaked in broth: should the broth count toward the fluid limit? Question for the reviewer."
+   ],
+   "note": null,
+   "contains": [
+    "meat"
+   ],
+   "main": [
+    "lamb",
+    "bread"
+   ],
+   "time": {
+    "prepMin": 20,
+    "cookMin": 100,
+    "aheadMin": 0
+   },
+   "ahead": [
+    {
+     "id": "thaw",
+     "leadMin": 1440,
+     "text": {
+      "en": "If your meat or chicken is frozen, move it to the fridge the night before so it thaws safely.",
+      "ar": "إذا كان اللحم أو الدجاج مجمّدًا، انقله إلى الثلاجة في الليلة السابقة لتذويبه بأمان.",
+      "fr": "Si votre viande ou votre poulet est congelé, mettez-le au réfrigérateur la veille pour qu'il décongèle en toute sécurité."
+     },
+     "optional": true
+    }
+   ],
+   "steps": [
+    {
+     "text": {
+      "en": "Brown the onion and lamb in the oil with the spice mix.",
+      "ar": "حمّر البصل واللحم في الزيت مع البهارات.",
+      "fr": "Faites dorer l'oignon et l'agneau dans l'huile avec les épices."
+     }
+    },
+    {
+     "text": {
+      "en": "Add the tomato, tomato paste and water. Simmer covered for about 1 hour.",
+      "ar": "أضف الطماطم ومعجون الطماطم والماء. اتركه مغطّى على نار هادئة حوالي ساعة.",
+      "fr": "Ajoutez la tomate, le concentré et l'eau. Laissez mijoter à couvert environ 1 heure."
+     },
+     "timer": 3600
+    },
+    {
+     "text": {
+      "en": "Add the potato and carrot. After 15 minutes add the zucchini and cook 10 more minutes.",
+      "ar": "أضف البطاطس والجزر. بعد ١٥ دقيقة أضف الكوسة واطبخ ١٠ دقائق أخرى.",
+      "fr": "Ajoutez la pomme de terre et la carotte. Après 15 minutes, ajoutez la courgette et laissez cuire encore 10 minutes."
+     },
+     "timer": 1500
+    },
+    {
+     "text": {
+      "en": "Tear the bread into a deep dish. Ladle the stew and some broth over it and let it soak for a few minutes before serving.",
+      "ar": "فتّت الخبز في صحن عميق. اسكب فوقه المرق والخضار واللحم واتركه يتشرّب بضع دقائق قبل التقديم.",
+      "fr": "Déchirez le pain dans un plat creux. Versez le ragoût et un peu de bouillon dessus et laissez imbiber quelques minutes avant de servir."
+     }
+    },
+    {
+     "text": {
+      "en": "Taste before adding the salt from the list. Add it at the end, a little at a time.",
+      "ar": "تذوّق قبل إضافة الملح المذكور في القائمة. أضفه في النهاية وبالتدريج.",
+      "fr": "Goûtez avant d'ajouter le sel indiqué. Ajoutez-le à la fin, petit à petit."
+     }
+    }
+   ],
+   "stepsStatus": "draft",
+   "tips": [],
+   "status": "draft",
+   "reviewedBy": null,
+   "reviewedOn": null,
+   "calculatedOn": "2026-09-29"
+  },
+  {
+   "id": "gulf_grilled_fish_rice",
+   "cuisine": "gulf",
+   "tags": [
+    "gulf"
+   ],
+   "names": {
+    "en": "Grilled hammour with rice",
+    "ar": "سمك هامور مشوي مع أرز",
+    "fr": "Mérou grillé avec riz"
+   },
+   "portion": {
+    "en": "1 plate",
+    "ar": "طبق واحد",
+    "fr": "1 assiette"
+   },
+   "portionGrams": 320,
+   "ingredients": [
+    {
+     "key": "fish",
+     "name": "Grouper (hammour), cooked",
+     "names": {
+      "en": "Hammour or other white fish (cooked weight)",
+      "ar": "هامور أو سمك أبيض آخر (وزن مطبوخ)",
+      "fr": "Mérou ou autre poisson blanc (poids cuit)"
+     },
+     "ndb": "15032",
+     "g": 120
+    },
+    {
+     "key": "rice",
+     "name": "White rice, long-grain, cooked",
+     "names": {
+      "en": "Long-grain rice (cooked weight)",
+      "ar": "أرز طويل الحبة (وزن مطبوخ)",
+      "fr": "Riz long (poids cuit)"
+     },
+     "ndb": "20045",
+     "g": 180
+    },
+    {
+     "key": "lemon",
+     "name": "Lemon juice",
+     "names": {
+      "en": "Lemon juice",
+      "ar": "عصير ليمون",
+      "fr": "Jus de citron"
+     },
+     "ndb": "09152",
+     "g": 10
+    },
+    {
+     "key": "olive_oil",
+     "name": "Olive oil",
+     "names": {
+      "en": "Olive oil",
+      "ar": "زيت زيتون",
+      "fr": "Huile d'olive"
+     },
+     "ndb": "04053",
+     "g": 6
+    },
+    {
+     "key": "garlic",
+     "name": "Garlic, raw",
+     "names": {
+      "en": "Garlic",
+      "ar": "ثوم",
+      "fr": "Ail"
+     },
+     "ndb": "11215",
+     "g": 3
+    },
+    {
+     "key": "cumin",
+     "name": "Cumin",
+     "names": {
+      "en": "Cumin",
+      "ar": "كمون",
+      "fr": "Cumin"
+     },
+     "ndb": "02014",
+     "g": 0.5
+    },
+    {
+     "key": "salt",
+     "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
+     "ndb": "02047",
+     "g": 1.0
+    }
+   ],
+   "nutrients": {
+    "potassium": {
+     "value": 660,
+     "unit": "mg",
+     "calc": 664.4,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "phosphorus": {
+     "value": 260,
+     "unit": "mg",
+     "calc": 256.9,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "sodium": {
+     "value": 450,
+     "unit": "mg",
+     "calc": 454.5,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "protein": {
+     "value": 35,
+     "unit": "g",
+     "calc": 35.0,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    }
+   },
+   "saltAddedG": 1.0,
+   "method": "recipe",
+   "recipeSourceId": "sufra-recipes-v1",
+   "gaps": [],
+   "note": null,
+   "contains": [
+    "fish"
+   ],
+   "main": [
+    "fish",
+    "rice"
+   ],
+   "time": {
+    "prepMin": 15,
+    "cookMin": 25,
+    "aheadMin": 60
+   },
+   "ahead": [
+    {
+     "id": "thaw",
+     "leadMin": 1440,
+     "text": {
+      "en": "If your fish is frozen, move it to the fridge the night before so it thaws safely.",
+      "ar": "إذا كان السمك مجمّدًا، انقله إلى الثلاجة في الليلة السابقة لتذويبه بأمان.",
+      "fr": "Si votre poisson est congelé, mettez-le au réfrigérateur la veille pour qu'il décongèle en toute sécurité."
+     },
+     "optional": true
+    },
+    {
+     "id": "marinate",
+     "leadMin": 60,
+     "text": {
+      "en": "Rub the fish with lemon, garlic, cumin and half the oil. Keep it in the fridge for 30 minutes.",
+      "ar": "ادهن السمك بالليمون والثوم والكمون ونصف الزيت. اتركه في الثلاجة ٣٠ دقيقة.",
+      "fr": "Frottez le poisson avec le citron, l'ail, le cumin et la moitié de l'huile. Laissez-le 30 minutes au réfrigérateur."
+     }
+    }
+   ],
+   "steps": [
+    {
+     "text": {
+      "en": "Cook the rice in water: 1½ cups of water per cup of rice, covered on low heat for 20 minutes.",
+      "ar": "اطبخ الأرز في الماء: كوب ونصف ماء لكل كوب أرز، مغطّى على نار هادئة ٢٠ دقيقة.",
+      "fr": "Faites cuire le riz dans l'eau : 1 tasse ½ d'eau par tasse de riz, à couvert, à feu doux, 20 minutes."
+     },
+     "timer": 1200
+    },
+    {
+     "text": {
+      "en": "Grill the fish in a hot pan or oven with the rest of the oil, 4–5 minutes each side, until it flakes easily.",
+      "ar": "اشوِ السمك في مقلاة ساخنة أو في الفرن مع باقي الزيت، ٤–٥ دقائق لكل جهة، حتى يتفتّت بسهولة.",
+      "fr": "Faites griller le poisson à la poêle ou au four avec le reste de l'huile, 4 à 5 minutes par face, jusqu'à ce qu'il s'effeuille facilement."
+     }
+    },
+    {
+     "text": {
+      "en": "Serve the fish on the rice.",
+      "ar": "قدّم السمك فوق الأرز.",
+      "fr": "Servez le poisson sur le riz."
+     }
+    },
+    {
+     "text": {
+      "en": "Taste before adding the salt from the list. Add it at the end, a little at a time.",
+      "ar": "تذوّق قبل إضافة الملح المذكور في القائمة. أضفه في النهاية وبالتدريج.",
+      "fr": "Goûtez avant d'ajouter le sel indiqué. Ajoutez-le à la fin, petit à petit."
+     }
+    }
+   ],
+   "stepsStatus": "draft",
+   "tips": [],
+   "status": "draft",
+   "reviewedBy": null,
+   "reviewedOn": null,
+   "calculatedOn": "2026-09-29"
+  },
+  {
+   "id": "gulf_dates",
+   "cuisine": "gulf",
+   "tags": [
+    "gulf",
+    "levantine",
+    "egyptian"
+   ],
+   "names": {
+    "en": "Dates",
+    "ar": "تمر",
+    "fr": "Dattes"
+   },
+   "portion": {
+    "en": "3 dates",
+    "ar": "٣ تمرات",
+    "fr": "3 dattes"
+   },
+   "portionGrams": 21,
+   "ingredients": [
+    {
+     "key": "dates",
+     "name": "Dates (deglet noor)",
+     "names": {
+      "en": "Dates",
+      "ar": "تمر",
+      "fr": "Dattes"
+     },
+     "ndb": "09087",
+     "g": 21
+    }
+   ],
+   "nutrients": {
+    "potassium": {
+     "value": 140,
+     "unit": "mg",
+     "calc": 137.8,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "phosphorus": {
+     "value": 15,
+     "unit": "mg",
+     "calc": 13.0,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "sodium": {
+     "value": 0,
+     "unit": "mg",
+     "calc": 0.4,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    },
+    "protein": {
+     "value": 0.5,
+     "unit": "g",
+     "calc": 0.5,
+     "confidence": "calculated",
+     "sourceId": "usda-sr28"
+    }
+   },
+   "saltAddedG": 0,
+   "method": "direct",
+   "recipeSourceId": null,
+   "gaps": [
+    "USDA has deglet noor only; Gulf varieties (khalas, sukkari) have no USDA entry and may differ."
+   ],
+   "note": {
+    "en": "Values are for Deglet Noor dates. Khalas, sukkari and other Gulf dates may differ: no verified data yet.",
+    "ar": "القيم لتمر دقلة نور. تمر الخلاص والسكري وغيرها من تمور الخليج قد تختلف: لا توجد بيانات موثّقة بعد.",
+    "fr": "Valeurs pour les dattes Deglet Nour. Les dattes du Golfe (khalas, sukkari…) peuvent différer : pas encore de données vérifiées."
+   },
+   "contains": [],
+   "main": [
+    "dates"
+   ],
+   "time": {
+    "prepMin": 1,
+    "cookMin": 0,
+    "aheadMin": 0
+   },
+   "ahead": [],
+   "steps": [
+    {
+     "text": {
+      "en": "Count out 3 dates. That is one portion.",
+      "ar": "خذ ٣ تمرات. هذه حصة واحدة.",
+      "fr": "Prenez 3 dattes. C'est une portion."
+     }
+    }
+   ],
+   "stepsStatus": "draft",
+   "tips": [],
+   "status": "draft",
+   "reviewedBy": null,
+   "reviewedOn": null,
+   "calculatedOn": "2026-09-29"
+  }
+ ]
+}
