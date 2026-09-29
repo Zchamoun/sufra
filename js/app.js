@@ -1,4 +1,4 @@
-/* Sufra app v0.5 — onboarding, Today, fluid tracker with edit on any day. All data stays on this device. */
+/* Sufra app v0.5.1 — onboarding, Today, fluid tracker with edit on any day. All data stays on this device. */
 "use strict";
 
 const LANGS = ["en", "ar", "fr"];
@@ -154,22 +154,24 @@ function nextSession() {
 
 /* ---------- icons ---------- */
 const ICON = {
-  gear: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
-  back: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="flip"><path d="M15 18l-6-6 6-6"/></svg>',
-  heart: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
+  // Colourful duotone icons: soft fill + deeper outline, one colour family per meaning
+  gear: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7.5" fill="#E6ECF2" stroke="#5B7389"/><circle cx="12" cy="12" r="2.6" fill="#fff" stroke="#3F5B72"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="#5B7389"/></svg>',
+  back: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3F5B72" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="flip"><path d="M15 18l-6-6 6-6"/></svg>',
+  fwd: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3F5B72" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="flip"><path d="M9 6l6 6-6 6"/></svg>',
+  heart: '<svg width="24" height="24" viewBox="0 0 24 24" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z" fill="#F6CFC9" stroke="#B5483C"/></svg>',
   phone: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>',
-  today: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/></svg>',
-  meals: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11h18a9 9 0 0 1-18 0zM8 7c0-2 2-2 2-4M13 7c0-2 2-2 2-4"/></svg>',
-  track: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></svg>',
-  small: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 9h10l-1 9H8z"/></svg>',
-  glass: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 4h12l-2 16H8z"/></svg>',
-  mug: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 6h11v12H5zM16 9h2a2 2 0 0 1 0 4h-2"/></svg>',
-  ice: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 8l8-4 8 4v8l-8 4-8-4z"/><path d="M4 8l8 4 8-4M12 12v8"/></svg>',
-  pen: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>',
-  trash: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>',
-  fwd: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="flip"><path d="M9 6l6 6-6 6"/></svg>',
-  x: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
-  learn: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 21V5"/></svg>'
+  today: '<svg width="26" height="26" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.6" fill="#FCE3A0" stroke="#C98414"/><path d="M12 2.3v2.2M12 19.5v2.2M2.3 12h2.2M19.5 12h2.2M5.1 5.1l1.6 1.6M17.3 17.3l1.6 1.6M5.1 18.9l1.6-1.6M17.3 6.7l1.6-1.6" stroke="#E0A93A"/></svg>',
+  meals: '<svg width="26" height="26" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11h18a9 9 0 0 1-18 0z" fill="#FAD9C4" stroke="#C0613A"/><path d="M8.5 7.5c0-1.6 1.6-1.6 1.6-3.5M13.5 7.5c0-1.6 1.6-1.6 1.6-3.5" fill="none" stroke="#E29A74"/></svg>',
+  track: '<svg width="26" height="26" viewBox="0 0 24 24" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z" fill="#CFE6F7" stroke="#2F77B0"/><path d="M9.3 14.5a2.8 2.8 0 0 0 2.2 2.6" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>',
+  learn: '<svg width="26" height="26" viewBox="0 0 24 24" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z" fill="#D5EEDD" stroke="#3B8458"/><path d="M4 21V5M9 7.5h6M9 11h4" fill="none" stroke="#3B8458" stroke-linecap="round"/></svg>',
+  small: '<svg width="34" height="34" viewBox="0 0 24 24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 10h11l-1.2 7.2a2 2 0 0 1-2 1.8H8.7a2 2 0 0 1-2-1.8z" fill="#F5DFC2" stroke="#9A6436"/><path d="M16.5 11.5h1.2a1.8 1.8 0 0 1 0 3.6h-1.6" fill="none" stroke="#9A6436"/><path d="M9 7.5c0-1 1-1 1-2.2M12.5 7.5c0-1 1-1 1-2.2" fill="none" stroke="#C99A6B"/></svg>',
+  glass: '<svg width="34" height="34" viewBox="0 0 24 24" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M7.1 11.5h9.8l-.9 8.5H8z" fill="#BFE0F6"/><path d="M6 4h12l-2 16H8z" fill="none" stroke="#2F77B0"/><path d="M7.1 11.5c1.6.8 3.3.8 4.9 0s3.3-.8 4.9 0" fill="none" stroke="#2F77B0"/></svg>',
+  mug: '<svg width="34" height="34" viewBox="0 0 24 24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h11v10a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2z" fill="#F7D5C2" stroke="#B85A2E"/><path d="M15.5 9.5h1.8a2.3 2.3 0 0 1 0 4.6h-1.8" fill="none" stroke="#B85A2E"/><path d="M4.5 10.5h11" stroke="#D98B63"/></svg>',
+  ice: '<svg width="34" height="34" viewBox="0 0 24 24" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M4 8l8-4 8 4v8l-8 4-8-4z" fill="#DDF3FA" stroke="#2F8FB0"/><path d="M4 8l8 4 8-4M12 12v8" fill="none" stroke="#2F8FB0"/><path d="M7 9.6l2.5 1.2" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>',
+  custom: '<svg width="34" height="34" viewBox="0 0 24 24" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h10l-1 3v12a3 3 0 0 1-3 3h-2a3 3 0 0 1-3-3V6z" fill="#E4E1F4" stroke="#6A5CA8"/><path d="M8 11h3M8 14h2M8 17h3" stroke="#6A5CA8" stroke-linecap="round"/></svg>',
+  pen: '<svg width="22" height="22" viewBox="0 0 24 24" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z" fill="#E1EAF1" stroke="#3F5B72"/><path d="M13.5 6.5l4 4" stroke="#3F5B72"/></svg>',
+  trash: '<svg width="22" height="22" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7l1 13h10l1-13z" fill="#F6DAD5" stroke="#A4473B"/><path d="M4 7h16M9 7V4h6v3" fill="none" stroke="#A4473B"/></svg>',
+  x: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5E6A6E" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>'
 };
 
 /* ---------- onboarding ---------- */
@@ -224,8 +226,9 @@ function renderOb() {
 }
 
 /* ---------- main app ---------- */
+function ib(k) { return `<span class="ib ib-${k}">${ICON[k] || ICON.custom}</span>`; } // icon on a soft coloured tile
 function cupButtons() {
-  return `<div class="cups">${CUPS.map(k => `<button type="button" class="btn cup" data-act="addcup" data-v="${k}">${ICON[k]}<span>${t("cup_" + k)}</span><span class="muted">${num(S.profile.cups[k])} ${t("ml")}</span></button>`).join("")}</div>`;
+  return `<div class="cups">${CUPS.map(k => `<button type="button" class="btn cup" data-act="addcup" data-v="${k}">${ib(k)}<span>${t("cup_" + k)}</span><span class="muted">${num(S.profile.cups[k])} ${t("ml")}</span></button>`).join("")}</div>`;
 }
 function fluidSummary(off = 0) {
   const used = fluidTotal(dayDate(off)), f = S.targets.fluid, u = t("ml");
@@ -257,7 +260,7 @@ function renderToday() {
     <p class="muted">${esc(new Intl.DateTimeFormat(loc(), { weekday: "long", day: "numeric", month: "long" }).format(new Date()))}</p>
     <section class="card" aria-labelledby="h-fluid"><h2 id="h-fluid" class="card-title">${t("fluid_title")}</h2>${fluidSummary()}</section>
     ${cupButtons()}
-    <button type="button" class="btn btn-secondary wide" data-act="tab" data-v="track">${ICON.ice}<span>${t("more_options")}</span></button>
+    <button type="button" class="btn btn-secondary wide" data-act="tab" data-v="track">${ib("ice")}<span>${t("more_options")}</span></button>
     <section class="card" aria-labelledby="h-next"><h2 id="h-next" class="card-title">${t("next_title")}</h2>${next}</section>
     <section class="card" aria-labelledby="h-meal"><h2 id="h-meal" class="card-title">${t("meal_title")}</h2>
       ${cz.length ? `<div class="chips">${cz.map(c => `<span class="tag">${esc(nm(c))}</span>`).join("")}</div>` : ""}<p class="muted">${t("meal_soon")}</p></section>
@@ -301,7 +304,7 @@ function entryRow(x) {
   const u = t("ml"), what = entryLabel(x), open = view.edit === x.id;
   const hhmm = new Date(x.time).toTimeString().slice(0, 5);
   return `<li class="entry">
-    <div class="entry-top"><span class="ico">${ICON[x.container] || ICON.track}</span>
+    <div class="entry-top">${ib(x.container)}
       <span class="grow"><strong>${esc(what)}</strong><br><span class="muted">${esc(clock(new Date(x.time)))}</span></span>
       <strong class="big">${num(x.ml)} ${u}</strong></div>
     <div class="entry-actions">
@@ -340,7 +343,7 @@ function renderTrack() {
     ${cupButtons()}
     <section class="card" aria-labelledby="h-ice">
       <div class="row" style="justify-content:space-between">
-        <div class="row"><span style="color:var(--accent)">${ICON.ice}</span>
+        <div class="row">${ib("ice")}
           <div><h3 id="h-ice" class="big" style="margin:0">${t("ice_title")}</h3>
           <div class="muted">${t(measured ? "ice_measured" : "ice_est", { ml: num(Math.round(ice * cm)), unit: u })}</div></div></div>
         <div class="stepper">
@@ -352,7 +355,7 @@ function renderTrack() {
       <button type="button" class="btn btn-primary" style="margin-top:.75rem" data-act="addice">${t("ice_add")}</button>
       ${measured ? "" : `<p class="muted small" style="margin-top:.5rem">${t("ice_tip")}</p>`}
     </section>
-    <section class="card" aria-labelledby="h-cust"><h3 id="h-cust" class="big" style="margin:0 0 .4rem">${t("custom_title")}</h3>
+    <section class="card" aria-labelledby="h-cust"><div class="row" style="margin-bottom:.4rem">${ib("custom")}<h3 id="h-cust" class="big" style="margin:0">${t("custom_title")}</h3></div>
       <div class="unit-input wrap"><input id="f-custom" type="number" inputmode="numeric" min="1" dir="ltr" aria-labelledby="h-cust" placeholder="${esc(t("custom_ph"))}"><span>${u}</span>
       <button type="button" class="btn btn-secondary" data-act="addcustom">${t("add")}</button></div>
     </section>
