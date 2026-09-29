@@ -1,4 +1,4 @@
-/* Sufra app v0.4 — onboarding, Today, fluid tracker. All data stays on this device. */
+/* Sufra app v0.5 — onboarding, Today, fluid tracker with edit on any day. All data stays on this device. */
 "use strict";
 
 const LANGS = ["en", "ar", "fr"];
@@ -12,7 +12,7 @@ const WEEK = [6, 0, 1, 2, 3, 4, 5]; // Saturday first
 let S = load();
 let T = {}, TE = {}, OPT = { countries: [], cuisines: [] };
 let view = { name: "loading", step: 0, tab: "today", page: null };
-let ice = 2, toastTimer = null;
+let ice = 2, toastTimer = null, lastRemoved = null;
 const CUPS = ["small", "glass", "mug"];
 const ICE_EST = 15; // placeholder ml per cube until the user measures their own
 
@@ -40,7 +40,10 @@ function load() {
       if (!Array.isArray(d.rules)) { // upgrade answers saved by v0.3
         s.profile.diet = { rules: [d.halal && "halal", d.vegetarian && "vegetarian"].filter(Boolean), fasts: d.ramadan ? ["ramadan"] : [], allergies: d.allergies || "" };
       }
-      return { ...b, ...s, profile: { ...b.profile, ...s.profile }, targets: { ...b.targets, ...s.targets } };
+      const out = { ...b, ...s, profile: { ...b.profile, ...s.profile }, targets: { ...b.targets, ...s.targets } };
+      out.logs = { fluid: [], meal: [], ...(s.logs || {}) };
+      out.logs.fluid = out.logs.fluid.map(x => { const c = x.count || 1; return { ...x, count: c, unitMl: x.unitMl || x.ml / c }; }); // upgrade v0.4 entries
+      return out;
     }
   } catch (e) {}
   return blank();
@@ -87,21 +90,49 @@ function fluidOn(day) {
   const d = day.toDateString();
   return S.logs.fluid.filter(x => new Date(x.time).toDateString() === d);
 }
-function fluidToday() { return fluidOn(new Date()).reduce((a, x) => a + (x.ml || 0), 0); }
-function cubeMl() { const v = S.profile.cups.ice5; return v > 0 ? Math.round((v / 5) * 10) / 10 : ICE_EST; }
-function addFluid(ml, container, count = 1) {
-  ml = Math.round(ml);
-  if (!(ml > 0)) return;
-  const id = Date.now() + "-" + Math.floor(Math.random() * 1000);
-  S.logs.fluid.push({ id, time: new Date().toISOString(), ml, container, count });
-  save(); render(false);
-  toast(t("added", { ml: num(ml), unit: t("ml") }), id);
+function dayDate(off) { const d = new Date(); d.setDate(d.getDate() - off); return d; }
+function fluidTotal(day) { return fluidOn(day).reduce((a, x) => a + (x.ml || 0), 0); }
+function fluidToday() { return fluidTotal(new Date()); }
+function dayName(off, d = dayDate(off)) {
+  if (off === 0) return t("next_today");
+  if (off === 1) return t("yesterday");
+  return new Intl.DateTimeFormat(loc(), { weekday: "long", day: "numeric", month: "long" }).format(d);
 }
-function removeFluid(id) { S.logs.fluid = S.logs.fluid.filter(x => x.id !== id); save(); render(false); }
-function toast(msg, undoId) {
+function cubeMl() { const v = S.profile.cups.ice5; return v > 0 ? Math.round((v / 5) * 10) / 10 : ICE_EST; }
+/* Every logged item follows one rule: + one more, − one less, edit amount and time, delete with Undo, on any day. */
+function addFluid(unitMl, container, count = 1, off = 0) {
+  unitMl = Math.round(unitMl * 10) / 10;
+  if (!(unitMl > 0)) return;
+  const id = Date.now() + "-" + Math.floor(Math.random() * 1000);
+  const when = new Date(); when.setDate(when.getDate() - off);
+  const ml = Math.round(unitMl * count);
+  S.logs.fluid.push({ id, time: when.toISOString(), unitMl, count, ml, container });
+  save(); render(false);
+  toast(t("added", { ml: num(ml), unit: t("ml") }), "undo", id);
+}
+function entry(id) { return S.logs.fluid.find(x => x.id === id); }
+function changeCount(id, delta) {
+  const x = entry(id); if (!x) return;
+  x.count = Math.max(1, Math.min(99, x.count + delta)); x.ml = Math.round(x.unitMl * x.count); save(); render(false);
+}
+function setEntryTime(id, hhmm) {
+  const x = entry(id); if (!x || !/^\d\d:\d\d$/.test(hhmm)) return;
+  const d = new Date(x.time), [h, m] = hhmm.split(":").map(Number); d.setHours(h, m, 0, 0); x.time = d.toISOString(); save();
+}
+function setEntryUnit(id, v) {
+  const x = entry(id), n = Number(v); if (!x || !(n > 0 && n <= 5000)) return;
+  x.unitMl = n; x.ml = Math.round(n * x.count); save();
+}
+function removeFluid(id, withUndo = true) {
+  const x = entry(id); if (!x) return;
+  S.logs.fluid = S.logs.fluid.filter(y => y.id !== id); lastRemoved = x; if (view.edit === id) view.edit = null;
+  save(); render(false);
+  if (withUndo) toast(t("removed"), "restore", id);
+}
+function toast(msg, act, undoId) {
   let el = document.getElementById("toast");
   if (!el) { el = document.createElement("div"); el.id = "toast"; el.setAttribute("role", "status"); el.setAttribute("aria-live", "polite"); document.body.appendChild(el); }
-  el.innerHTML = `<span>${esc(msg)}</span>${undoId ? `<button type="button" class="btn-link" data-act="undo" data-v="${esc(undoId)}">${t("undo")}</button>` : ""}`;
+  el.innerHTML = `<span>${esc(msg)}</span>${act ? `<button type="button" class="btn-link" data-act="${act}" data-v="${esc(undoId)}">${t("undo")}</button>` : ""}`;
   el.classList.add("show");
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => el.classList.remove("show"), 10000);
@@ -134,6 +165,9 @@ const ICON = {
   glass: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 4h12l-2 16H8z"/></svg>',
   mug: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 6h11v12H5zM16 9h2a2 2 0 0 1 0 4h-2"/></svg>',
   ice: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 8l8-4 8 4v8l-8 4-8-4z"/><path d="M4 8l8 4 8-4M12 12v8"/></svg>',
+  pen: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>',
+  trash: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>',
+  fwd: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="flip"><path d="M9 6l6 6-6 6"/></svg>',
   x: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
   learn: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 21V5"/></svg>'
 };
@@ -193,8 +227,8 @@ function renderOb() {
 function cupButtons() {
   return `<div class="cups">${CUPS.map(k => `<button type="button" class="btn cup" data-act="addcup" data-v="${k}">${ICON[k]}<span>${t("cup_" + k)}</span><span class="muted">${num(S.profile.cups[k])} ${t("ml")}</span></button>`).join("")}</div>`;
 }
-function fluidSummary() {
-  const used = fluidToday(), f = S.targets.fluid, u = t("ml");
+function fluidSummary(off = 0) {
+  const used = fluidTotal(dayDate(off)), f = S.targets.fluid, u = t("ml");
   const lim = f.status === "set" ? f.value : null;
   let fluid;
   if (lim) {
@@ -202,9 +236,9 @@ function fluidSummary() {
     const left = lim - used;
     fluid = `<div class="bar" role="img" aria-label="${esc(t("fluid_aria", { used: num(used), limit: num(lim) }))}"><span style="width:${pct}%"></span></div>
       <p class="big">${t("fluid_of", { used: num(used), limit: num(lim), unit: u })}</p>
-      <p class="muted">${left >= 0 ? t("fluid_left", { left: num(left), unit: u }) : t("fluid_over", { over: num(-left), unit: u })}</p>`;
+      ${off ? "" : `<p class="muted">${left >= 0 ? t("fluid_left", { left: num(left), unit: u }) : t("fluid_over", { over: num(-left), unit: u })}</p>`}`;
   } else {
-    fluid = `<p class="big">${t("fluid_used", { used: num(used), unit: u })}</p><p class="muted">${t("fluid_nolimit")}</p>`;
+    fluid = `<p class="big">${t(off ? "week_total" : "fluid_used", { used: num(used), unit: u })}</p>${off ? "" : `<p class="muted">${t("fluid_nolimit")}</p>`}`;
   }
   return fluid;
 }
@@ -262,14 +296,46 @@ function pageHead(title) {
   return `<div class="head"><button type="button" class="icon-btn" data-act="page" data-v="" aria-label="${esc(t("back"))}">${ICON.back}</button>
     <h1 tabindex="-1" class="grow">${esc(title)}</h1></div>`;
 }
+function entryLabel(x) { return x.container === "ice" ? t("ice_title") : t("cup_" + x.container); }
+function entryRow(x) {
+  const u = t("ml"), what = entryLabel(x), open = view.edit === x.id;
+  const hhmm = new Date(x.time).toTimeString().slice(0, 5);
+  return `<li class="entry">
+    <div class="entry-top"><span class="ico">${ICON[x.container] || ICON.track}</span>
+      <span class="grow"><strong>${esc(what)}</strong><br><span class="muted">${esc(clock(new Date(x.time)))}</span></span>
+      <strong class="big">${num(x.ml)} ${u}</strong></div>
+    <div class="entry-actions">
+      <div class="stepper sm">
+        <button type="button" data-act="less" data-v="${esc(x.id)}" aria-label="${esc(t("less_aria", { what }))}"${x.count <= 1 ? " disabled" : ""}>−</button>
+        <output aria-live="polite">${num(x.count)}</output>
+        <button type="button" data-act="more" data-v="${esc(x.id)}" aria-label="${esc(t("more_aria", { what }))}">+</button>
+      </div>
+      <span class="grow"></span>
+      <button type="button" class="icon-btn small-btn" data-act="editlog" data-v="${esc(x.id)}" aria-expanded="${open}" aria-label="${esc(t("edit_aria", { what }))}">${ICON.pen}</button>
+      <button type="button" class="icon-btn small-btn" data-act="rmlog" data-v="${esc(x.id)}" aria-label="${esc(t("remove_aria", { what: what + " " + num(x.ml) + " " + u }))}">${ICON.trash}</button>
+    </div>
+    ${open ? `<div class="entry-edit">
+      <label class="field" for="e-time">${t("time")}</label>
+      <input id="e-time" type="time" data-entry-time="${esc(x.id)}" value="${hhmm}">
+      <label class="field" for="e-unit">${t("amount_each")}</label>
+      <div class="unit-input"><input id="e-unit" type="number" inputmode="numeric" min="1" dir="ltr" data-entry-unit="${esc(x.id)}" value="${x.unitMl}"><span>${u}</span></div>
+      <button type="button" class="btn btn-primary" style="margin-top:.75rem" data-act="editdone">${t("done")}</button>
+    </div>` : ""}
+  </li>`;
+}
 function renderTrack() {
-  const u = t("ml"), cm = cubeMl(), measured = S.profile.cups.ice5 > 0;
-  const list = fluidOn(new Date()).slice().reverse();
-  const label = x => x.container === "ice" ? `${t("ice_title")} × ${num(x.count)}` : t("cup_" + x.container);
-  const week = [...Array(7)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() - i); return { d, total: fluidOn(d).reduce((a, x) => a + x.ml, 0) }; });
+  const u = t("ml"), cm = cubeMl(), measured = S.profile.cups.ice5 > 0, off = view.day || 0;
+  const list = fluidOn(dayDate(off)).slice().sort((a, b) => new Date(b.time) - new Date(a.time));
   const lim = S.targets.fluid.status === "set" ? S.targets.fluid.value : null;
   return `<h1 tabindex="-1">${t("tab_track")}</h1>
-    <section class="card" aria-labelledby="h-fl"><h2 id="h-fl" class="card-title">${t("fluid_title")}</h2>${fluidSummary()}</section>
+    <div class="daynav">
+      <button type="button" class="icon-btn" data-act="dayprev" aria-label="${esc(t("day_prev"))}"${off >= 365 ? " disabled" : ""}>${ICON.back}</button>
+      <strong class="grow center" aria-live="polite">${esc(dayName(off))}</strong>
+      <button type="button" class="icon-btn" data-act="daynext" aria-label="${esc(t("day_next"))}"${off === 0 ? " disabled" : ""}>${ICON.fwd}</button>
+    </div>
+    <section class="card" aria-labelledby="h-fl"><h2 id="h-fl" class="card-title">${t("fluid_title")}</h2>${fluidSummary(off)}</section>
+    <h2>${off ? t("day_list") : t("today_list")}</h2>
+    ${list.length ? `<ul class="log entries">${list.map(entryRow).join("")}</ul>` : `<p class="muted">${t(off ? "none_day" : "none_yet")}</p>`}
     <h2>${t("add_drink")}</h2>
     ${cupButtons()}
     <section class="card" aria-labelledby="h-ice">
@@ -290,13 +356,11 @@ function renderTrack() {
       <div class="unit-input wrap"><input id="f-custom" type="number" inputmode="numeric" min="1" dir="ltr" aria-labelledby="h-cust" placeholder="${esc(t("custom_ph"))}"><span>${u}</span>
       <button type="button" class="btn btn-secondary" data-act="addcustom">${t("add")}</button></div>
     </section>
-    <h2>${t("today_list")}</h2>
-    ${list.length ? `<ul class="log">${list.map(x => `<li><span class="muted">${esc(clock(new Date(x.time)))}</span><span class="grow">${esc(label(x))}</span><strong>${num(x.ml)} ${u}</strong>
-      <button type="button" class="icon-btn small-btn" data-act="rmlog" data-v="${esc(x.id)}" aria-label="${esc(t("remove_aria", { what: label(x) + " " + num(x.ml) + " " + u }))}">${ICON.x}</button></li>`).join("")}</ul>`
-      : `<p class="muted">${t("none_yet")}</p>`}
     <h2>${t("week_title")}</h2>
-    <ul class="log">${week.map(w => `<li><span class="grow">${esc(w.d.toDateString() === new Date().toDateString() ? t("next_today") : new Intl.DateTimeFormat(loc(), { weekday: "long", day: "numeric" }).format(w.d))}</span>
-      <strong>${lim ? t("week_of", { used: num(w.total), limit: num(lim), unit: u }) : `${num(w.total)} ${u}`}</strong></li>`).join("")}</ul>`;
+    <p class="muted">${t("week_hint")}</p>
+    <ul class="log">${[...Array(7)].map((_, i) => { const tot = fluidTotal(dayDate(i));
+      return `<li><button type="button" class="rowbtn" data-act="gotoday" data-v="${i}"${i === off ? ' aria-current="date"' : ""}><span class="grow">${esc(dayName(i))}</span>
+      <strong>${lim ? t("week_of", { used: num(tot), limit: num(lim), unit: u }) : `${num(tot)} ${u}`}</strong></button></li>`; }).join("")}</ul>`;
 }
 function renderSoon() { return `<h1 tabindex="-1">${t("tab_" + view.tab)}</h1><div class="card"><p>${t("soon")}</p></div>`; }
 function tabs() {
@@ -315,6 +379,7 @@ function render(focus = true) {
   }
   if (focus) { window.scrollTo(0, 0); const h = app.querySelector("h1"); if (h) h.focus({ preventScroll: true }); }
 }
+function trackDay() { return view.tab === "track" && !view.page ? (view.day || 0) : 0; }
 function go(step) { view.step = Math.max(0, Math.min(STEPS.length - 1, step)); render(); }
 
 document.addEventListener("click", async e => {
@@ -336,14 +401,22 @@ document.addEventListener("click", async e => {
       const i = arr.indexOf(val); if (i >= 0) arr.splice(i, 1); else arr.push(val);
       save(); b.setAttribute("aria-pressed", i < 0); break;
     }
-    case "tab": view.tab = v; view.page = null; hideToast(); render(); break;
-    case "addcup": addFluid(S.profile.cups[v], v); break;
+    case "tab": view.tab = v; view.page = null; view.day = 0; view.edit = null; hideToast(); render(); break;
+    case "addcup": addFluid(S.profile.cups[v], v, 1, trackDay()); break;
     case "iceplus": if (ice < 30) { ice++; render(false); } break;
     case "iceminus": if (ice > 1) { ice--; render(false); } break;
-    case "addice": addFluid(ice * cubeMl(), "ice", ice); break;
-    case "addcustom": { const el = document.getElementById("f-custom"); const n = Number(el && el.value); if (n > 0 && n <= 5000) addFluid(n, "custom"); else if (el) el.focus(); break; }
-    case "undo": removeFluid(v); hideToast(); toast(t("removed")); break;
-    case "rmlog": removeFluid(v); toast(t("removed")); break;
+    case "addice": addFluid(cubeMl(), "ice", ice, trackDay()); break;
+    case "addcustom": { const el = document.getElementById("f-custom"); const n = Number(el && el.value); if (n > 0 && n <= 5000) addFluid(n, "custom", 1, trackDay()); else if (el) el.focus(); break; }
+    case "undo": removeFluid(v, false); hideToast(); break;
+    case "restore": if (lastRemoved) { S.logs.fluid.push(lastRemoved); lastRemoved = null; save(); render(false); } hideToast(); break;
+    case "rmlog": removeFluid(v); break;
+    case "more": changeCount(v, 1); break;
+    case "less": changeCount(v, -1); break;
+    case "editlog": view.edit = view.edit === v ? null : v; render(false); if (view.edit) document.getElementById("e-time")?.focus(); break;
+    case "editdone": view.edit = null; render(false); break;
+    case "dayprev": view.day = Math.min(365, (view.day || 0) + 1); view.edit = null; render(false); break;
+    case "daynext": view.day = Math.max(0, (view.day || 0) - 1); view.edit = null; render(false); break;
+    case "gotoday": view.day = Number(v); view.edit = null; render(); break;
     case "page": view.page = v || null; render(); break;
     case "size": S.profile.size = Number(v); save(); await loadLang(lang()); render(false); break;
     case "edit": view = { name: "ob", step: 2, tab: "today", page: null }; render(); break;
@@ -361,6 +434,13 @@ document.addEventListener("click", async e => {
 });
 document.addEventListener("input", e => {
   const el = e.target, f = el.dataset.field;
+  const id = el.dataset.entryTime || el.dataset.entryUnit;
+  if (id) { // live edit: save and refresh the row's text without redrawing the page
+    if (el.dataset.entryTime) setEntryTime(id, el.value); else setEntryUnit(id, el.value);
+    const x = entry(id), li = el.closest(".entry");
+    if (x && li) { li.querySelector(".entry-top .big").textContent = `${num(x.ml)} ${t("ml")}`; li.querySelector(".entry-top .muted").textContent = clock(new Date(x.time)); }
+    return;
+  }
   if (!f) return;
   if ("target" in el.dataset) {
     const g = getPath(f), n = el.value === "" ? null : Math.max(0, Number(el.value));
