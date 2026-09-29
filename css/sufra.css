@@ -119,3 +119,17 @@ input::placeholder{color:var(--muted);opacity:1;}
 .ob-nav{display:flex;gap:.6rem;align-items:center;margin-top:1.5rem;}
 .ob-nav .btn-primary{flex:1;width:auto;}
 .chip{padding:.45rem 1rem;border-radius:24px;line-height:1.35;text-align:start;}
+/* ---------- v1.3: fluid tracker ---------- */
+h3{font-size:1.05rem;font-weight:600;}
+.wide{width:100%;justify-content:center;margin:.75rem 0;}
+.log{list-style:none;padding:0;margin:.5rem 0;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);}
+.log li{display:flex;align-items:center;gap:.75rem;padding:.6rem 1rem;border-bottom:1px solid var(--line);min-height:56px;}
+.log li:last-child{border-bottom:0;}
+.small-btn{width:48px;height:48px;}
+.unit-input .btn{min-height:var(--tap);}
+.unit-input.wrap{flex-wrap:wrap;} .unit-input.wrap input{min-width:7rem;}
+#toast{position:fixed;inset-inline:1rem;bottom:5.25rem;background:var(--text);color:#fff;border-radius:14px;padding:.6rem 1rem;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;box-shadow:0 4px 16px rgba(0,0,0,.18);
+  transform:translateY(150%);opacity:0;transition:transform .25s,opacity .25s;pointer-events:none;z-index:10;}
+#toast.show{transform:none;opacity:1;pointer-events:auto;}
+#toast .btn-link{color:#fff;font-weight:700;}
