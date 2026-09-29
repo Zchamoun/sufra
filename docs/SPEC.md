@@ -72,6 +72,9 @@ Photo lookup · caregiver sharing · accounts or cloud sync · push notification
 ## 9. Folder layout
 ```
 index.html          app shell (loads css and js with ?v=version)
+manifest.webmanifest  app name, icon and colours for installing
+sw.js               offline copy and update control
+/icons              app icon in all sizes
 /css/sufra.css      design system
 /js/app.js          app logic
 /i18n               en.json · ar.json · fr.json
@@ -84,8 +87,12 @@ index.html          app shell (loads css and js with ?v=version)
 /docs/SPEC.md       this document
 ```
 
-## 10. How updates are released
-- Every update raises the version number in `index.html` (`?v=0.4` and so on) so phones load the new files straight away instead of an old saved copy.
+## 10. Install and updates
+- **Install:** the first screen, Today (until "Not now") and Settings offer "Install Sufra as an app". Android and desktop Chrome show the real install prompt; iPhone shows the 2-tap "Add to Home Screen" steps. On iPhone the installed app keeps its own data, so people are told to install first.
+- **Icon:** "Sufra tray" (brass tray with three small dishes on mist blue), `icons/`.
+- **Offline:** `sw.js` saves every app file and every dish file listed in `data/dishes/index.json`, so Sufra works without internet.
+- **Updates only when the person chooses:** Sufra checks quietly on start and with Settings → "Check for updates". A new version waits and shows "A new version of Sufra is ready · Update now". Only that tap installs it and restarts the app.
+- **Every release** changes the same number in 3 places: `VERSION` in `sw.js`, `APP_VERSION` in `js/app.js`, and `?v=` in `index.html`.
 
   
 ## 11. Editing rule (applies to every log: drinks now, meals later)
