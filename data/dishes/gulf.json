@@ -30,72 +30,132 @@
     {
      "key": "rice",
      "name": "White rice, long-grain, cooked",
+     "names": {
+      "en": "Long-grain rice (cooked weight)",
+      "ar": "أرز طويل الحبة (وزن مطبوخ)",
+      "fr": "Riz long (poids cuit)"
+     },
      "ndb": "20045",
      "g": 200
     },
     {
      "key": "chicken_thigh",
      "name": "Chicken thigh meat, roasted",
+     "names": {
+      "en": "Chicken thigh (cooked weight, no bone)",
+      "ar": "فخذ دجاج (وزن مطبوخ بدون عظم)",
+      "fr": "Cuisse de poulet (poids cuit, sans os)"
+     },
      "ndb": "05098",
      "g": 100
     },
     {
      "key": "tomato",
      "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
      "ndb": "11529",
      "g": 40
     },
     {
      "key": "onion",
      "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
      "ndb": "11282",
      "g": 25
     },
     {
      "key": "carrot",
      "name": "Carrot, raw",
+     "names": {
+      "en": "Carrot",
+      "ar": "جزر",
+      "fr": "Carotte"
+     },
      "ndb": "11124",
      "g": 15
     },
     {
      "key": "tomato_paste",
      "name": "Tomato paste, no salt added",
+     "names": {
+      "en": "Tomato paste",
+      "ar": "معجون طماطم",
+      "fr": "Concentré de tomate"
+     },
      "ndb": "11546",
      "g": 8
     },
     {
      "key": "veg_oil",
      "name": "Vegetable (corn) oil",
+     "names": {
+      "en": "Vegetable oil",
+      "ar": "زيت نباتي",
+      "fr": "Huile végétale"
+     },
      "ndb": "04518",
      "g": 8
     },
     {
      "key": "garlic",
      "name": "Garlic, raw",
+     "names": {
+      "en": "Garlic",
+      "ar": "ثوم",
+      "fr": "Ail"
+     },
      "ndb": "11215",
      "g": 3
     },
     {
      "key": "cardamom",
      "name": "Cardamom",
+     "names": {
+      "en": "Cardamom",
+      "ar": "هيل",
+      "fr": "Cardamome"
+     },
      "ndb": "02006",
      "g": 0.3
     },
     {
      "key": "cinnamon",
      "name": "Cinnamon",
+     "names": {
+      "en": "Cinnamon",
+      "ar": "قرفة",
+      "fr": "Cannelle"
+     },
      "ndb": "02010",
      "g": 0.3
     },
     {
      "key": "black_pepper",
      "name": "Black pepper",
+     "names": {
+      "en": "Black pepper",
+      "ar": "فلفل أسود",
+      "fr": "Poivre noir"
+     },
      "ndb": "02030",
      "g": 0.3
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 1.2
     }
@@ -134,6 +194,10 @@
    "method": "recipe",
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [],
+   "note": null,
+   "contains": [
+    "meat"
+   ],
    "main": [
     "chicken",
     "rice"
@@ -245,54 +309,99 @@
     {
      "key": "rice",
      "name": "White rice, long-grain, cooked",
+     "names": {
+      "en": "Long-grain rice (cooked weight)",
+      "ar": "أرز طويل الحبة (وزن مطبوخ)",
+      "fr": "Riz long (poids cuit)"
+     },
      "ndb": "20045",
      "g": 200
     },
     {
      "key": "lamb",
      "name": "Lamb shoulder, lean, braised",
+     "names": {
+      "en": "Lamb, lean (cooked weight, no bone)",
+      "ar": "لحم غنم قليل الدهن (وزن مطبوخ بدون عظم)",
+      "fr": "Agneau maigre (poids cuit, sans os)"
+     },
      "ndb": "17040",
      "g": 90
     },
     {
      "key": "onion",
      "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
      "ndb": "11282",
      "g": 30
     },
     {
      "key": "tomato",
      "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
      "ndb": "11529",
      "g": 40
     },
     {
      "key": "veg_oil",
      "name": "Vegetable (corn) oil",
+     "names": {
+      "en": "Vegetable oil",
+      "ar": "زيت نباتي",
+      "fr": "Huile végétale"
+     },
      "ndb": "04518",
      "g": 8
     },
     {
      "key": "turmeric",
      "name": "Turmeric",
+     "names": {
+      "en": "Turmeric",
+      "ar": "كركم",
+      "fr": "Curcuma"
+     },
      "ndb": "02043",
      "g": 0.5
     },
     {
      "key": "cardamom",
      "name": "Cardamom",
+     "names": {
+      "en": "Cardamom",
+      "ar": "هيل",
+      "fr": "Cardamome"
+     },
      "ndb": "02006",
      "g": 0.3
     },
     {
      "key": "curry",
      "name": "Mixed spice (bzar / curry)",
+     "names": {
+      "en": "Spice mix (bzar)",
+      "ar": "بهارات مشكلة (بزار)",
+      "fr": "Mélange d'épices (bzar)"
+     },
      "ndb": "02015",
      "g": 0.5
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 1.2
     }
@@ -332,6 +441,14 @@
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [
     "Dried lime (loomi) is used in most homes but has no USDA entry; not included."
+   ],
+   "note": {
+    "en": "Dried lime (loomi) is not counted: no verified data yet.",
+    "ar": "اللومي (الليمون الأسود) غير محسوب: لا توجد بيانات موثّقة بعد.",
+    "fr": "Le citron séché (loomi) n'est pas compté : pas encore de données vérifiées."
+   },
+   "contains": [
+    "meat"
    ],
    "main": [
     "lamb",
@@ -437,36 +554,66 @@
     {
      "key": "wheat",
      "name": "Whole wheat grain, dry",
+     "names": {
+      "en": "Whole wheat grain (dry weight)",
+      "ar": "حب قمح كامل (وزن جاف)",
+      "fr": "Blé entier (poids sec)"
+     },
      "ndb": "20072",
      "g": 50
     },
     {
      "key": "chicken_stew",
      "name": "Chicken leg meat, stewed",
+     "names": {
+      "en": "Chicken (cooked weight, no bone)",
+      "ar": "دجاج (وزن مطبوخ بدون عظم)",
+      "fr": "Poulet (poids cuit, sans os)"
+     },
      "ndb": "05083",
      "g": 70
     },
     {
      "key": "ghee",
      "name": "Ghee (butter oil)",
+     "names": {
+      "en": "Ghee",
+      "ar": "سمن",
+      "fr": "Ghee (beurre clarifié)"
+     },
      "ndb": "01003",
      "g": 8
     },
     {
      "key": "cinnamon",
      "name": "Cinnamon",
+     "names": {
+      "en": "Cinnamon",
+      "ar": "قرفة",
+      "fr": "Cannelle"
+     },
      "ndb": "02010",
      "g": 0.3
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 1.0
     },
     {
      "key": "water",
      "name": "Tap water",
+     "names": {
+      "en": "Water",
+      "ar": "ماء",
+      "fr": "Eau"
+     },
      "ndb": "14411",
      "g": 220
     }
@@ -505,6 +652,12 @@
    "method": "recipe",
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [],
+   "note": null,
+   "contains": [
+    "meat",
+    "dairy",
+    "meat_dairy"
+   ],
    "main": [
     "wheat",
     "chicken"
@@ -601,48 +754,88 @@
     {
      "key": "wheat",
      "name": "Whole wheat grain, dry",
+     "names": {
+      "en": "Whole wheat grain (dry weight)",
+      "ar": "حب قمح كامل (وزن جاف)",
+      "fr": "Blé entier (poids sec)"
+     },
      "ndb": "20072",
      "g": 45
     },
     {
      "key": "yogurt",
      "name": "Yogurt, plain, whole milk",
+     "names": {
+      "en": "Plain yogurt",
+      "ar": "لبن زبادي",
+      "fr": "Yaourt nature"
+     },
      "ndb": "01116",
      "g": 60
     },
     {
      "key": "chicken_stew",
      "name": "Chicken leg meat, stewed",
+     "names": {
+      "en": "Chicken (cooked weight, no bone)",
+      "ar": "دجاج (وزن مطبوخ بدون عظم)",
+      "fr": "Poulet (poids cuit, sans os)"
+     },
      "ndb": "05083",
      "g": 50
     },
     {
      "key": "onion",
      "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
      "ndb": "11282",
      "g": 20
     },
     {
      "key": "ghee",
      "name": "Ghee (butter oil)",
+     "names": {
+      "en": "Ghee",
+      "ar": "سمن",
+      "fr": "Ghee (beurre clarifié)"
+     },
      "ndb": "01003",
      "g": 6
     },
     {
      "key": "cumin",
      "name": "Cumin",
+     "names": {
+      "en": "Cumin",
+      "ar": "كمون",
+      "fr": "Cumin"
+     },
      "ndb": "02014",
      "g": 0.5
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 1.0
     },
     {
      "key": "water",
      "name": "Tap water",
+     "names": {
+      "en": "Water",
+      "ar": "ماء",
+      "fr": "Eau"
+     },
      "ndb": "14411",
      "g": 200
     }
@@ -682,6 +875,12 @@
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [
     "Crushed whole wheat; USDA has no separate entry for jareesh, so whole wheat grain is used."
+   ],
+   "note": null,
+   "contains": [
+    "meat",
+    "dairy",
+    "meat_dairy"
    ],
    "main": [
     "wheat",
@@ -773,66 +972,121 @@
     {
      "key": "chicken_stew",
      "name": "Chicken leg meat, stewed",
+     "names": {
+      "en": "Chicken (cooked weight, no bone)",
+      "ar": "دجاج (وزن مطبوخ بدون عظم)",
+      "fr": "Poulet (poids cuit, sans os)"
+     },
      "ndb": "05083",
      "g": 80
     },
     {
      "key": "potato_raw",
      "name": "Potato, raw weight (stewed in its broth)",
+     "names": {
+      "en": "Potato (raw weight)",
+      "ar": "بطاطس (وزن نيء)",
+      "fr": "Pomme de terre (poids cru)"
+     },
      "ndb": "11352",
      "g": 60
     },
     {
      "key": "zucchini",
      "name": "Zucchini, raw",
+     "names": {
+      "en": "Zucchini",
+      "ar": "كوسة",
+      "fr": "Courgette"
+     },
      "ndb": "11477",
      "g": 50
     },
     {
      "key": "carrot",
      "name": "Carrot, raw",
+     "names": {
+      "en": "Carrot",
+      "ar": "جزر",
+      "fr": "Carotte"
+     },
      "ndb": "11124",
      "g": 30
     },
     {
      "key": "tomato",
      "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
      "ndb": "11529",
      "g": 50
     },
     {
      "key": "tomato_paste",
      "name": "Tomato paste, no salt added",
+     "names": {
+      "en": "Tomato paste",
+      "ar": "معجون طماطم",
+      "fr": "Concentré de tomate"
+     },
      "ndb": "11546",
      "g": 8
     },
     {
      "key": "onion",
      "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
      "ndb": "11282",
      "g": 25
     },
     {
      "key": "veg_oil",
      "name": "Vegetable (corn) oil",
+     "names": {
+      "en": "Vegetable oil",
+      "ar": "زيت نباتي",
+      "fr": "Huile végétale"
+     },
      "ndb": "04518",
      "g": 6
     },
     {
      "key": "curry",
      "name": "Mixed spice (bzar / curry)",
+     "names": {
+      "en": "Spice mix (bzar)",
+      "ar": "بهارات مشكلة (بزار)",
+      "fr": "Mélange d'épices (bzar)"
+     },
      "ndb": "02015",
      "g": 1
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 1.0
     },
     {
      "key": "water",
      "name": "Tap water",
+     "names": {
+      "en": "Water",
+      "ar": "ماء",
+      "fr": "Eau"
+     },
      "ndb": "14411",
      "g": 60
     }
@@ -872,6 +1126,10 @@
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [
     "Broth-based stew: should its broth count toward the fluid limit? Question for the reviewer."
+   ],
+   "note": null,
+   "contains": [
+    "meat"
    ],
    "main": [
     "chicken",
@@ -962,48 +1220,88 @@
     {
      "key": "flour",
      "name": "White flour",
+     "names": {
+      "en": "White flour",
+      "ar": "طحين أبيض",
+      "fr": "Farine blanche"
+     },
      "ndb": "20081",
      "g": 25
     },
     {
      "key": "sugar",
      "name": "Sugar",
+     "names": {
+      "en": "Sugar",
+      "ar": "سكر",
+      "fr": "Sucre"
+     },
      "ndb": "19335",
      "g": 3
     },
     {
      "key": "veg_oil",
      "name": "Vegetable (corn) oil",
+     "names": {
+      "en": "Vegetable oil",
+      "ar": "زيت نباتي",
+      "fr": "Huile végétale"
+     },
      "ndb": "04518",
      "g": 10
     },
     {
      "key": "honey",
      "name": "Honey",
+     "names": {
+      "en": "Honey",
+      "ar": "عسل",
+      "fr": "Miel"
+     },
      "ndb": "19296",
      "g": 15
     },
     {
      "key": "cardamom",
      "name": "Cardamom",
+     "names": {
+      "en": "Cardamom",
+      "ar": "هيل",
+      "fr": "Cardamome"
+     },
      "ndb": "02006",
      "g": 0.2
     },
     {
      "key": "yeast",
      "name": "Dry yeast",
+     "names": {
+      "en": "Dry yeast",
+      "ar": "خميرة جافة",
+      "fr": "Levure sèche"
+     },
      "ndb": "18375",
      "g": 0.5
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 0.1
     },
     {
      "key": "water",
      "name": "Tap water",
+     "names": {
+      "en": "Water",
+      "ar": "ماء",
+      "fr": "Eau"
+     },
      "ndb": "14411",
      "g": 15
     }
@@ -1043,6 +1341,14 @@
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [
     "Topping calculated as honey/sugar syrup. Date syrup (dibs) is common but has no verified USDA entry; potassium would be higher with dibs."
+   ],
+   "note": {
+    "en": "Calculated with honey. Date syrup (dibs) has more potassium: no verified data yet.",
+    "ar": "محسوب مع العسل. دبس التمر فيه بوتاسيوم أكثر: لا توجد بيانات موثّقة بعد.",
+    "fr": "Calculé avec du miel. Le sirop de dattes (dibs) contient plus de potassium : pas encore de données vérifiées."
+   },
+   "contains": [
+    "honey"
    ],
    "main": [
     "flour",
@@ -1115,42 +1421,77 @@
     {
      "key": "pasta",
      "name": "Pasta / vermicelli, cooked",
+     "names": {
+      "en": "Pasta or vermicelli (cooked weight)",
+      "ar": "معكرونة أو شعيرية (وزن مطبوخ)",
+      "fr": "Pâtes ou vermicelles (poids cuit)"
+     },
      "ndb": "20121",
      "g": 120
     },
     {
      "key": "sugar",
      "name": "Sugar",
+     "names": {
+      "en": "Sugar",
+      "ar": "سكر",
+      "fr": "Sucre"
+     },
      "ndb": "19335",
      "g": 10
     },
     {
      "key": "ghee",
      "name": "Ghee (butter oil)",
+     "names": {
+      "en": "Ghee",
+      "ar": "سمن",
+      "fr": "Ghee (beurre clarifié)"
+     },
      "ndb": "01003",
      "g": 5
     },
     {
      "key": "cardamom",
      "name": "Cardamom",
+     "names": {
+      "en": "Cardamom",
+      "ar": "هيل",
+      "fr": "Cardamome"
+     },
      "ndb": "02006",
      "g": 0.3
     },
     {
      "key": "egg",
      "name": "Egg, whole",
+     "names": {
+      "en": "Egg",
+      "ar": "بيض",
+      "fr": "Œuf"
+     },
      "ndb": "01123",
      "g": 50
     },
     {
      "key": "veg_oil",
      "name": "Vegetable (corn) oil",
+     "names": {
+      "en": "Vegetable oil",
+      "ar": "زيت نباتي",
+      "fr": "Huile végétale"
+     },
      "ndb": "04518",
      "g": 3
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 0.3
     }
@@ -1189,6 +1530,11 @@
    "method": "recipe",
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [],
+   "note": null,
+   "contains": [
+    "dairy",
+    "egg"
+   ],
    "main": [
     "pasta",
     "egg"
@@ -1251,72 +1597,132 @@
     {
      "key": "pita",
      "name": "Pita / flatbread, white",
+     "names": {
+      "en": "Flatbread (pita)",
+      "ar": "خبز عربي",
+      "fr": "Pain pita"
+     },
      "ndb": "18041",
      "g": 50
     },
     {
      "key": "lamb",
      "name": "Lamb shoulder, lean, braised",
+     "names": {
+      "en": "Lamb, lean (cooked weight, no bone)",
+      "ar": "لحم غنم قليل الدهن (وزن مطبوخ بدون عظم)",
+      "fr": "Agneau maigre (poids cuit, sans os)"
+     },
      "ndb": "17040",
      "g": 70
     },
     {
      "key": "potato_raw",
      "name": "Potato, raw weight (stewed in its broth)",
+     "names": {
+      "en": "Potato (raw weight)",
+      "ar": "بطاطس (وزن نيء)",
+      "fr": "Pomme de terre (poids cru)"
+     },
      "ndb": "11352",
      "g": 60
     },
     {
      "key": "zucchini",
      "name": "Zucchini, raw",
+     "names": {
+      "en": "Zucchini",
+      "ar": "كوسة",
+      "fr": "Courgette"
+     },
      "ndb": "11477",
      "g": 50
     },
     {
      "key": "carrot",
      "name": "Carrot, raw",
+     "names": {
+      "en": "Carrot",
+      "ar": "جزر",
+      "fr": "Carotte"
+     },
      "ndb": "11124",
      "g": 30
     },
     {
      "key": "tomato",
      "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
      "ndb": "11529",
      "g": 50
     },
     {
      "key": "tomato_paste",
      "name": "Tomato paste, no salt added",
+     "names": {
+      "en": "Tomato paste",
+      "ar": "معجون طماطم",
+      "fr": "Concentré de tomate"
+     },
      "ndb": "11546",
      "g": 8
     },
     {
      "key": "onion",
      "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
      "ndb": "11282",
      "g": 25
     },
     {
      "key": "veg_oil",
      "name": "Vegetable (corn) oil",
+     "names": {
+      "en": "Vegetable oil",
+      "ar": "زيت نباتي",
+      "fr": "Huile végétale"
+     },
      "ndb": "04518",
      "g": 6
     },
     {
      "key": "curry",
      "name": "Mixed spice (bzar / curry)",
+     "names": {
+      "en": "Spice mix (bzar)",
+      "ar": "بهارات مشكلة (بزار)",
+      "fr": "Mélange d'épices (bzar)"
+     },
      "ndb": "02015",
      "g": 1
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 1.2
     },
     {
      "key": "water",
      "name": "Tap water",
+     "names": {
+      "en": "Water",
+      "ar": "ماء",
+      "fr": "Eau"
+     },
      "ndb": "14411",
      "g": 120
     }
@@ -1356,6 +1762,10 @@
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [
     "Bread soaked in broth: should the broth count toward the fluid limit? Question for the reviewer."
+   ],
+   "note": null,
+   "contains": [
+    "meat"
    ],
    "main": [
     "lamb",
@@ -1445,42 +1855,77 @@
     {
      "key": "fish",
      "name": "Grouper (hammour), cooked",
+     "names": {
+      "en": "Hammour or other white fish (cooked weight)",
+      "ar": "هامور أو سمك أبيض آخر (وزن مطبوخ)",
+      "fr": "Mérou ou autre poisson blanc (poids cuit)"
+     },
      "ndb": "15032",
      "g": 120
     },
     {
      "key": "rice",
      "name": "White rice, long-grain, cooked",
+     "names": {
+      "en": "Long-grain rice (cooked weight)",
+      "ar": "أرز طويل الحبة (وزن مطبوخ)",
+      "fr": "Riz long (poids cuit)"
+     },
      "ndb": "20045",
      "g": 180
     },
     {
      "key": "lemon",
      "name": "Lemon juice",
+     "names": {
+      "en": "Lemon juice",
+      "ar": "عصير ليمون",
+      "fr": "Jus de citron"
+     },
      "ndb": "09152",
      "g": 10
     },
     {
      "key": "olive_oil",
      "name": "Olive oil",
+     "names": {
+      "en": "Olive oil",
+      "ar": "زيت زيتون",
+      "fr": "Huile d'olive"
+     },
      "ndb": "04053",
      "g": 6
     },
     {
      "key": "garlic",
      "name": "Garlic, raw",
+     "names": {
+      "en": "Garlic",
+      "ar": "ثوم",
+      "fr": "Ail"
+     },
      "ndb": "11215",
      "g": 3
     },
     {
      "key": "cumin",
      "name": "Cumin",
+     "names": {
+      "en": "Cumin",
+      "ar": "كمون",
+      "fr": "Cumin"
+     },
      "ndb": "02014",
      "g": 0.5
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 1.0
     }
@@ -1519,6 +1964,10 @@
    "method": "recipe",
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [],
+   "note": null,
+   "contains": [
+    "fish"
+   ],
    "main": [
     "fish",
     "rice"
@@ -1610,6 +2059,11 @@
     {
      "key": "dates",
      "name": "Dates (deglet noor)",
+     "names": {
+      "en": "Dates",
+      "ar": "تمر",
+      "fr": "Dattes"
+     },
      "ndb": "09087",
      "g": 21
     }
@@ -1650,6 +2104,12 @@
    "gaps": [
     "USDA has deglet noor only; Gulf varieties (khalas, sukkari) have no USDA entry and may differ."
    ],
+   "note": {
+    "en": "Values are for Deglet Noor dates. Khalas, sukkari and other Gulf dates may differ: no verified data yet.",
+    "ar": "القيم لتمر دقلة نور. تمر الخلاص والسكري وغيرها من تمور الخليج قد تختلف: لا توجد بيانات موثّقة بعد.",
+    "fr": "Valeurs pour les dattes Deglet Nour. Les dattes du Golfe (khalas, sukkari…) peuvent différer : pas encore de données vérifiées."
+   },
+   "contains": [],
    "main": [
     "dates"
    ],

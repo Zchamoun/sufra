@@ -30,72 +30,132 @@
     {
      "key": "rice",
      "name": "White rice, long-grain, cooked",
+     "names": {
+      "en": "Long-grain rice (cooked weight)",
+      "ar": "أرز طويل الحبة (وزن مطبوخ)",
+      "fr": "Riz long (poids cuit)"
+     },
      "ndb": "20045",
      "g": 100
     },
     {
      "key": "lentils",
      "name": "Lentils, boiled",
+     "names": {
+      "en": "Lentils (cooked weight)",
+      "ar": "عدس (وزن مطبوخ)",
+      "fr": "Lentilles (poids cuit)"
+     },
      "ndb": "16070",
      "g": 60
     },
     {
      "key": "pasta",
      "name": "Pasta / vermicelli, cooked",
+     "names": {
+      "en": "Pasta or vermicelli (cooked weight)",
+      "ar": "معكرونة أو شعيرية (وزن مطبوخ)",
+      "fr": "Pâtes ou vermicelles (poids cuit)"
+     },
      "ndb": "20121",
      "g": 80
     },
     {
      "key": "chickpeas",
      "name": "Chickpeas, boiled",
+     "names": {
+      "en": "Chickpeas (cooked weight)",
+      "ar": "حمص (وزن مطبوخ)",
+      "fr": "Pois chiches (poids cuit)"
+     },
      "ndb": "16057",
      "g": 25
     },
     {
      "key": "tomato_paste",
      "name": "Tomato paste, no salt added",
+     "names": {
+      "en": "Tomato paste",
+      "ar": "معجون طماطم",
+      "fr": "Concentré de tomate"
+     },
      "ndb": "11546",
      "g": 15
     },
     {
      "key": "tomato",
      "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
      "ndb": "11529",
      "g": 60
     },
     {
      "key": "vinegar",
      "name": "Vinegar",
+     "names": {
+      "en": "Vinegar",
+      "ar": "خل",
+      "fr": "Vinaigre"
+     },
      "ndb": "02048",
      "g": 5
     },
     {
      "key": "garlic",
      "name": "Garlic, raw",
+     "names": {
+      "en": "Garlic",
+      "ar": "ثوم",
+      "fr": "Ail"
+     },
      "ndb": "11215",
      "g": 3
     },
     {
      "key": "onion",
      "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
      "ndb": "11282",
      "g": 20
     },
     {
      "key": "veg_oil",
      "name": "Vegetable (corn) oil",
+     "names": {
+      "en": "Vegetable oil",
+      "ar": "زيت نباتي",
+      "fr": "Huile végétale"
+     },
      "ndb": "04518",
      "g": 12
     },
     {
      "key": "cumin",
      "name": "Cumin",
+     "names": {
+      "en": "Cumin",
+      "ar": "كمون",
+      "fr": "Cumin"
+     },
      "ndb": "02014",
      "g": 0.5
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 1.5
     }
@@ -134,6 +194,8 @@
    "method": "recipe",
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [],
+   "note": null,
+   "contains": [],
    "main": [
     "lentils",
     "rice",
@@ -238,42 +300,77 @@
     {
      "key": "fava",
      "name": "Fava beans, boiled",
+     "names": {
+      "en": "Fava beans (cooked weight)",
+      "ar": "فول (وزن مطبوخ)",
+      "fr": "Fèves (poids cuit)"
+     },
      "ndb": "16053",
      "g": 150
     },
     {
      "key": "olive_oil",
      "name": "Olive oil",
+     "names": {
+      "en": "Olive oil",
+      "ar": "زيت زيتون",
+      "fr": "Huile d'olive"
+     },
      "ndb": "04053",
      "g": 10
     },
     {
      "key": "lemon",
      "name": "Lemon juice",
+     "names": {
+      "en": "Lemon juice",
+      "ar": "عصير ليمون",
+      "fr": "Jus de citron"
+     },
      "ndb": "09152",
      "g": 10
     },
     {
      "key": "cumin",
      "name": "Cumin",
+     "names": {
+      "en": "Cumin",
+      "ar": "كمون",
+      "fr": "Cumin"
+     },
      "ndb": "02014",
      "g": 0.5
     },
     {
      "key": "garlic",
      "name": "Garlic, raw",
+     "names": {
+      "en": "Garlic",
+      "ar": "ثوم",
+      "fr": "Ail"
+     },
      "ndb": "11215",
      "g": 3
     },
     {
      "key": "tomato",
      "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
      "ndb": "11529",
      "g": 20
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 1.0
     }
@@ -314,6 +411,12 @@
    "gaps": [
     "Beans cooked at home from dried. Canned ful adds much more sodium (about +650 mg per bowl, USDA 16054)."
    ],
+   "note": {
+    "en": "Made from dried beans. Canned ful has much more sodium.",
+    "ar": "محضّر من الفول المجفف. الفول المعلّب فيه صوديوم أكثر بكثير.",
+    "fr": "Préparé avec des fèves sèches. Le foul en conserve contient beaucoup plus de sodium."
+   },
+   "contains": [],
    "main": [
     "fava"
    ],
@@ -400,36 +503,66 @@
     {
      "key": "jute",
      "name": "Molokhia (jute leaves), boiled",
+     "names": {
+      "en": "Molokhia leaves (cooked weight)",
+      "ar": "ورق ملوخية (وزن مطبوخ)",
+      "fr": "Feuilles de mouloukhiya (poids cuit)"
+     },
      "ndb": "11232",
      "g": 100
     },
     {
      "key": "stock",
      "name": "Chicken stock, home-made",
+     "names": {
+      "en": "Home-made stock",
+      "ar": "مرق منزلي",
+      "fr": "Bouillon maison"
+     },
      "ndb": "06172",
      "g": 180
     },
     {
      "key": "garlic",
      "name": "Garlic, raw",
+     "names": {
+      "en": "Garlic",
+      "ar": "ثوم",
+      "fr": "Ail"
+     },
      "ndb": "11215",
      "g": 5
     },
     {
      "key": "coriander_seed",
      "name": "Coriander seed",
+     "names": {
+      "en": "Ground coriander",
+      "ar": "كزبرة جافة مطحونة",
+      "fr": "Coriandre moulue"
+     },
      "ndb": "02013",
      "g": 1
     },
     {
      "key": "ghee",
      "name": "Ghee (butter oil)",
+     "names": {
+      "en": "Ghee",
+      "ar": "سمن",
+      "fr": "Ghee (beurre clarifié)"
+     },
      "ndb": "01003",
      "g": 6
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 1.0
     }
@@ -469,6 +602,16 @@
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [
     "Home-made stock assumed. Stock cubes add much more sodium."
+   ],
+   "note": {
+    "en": "Made with home-made stock. Stock cubes add much more sodium.",
+    "ar": "محضّر بمرق منزلي. مكعبات المرق تضيف صوديوم أكثر بكثير.",
+    "fr": "Préparé avec un bouillon maison. Les cubes de bouillon ajoutent beaucoup plus de sodium."
+   },
+   "contains": [
+    "meat",
+    "dairy",
+    "meat_dairy"
    ],
    "main": [
     "greens"
@@ -573,60 +716,110 @@
     {
      "key": "fava_dry",
      "name": "Fava beans, dried (soaked for ta'ameya)",
+     "names": {
+      "en": "Dried peeled fava beans (dry weight)",
+      "ar": "فول مقشور مجفف (وزن جاف)",
+      "fr": "Fèves sèches décortiquées (poids sec)"
+     },
      "ndb": "16052",
      "g": 25
     },
     {
      "key": "parsley",
      "name": "Parsley, fresh",
+     "names": {
+      "en": "Parsley",
+      "ar": "بقدونس",
+      "fr": "Persil"
+     },
      "ndb": "11297",
      "g": 8
     },
     {
      "key": "coriander_leaf",
      "name": "Coriander leaves, fresh",
+     "names": {
+      "en": "Fresh coriander",
+      "ar": "كزبرة خضراء",
+      "fr": "Coriandre fraîche"
+     },
      "ndb": "11165",
      "g": 8
     },
     {
      "key": "onion",
      "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
      "ndb": "11282",
      "g": 10
     },
     {
      "key": "garlic",
      "name": "Garlic, raw",
+     "names": {
+      "en": "Garlic",
+      "ar": "ثوم",
+      "fr": "Ail"
+     },
      "ndb": "11215",
      "g": 3
     },
     {
      "key": "cumin",
      "name": "Cumin",
+     "names": {
+      "en": "Cumin",
+      "ar": "كمون",
+      "fr": "Cumin"
+     },
      "ndb": "02014",
      "g": 0.5
     },
     {
      "key": "sesame",
      "name": "Sesame seeds",
+     "names": {
+      "en": "Sesame seeds",
+      "ar": "سمسم",
+      "fr": "Graines de sésame"
+     },
      "ndb": "12023",
      "g": 2
     },
     {
      "key": "veg_oil",
      "name": "Vegetable (corn) oil",
+     "names": {
+      "en": "Vegetable oil",
+      "ar": "زيت نباتي",
+      "fr": "Huile végétale"
+     },
      "ndb": "04518",
      "g": 10
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 0.8
     },
     {
      "key": "water",
      "name": "Tap water",
+     "names": {
+      "en": "Water",
+      "ar": "ماء",
+      "fr": "Eau"
+     },
      "ndb": "14411",
      "g": 20
     }
@@ -665,6 +858,8 @@
    "method": "recipe",
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [],
+   "note": null,
+   "contains": [],
    "main": [
     "fava"
    ],
@@ -736,54 +931,99 @@
     {
      "key": "lentils",
      "name": "Lentils, boiled",
+     "names": {
+      "en": "Lentils (cooked weight)",
+      "ar": "عدس (وزن مطبوخ)",
+      "fr": "Lentilles (poids cuit)"
+     },
      "ndb": "16070",
      "g": 110
     },
     {
      "key": "carrot",
      "name": "Carrot, raw",
+     "names": {
+      "en": "Carrot",
+      "ar": "جزر",
+      "fr": "Carotte"
+     },
      "ndb": "11124",
      "g": 20
     },
     {
      "key": "onion",
      "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
      "ndb": "11282",
      "g": 20
     },
     {
      "key": "tomato",
      "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
      "ndb": "11529",
      "g": 20
     },
     {
      "key": "stock",
      "name": "Chicken stock, home-made",
+     "names": {
+      "en": "Home-made stock",
+      "ar": "مرق منزلي",
+      "fr": "Bouillon maison"
+     },
      "ndb": "06172",
      "g": 150
     },
     {
      "key": "ghee",
      "name": "Ghee (butter oil)",
+     "names": {
+      "en": "Ghee",
+      "ar": "سمن",
+      "fr": "Ghee (beurre clarifié)"
+     },
      "ndb": "01003",
      "g": 5
     },
     {
      "key": "cumin",
      "name": "Cumin",
+     "names": {
+      "en": "Cumin",
+      "ar": "كمون",
+      "fr": "Cumin"
+     },
      "ndb": "02014",
      "g": 0.5
     },
     {
      "key": "lemon",
      "name": "Lemon juice",
+     "names": {
+      "en": "Lemon juice",
+      "ar": "عصير ليمون",
+      "fr": "Jus de citron"
+     },
      "ndb": "09152",
      "g": 5
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 1.0
     }
@@ -823,6 +1063,16 @@
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [
     "Home-made stock assumed. Stock cubes add much more sodium."
+   ],
+   "note": {
+    "en": "Made with home-made stock. Stock cubes add much more sodium.",
+    "ar": "محضّر بمرق منزلي. مكعبات المرق تضيف صوديوم أكثر بكثير.",
+    "fr": "Préparé avec un bouillon maison. Les cubes de bouillon ajoutent beaucoup plus de sodium."
+   },
+   "contains": [
+    "meat",
+    "dairy",
+    "meat_dairy"
    ],
    "main": [
     "lentils"
@@ -917,60 +1167,110 @@
     {
      "key": "zucchini",
      "name": "Zucchini, raw",
+     "names": {
+      "en": "Zucchini",
+      "ar": "كوسة",
+      "fr": "Courgette"
+     },
      "ndb": "11477",
      "g": 120
     },
     {
      "key": "pepper_green",
      "name": "Green pepper, raw",
+     "names": {
+      "en": "Green pepper",
+      "ar": "فلفل أخضر",
+      "fr": "Poivron vert"
+     },
      "ndb": "11333",
      "g": 30
     },
     {
      "key": "rice_sg",
      "name": "White rice, short-grain, cooked",
+     "names": {
+      "en": "Short-grain rice (cooked weight)",
+      "ar": "أرز قصير الحبة (وزن مطبوخ)",
+      "fr": "Riz rond (poids cuit)"
+     },
      "ndb": "20053",
      "g": 70
     },
     {
      "key": "tomato_paste",
      "name": "Tomato paste, no salt added",
+     "names": {
+      "en": "Tomato paste",
+      "ar": "معجون طماطم",
+      "fr": "Concentré de tomate"
+     },
      "ndb": "11546",
      "g": 12
     },
     {
      "key": "tomato",
      "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
      "ndb": "11529",
      "g": 40
     },
     {
      "key": "onion",
      "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
      "ndb": "11282",
      "g": 15
     },
     {
      "key": "parsley",
      "name": "Parsley, fresh",
+     "names": {
+      "en": "Parsley",
+      "ar": "بقدونس",
+      "fr": "Persil"
+     },
      "ndb": "11297",
      "g": 5
     },
     {
      "key": "mint",
      "name": "Spearmint, fresh",
+     "names": {
+      "en": "Fresh mint",
+      "ar": "نعناع",
+      "fr": "Menthe fraîche"
+     },
      "ndb": "02065",
      "g": 2
     },
     {
      "key": "veg_oil",
      "name": "Vegetable (corn) oil",
+     "names": {
+      "en": "Vegetable oil",
+      "ar": "زيت نباتي",
+      "fr": "Huile végétale"
+     },
      "ndb": "04518",
      "g": 8
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 1.0
     }
@@ -1009,6 +1309,8 @@
    "method": "recipe",
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [],
+   "note": null,
+   "contains": [],
    "main": [
     "zucchini",
     "rice"
@@ -1095,60 +1397,110 @@
     {
      "key": "okra_raw",
      "name": "Okra, raw weight (stewed in its sauce)",
+     "names": {
+      "en": "Okra (raw weight)",
+      "ar": "بامية (وزن نيء)",
+      "fr": "Gombos (poids cru)"
+     },
      "ndb": "11278",
      "g": 120
     },
     {
      "key": "lamb",
      "name": "Lamb shoulder, lean, braised",
+     "names": {
+      "en": "Lamb, lean (cooked weight, no bone)",
+      "ar": "لحم غنم قليل الدهن (وزن مطبوخ بدون عظم)",
+      "fr": "Agneau maigre (poids cuit, sans os)"
+     },
      "ndb": "17040",
      "g": 70
     },
     {
      "key": "tomato_paste",
      "name": "Tomato paste, no salt added",
+     "names": {
+      "en": "Tomato paste",
+      "ar": "معجون طماطم",
+      "fr": "Concentré de tomate"
+     },
      "ndb": "11546",
      "g": 15
     },
     {
      "key": "tomato",
      "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
      "ndb": "11529",
      "g": 60
     },
     {
      "key": "onion",
      "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
      "ndb": "11282",
      "g": 20
     },
     {
      "key": "garlic",
      "name": "Garlic, raw",
+     "names": {
+      "en": "Garlic",
+      "ar": "ثوم",
+      "fr": "Ail"
+     },
      "ndb": "11215",
      "g": 4
     },
     {
      "key": "ghee",
      "name": "Ghee (butter oil)",
+     "names": {
+      "en": "Ghee",
+      "ar": "سمن",
+      "fr": "Ghee (beurre clarifié)"
+     },
      "ndb": "01003",
      "g": 6
     },
     {
      "key": "coriander_seed",
      "name": "Coriander seed",
+     "names": {
+      "en": "Ground coriander",
+      "ar": "كزبرة جافة مطحونة",
+      "fr": "Coriandre moulue"
+     },
      "ndb": "02013",
      "g": 0.5
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 1.1
     },
     {
      "key": "water",
      "name": "Tap water",
+     "names": {
+      "en": "Water",
+      "ar": "ماء",
+      "fr": "Eau"
+     },
      "ndb": "14411",
      "g": 80
     }
@@ -1188,6 +1540,12 @@
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [
     "Tomato sauce stew: should its sauce count toward the fluid limit? Question for the reviewer."
+   ],
+   "note": null,
+   "contains": [
+    "meat",
+    "dairy",
+    "meat_dairy"
    ],
    "main": [
     "okra",
@@ -1287,24 +1645,44 @@
     {
      "key": "milk",
      "name": "Milk, whole",
+     "names": {
+      "en": "Milk",
+      "ar": "حليب",
+      "fr": "Lait"
+     },
      "ndb": "01077",
      "g": 170
     },
     {
      "key": "rice_sg",
      "name": "White rice, short-grain, cooked",
+     "names": {
+      "en": "Short-grain rice (cooked weight)",
+      "ar": "أرز قصير الحبة (وزن مطبوخ)",
+      "fr": "Riz rond (poids cuit)"
+     },
      "ndb": "20053",
      "g": 35
     },
     {
      "key": "sugar",
      "name": "Sugar",
+     "names": {
+      "en": "Sugar",
+      "ar": "سكر",
+      "fr": "Sucre"
+     },
      "ndb": "19335",
      "g": 15
     },
     {
      "key": "cornstarch",
      "name": "Cornstarch",
+     "names": {
+      "en": "Cornflour (starch)",
+      "ar": "نشا الذرة",
+      "fr": "Fécule de maïs"
+     },
      "ndb": "20027",
      "g": 3
     }
@@ -1343,6 +1721,10 @@
    "method": "recipe",
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [],
+   "note": null,
+   "contains": [
+    "dairy"
+   ],
    "main": [
     "milk",
     "rice"
@@ -1424,60 +1806,110 @@
     {
      "key": "rice",
      "name": "White rice, long-grain, cooked",
+     "names": {
+      "en": "Long-grain rice (cooked weight)",
+      "ar": "أرز طويل الحبة (وزن مطبوخ)",
+      "fr": "Riz long (poids cuit)"
+     },
      "ndb": "20045",
      "g": 150
     },
     {
      "key": "pita",
      "name": "Pita / flatbread, white",
+     "names": {
+      "en": "Flatbread (pita)",
+      "ar": "خبز عربي",
+      "fr": "Pain pita"
+     },
      "ndb": "18041",
      "g": 40
     },
     {
      "key": "lamb",
      "name": "Lamb shoulder, lean, braised",
+     "names": {
+      "en": "Lamb, lean (cooked weight, no bone)",
+      "ar": "لحم غنم قليل الدهن (وزن مطبوخ بدون عظم)",
+      "fr": "Agneau maigre (poids cuit, sans os)"
+     },
      "ndb": "17040",
      "g": 80
     },
     {
      "key": "tomato_paste",
      "name": "Tomato paste, no salt added",
+     "names": {
+      "en": "Tomato paste",
+      "ar": "معجون طماطم",
+      "fr": "Concentré de tomate"
+     },
      "ndb": "11546",
      "g": 15
     },
     {
      "key": "tomato",
      "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
      "ndb": "11529",
      "g": 40
     },
     {
      "key": "garlic",
      "name": "Garlic, raw",
+     "names": {
+      "en": "Garlic",
+      "ar": "ثوم",
+      "fr": "Ail"
+     },
      "ndb": "11215",
      "g": 6
     },
     {
      "key": "vinegar",
      "name": "Vinegar",
+     "names": {
+      "en": "Vinegar",
+      "ar": "خل",
+      "fr": "Vinaigre"
+     },
      "ndb": "02048",
      "g": 8
     },
     {
      "key": "ghee",
      "name": "Ghee (butter oil)",
+     "names": {
+      "en": "Ghee",
+      "ar": "سمن",
+      "fr": "Ghee (beurre clarifié)"
+     },
      "ndb": "01003",
      "g": 10
     },
     {
      "key": "stock",
      "name": "Chicken stock, home-made",
+     "names": {
+      "en": "Home-made stock",
+      "ar": "مرق منزلي",
+      "fr": "Bouillon maison"
+     },
      "ndb": "06172",
      "g": 60
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 1.3
     }
@@ -1516,7 +1948,17 @@
    "method": "recipe",
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [
-    "The lamb broth is calculated as home-made stock. Stock cubes add much more sodium. Stock cubes add much more sodium."
+    "The lamb broth is calculated as home-made stock. Stock cubes add much more sodium."
+   ],
+   "note": {
+    "en": "Made with home-made stock. Stock cubes add much more sodium.",
+    "ar": "محضّر بمرق منزلي. مكعبات المرق تضيف صوديوم أكثر بكثير.",
+    "fr": "Préparé avec un bouillon maison. Les cubes de bouillon ajoutent beaucoup plus de sodium."
+   },
+   "contains": [
+    "meat",
+    "dairy",
+    "meat_dairy"
    ],
    "main": [
     "lamb",
@@ -1615,54 +2057,99 @@
     {
      "key": "pita",
      "name": "Pita / flatbread, white",
+     "names": {
+      "en": "Flatbread (pita)",
+      "ar": "خبز عربي",
+      "fr": "Pain pita"
+     },
      "ndb": "18041",
      "g": 90
     },
     {
      "key": "beef_ground",
      "name": "Beef, ground 85% lean, pan-browned",
+     "names": {
+      "en": "Minced beef (cooked weight)",
+      "ar": "لحم بقر مفروم (وزن مطبوخ)",
+      "fr": "Bœuf haché (poids cuit)"
+     },
      "ndb": "23570",
      "g": 80
     },
     {
      "key": "onion",
      "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
      "ndb": "11282",
      "g": 25
     },
     {
      "key": "pepper_green",
      "name": "Green pepper, raw",
+     "names": {
+      "en": "Green pepper",
+      "ar": "فلفل أخضر",
+      "fr": "Poivron vert"
+     },
      "ndb": "11333",
      "g": 15
     },
     {
      "key": "tomato",
      "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
      "ndb": "11529",
      "g": 15
     },
     {
      "key": "allspice",
      "name": "Allspice",
+     "names": {
+      "en": "Allspice",
+      "ar": "بهار حلو",
+      "fr": "Piment de la Jamaïque"
+     },
      "ndb": "02001",
      "g": 0.5
     },
     {
      "key": "black_pepper",
      "name": "Black pepper",
+     "names": {
+      "en": "Black pepper",
+      "ar": "فلفل أسود",
+      "fr": "Poivre noir"
+     },
      "ndb": "02030",
      "g": 0.3
     },
     {
      "key": "veg_oil",
      "name": "Vegetable (corn) oil",
+     "names": {
+      "en": "Vegetable oil",
+      "ar": "زيت نباتي",
+      "fr": "Huile végétale"
+     },
      "ndb": "04518",
      "g": 5
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 1.0
     }
@@ -1701,6 +2188,11 @@
    "method": "recipe",
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [],
+   "note": null,
+   "contains": [
+    "meat",
+    "beef"
+   ],
    "main": [
     "beef",
     "bread"

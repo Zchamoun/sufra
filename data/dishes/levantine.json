@@ -31,6 +31,11 @@
     {
      "key": "hummus_sr",
      "name": "Hummus, home prepared (USDA recipe)",
+     "names": {
+      "en": "Hummus",
+      "ar": "حمص بطحينة",
+      "fr": "Houmous"
+     },
      "ndb": "16137",
      "g": 100
     }
@@ -71,6 +76,8 @@
    "gaps": [
     "Direct USDA value for home-prepared hummus (includes its own salt)."
    ],
+   "note": null,
+   "contains": [],
    "main": [
     "chickpeas",
     "tahini"
@@ -151,48 +158,88 @@
     {
      "key": "parsley",
      "name": "Parsley, fresh",
+     "names": {
+      "en": "Parsley",
+      "ar": "بقدونس",
+      "fr": "Persil"
+     },
      "ndb": "11297",
      "g": 60
     },
     {
      "key": "bulgur",
      "name": "Bulgur, cooked",
+     "names": {
+      "en": "Bulgur (cooked or soaked weight)",
+      "ar": "برغل (وزن مطبوخ أو منقوع)",
+      "fr": "Boulgour (poids cuit ou trempé)"
+     },
      "ndb": "20013",
      "g": 25
     },
     {
      "key": "tomato",
      "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
      "ndb": "11529",
      "g": 40
     },
     {
      "key": "onion",
      "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
      "ndb": "11282",
      "g": 8
     },
     {
      "key": "mint",
      "name": "Spearmint, fresh",
+     "names": {
+      "en": "Fresh mint",
+      "ar": "نعناع",
+      "fr": "Menthe fraîche"
+     },
      "ndb": "02065",
      "g": 3
     },
     {
      "key": "lemon",
      "name": "Lemon juice",
+     "names": {
+      "en": "Lemon juice",
+      "ar": "عصير ليمون",
+      "fr": "Jus de citron"
+     },
      "ndb": "09152",
      "g": 10
     },
     {
      "key": "olive_oil",
      "name": "Olive oil",
+     "names": {
+      "en": "Olive oil",
+      "ar": "زيت زيتون",
+      "fr": "Huile d'olive"
+     },
      "ndb": "04053",
      "g": 10
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 0.8
     }
@@ -231,6 +278,8 @@
    "method": "recipe",
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [],
+   "note": null,
+   "contains": [],
    "main": [
     "herbs",
     "wheat",
@@ -313,66 +362,121 @@
     {
      "key": "lettuce",
      "name": "Romaine lettuce, raw",
+     "names": {
+      "en": "Lettuce",
+      "ar": "خس",
+      "fr": "Laitue"
+     },
      "ndb": "11251",
      "g": 60
     },
     {
      "key": "tomato",
      "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
      "ndb": "11529",
      "g": 40
     },
     {
      "key": "cucumber",
      "name": "Cucumber with peel, raw",
+     "names": {
+      "en": "Cucumber",
+      "ar": "خيار",
+      "fr": "Concombre"
+     },
      "ndb": "11205",
      "g": 40
     },
     {
      "key": "radish",
      "name": "Radish, raw",
+     "names": {
+      "en": "Radish",
+      "ar": "فجل",
+      "fr": "Radis"
+     },
      "ndb": "11429",
      "g": 10
     },
     {
      "key": "onion",
      "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
      "ndb": "11282",
      "g": 8
     },
     {
      "key": "parsley",
      "name": "Parsley, fresh",
+     "names": {
+      "en": "Parsley",
+      "ar": "بقدونس",
+      "fr": "Persil"
+     },
      "ndb": "11297",
      "g": 8
     },
     {
      "key": "mint",
      "name": "Spearmint, fresh",
+     "names": {
+      "en": "Fresh mint",
+      "ar": "نعناع",
+      "fr": "Menthe fraîche"
+     },
      "ndb": "02065",
      "g": 2
     },
     {
      "key": "pita",
      "name": "Pita / flatbread, white",
+     "names": {
+      "en": "Flatbread (pita)",
+      "ar": "خبز عربي",
+      "fr": "Pain pita"
+     },
      "ndb": "18041",
      "g": 20
     },
     {
      "key": "olive_oil",
      "name": "Olive oil",
+     "names": {
+      "en": "Olive oil",
+      "ar": "زيت زيتون",
+      "fr": "Huile d'olive"
+     },
      "ndb": "04053",
      "g": 10
     },
     {
      "key": "lemon",
      "name": "Lemon juice",
+     "names": {
+      "en": "Lemon juice",
+      "ar": "عصير ليمون",
+      "fr": "Jus de citron"
+     },
      "ndb": "09152",
      "g": 8
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 0.8
     }
@@ -413,6 +517,12 @@
    "gaps": [
     "Sumac and pomegranate molasses have no USDA entry; not included."
    ],
+   "note": {
+    "en": "Sumac and pomegranate molasses are not counted: no verified data yet.",
+    "ar": "السماق ودبس الرمان غير محسوبين: لا توجد بيانات موثّقة بعد.",
+    "fr": "Le sumac et la mélasse de grenade ne sont pas comptés : pas encore de données vérifiées."
+   },
+   "contains": [],
    "main": [
     "salad",
     "bread"
@@ -483,6 +593,11 @@
     {
      "key": "falafel_sr",
      "name": "Falafel, home prepared (USDA recipe)",
+     "names": {
+      "en": "Falafel",
+      "ar": "فلافل",
+      "fr": "Falafels"
+     },
      "ndb": "16138",
      "g": 68
     }
@@ -523,6 +638,8 @@
    "gaps": [
     "Direct USDA value for home-prepared falafel (17 g each)."
    ],
+   "note": null,
+   "contains": [],
    "main": [
     "chickpeas"
    ],
@@ -595,36 +712,66 @@
     {
      "key": "eggplant_raw",
      "name": "Eggplant, raw weight (roasted, juices kept)",
+     "names": {
+      "en": "Eggplant (raw weight)",
+      "ar": "باذنجان (وزن نيء)",
+      "fr": "Aubergine (poids cru)"
+     },
      "ndb": "11209",
      "g": 70
     },
     {
      "key": "tahini",
      "name": "Tahini",
+     "names": {
+      "en": "Tahini",
+      "ar": "طحينة",
+      "fr": "Tahini"
+     },
      "ndb": "12166",
      "g": 12
     },
     {
      "key": "lemon",
      "name": "Lemon juice",
+     "names": {
+      "en": "Lemon juice",
+      "ar": "عصير ليمون",
+      "fr": "Jus de citron"
+     },
      "ndb": "09152",
      "g": 8
     },
     {
      "key": "garlic",
      "name": "Garlic, raw",
+     "names": {
+      "en": "Garlic",
+      "ar": "ثوم",
+      "fr": "Ail"
+     },
      "ndb": "11215",
      "g": 2
     },
     {
      "key": "olive_oil",
      "name": "Olive oil",
+     "names": {
+      "en": "Olive oil",
+      "ar": "زيت زيتون",
+      "fr": "Huile d'olive"
+     },
      "ndb": "04053",
      "g": 5
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 0.5
     }
@@ -663,6 +810,8 @@
    "method": "recipe",
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [],
+   "note": null,
+   "contains": [],
    "main": [
     "eggplant",
     "tahini"
@@ -734,36 +883,66 @@
     {
      "key": "lentils",
      "name": "Lentils, boiled",
+     "names": {
+      "en": "Lentils (cooked weight)",
+      "ar": "عدس (وزن مطبوخ)",
+      "fr": "Lentilles (poids cuit)"
+     },
      "ndb": "16070",
      "g": 90
     },
     {
      "key": "rice",
      "name": "White rice, long-grain, cooked",
+     "names": {
+      "en": "Long-grain rice (cooked weight)",
+      "ar": "أرز طويل الحبة (وزن مطبوخ)",
+      "fr": "Riz long (poids cuit)"
+     },
      "ndb": "20045",
      "g": 100
     },
     {
      "key": "onion",
      "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
      "ndb": "11282",
      "g": 40
     },
     {
      "key": "olive_oil",
      "name": "Olive oil",
+     "names": {
+      "en": "Olive oil",
+      "ar": "زيت زيتون",
+      "fr": "Huile d'olive"
+     },
      "ndb": "04053",
      "g": 12
     },
     {
      "key": "cumin",
      "name": "Cumin",
+     "names": {
+      "en": "Cumin",
+      "ar": "كمون",
+      "fr": "Cumin"
+     },
      "ndb": "02014",
      "g": 0.5
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 1.0
     }
@@ -802,6 +981,8 @@
    "method": "recipe",
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [],
+   "note": null,
+   "contains": [],
    "main": [
     "lentils",
     "rice",
@@ -881,54 +1062,99 @@
     {
      "key": "grape_leaves",
      "name": "Grape leaves, jarred (brined)",
+     "names": {
+      "en": "Grape leaves from a jar",
+      "ar": "ورق عنب من مرطبان",
+      "fr": "Feuilles de vigne en bocal"
+     },
      "ndb": "11975",
      "g": 30
     },
     {
      "key": "rice_sg",
      "name": "White rice, short-grain, cooked",
+     "names": {
+      "en": "Short-grain rice (cooked weight)",
+      "ar": "أرز قصير الحبة (وزن مطبوخ)",
+      "fr": "Riz rond (poids cuit)"
+     },
      "ndb": "20053",
      "g": 60
     },
     {
      "key": "tomato",
      "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
      "ndb": "11529",
      "g": 25
     },
     {
      "key": "parsley",
      "name": "Parsley, fresh",
+     "names": {
+      "en": "Parsley",
+      "ar": "بقدونس",
+      "fr": "Persil"
+     },
      "ndb": "11297",
      "g": 10
     },
     {
      "key": "mint",
      "name": "Spearmint, fresh",
+     "names": {
+      "en": "Fresh mint",
+      "ar": "نعناع",
+      "fr": "Menthe fraîche"
+     },
      "ndb": "02065",
      "g": 2
     },
     {
      "key": "onion",
      "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
      "ndb": "11282",
      "g": 10
     },
     {
      "key": "olive_oil",
      "name": "Olive oil",
+     "names": {
+      "en": "Olive oil",
+      "ar": "زيت زيتون",
+      "fr": "Huile d'olive"
+     },
      "ndb": "04053",
      "g": 12
     },
     {
      "key": "lemon",
      "name": "Lemon juice",
+     "names": {
+      "en": "Lemon juice",
+      "ar": "عصير ليمون",
+      "fr": "Jus de citron"
+     },
      "ndb": "09152",
      "g": 10
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 0.5
     }
@@ -969,6 +1195,12 @@
    "gaps": [
     "Assumes jarred brined leaves, not rinsed. Brine is the main sodium source."
    ],
+   "note": {
+    "en": "Most of the sodium comes from the jar brine. Values assume the leaves are not rinsed.",
+    "ar": "معظم الصوديوم يأتي من محلول المرطبان. القيم محسوبة على أن الورق غير مغسول.",
+    "fr": "La plus grande partie du sodium vient de la saumure du bocal. Valeurs calculées pour des feuilles non rincées."
+   },
+   "contains": [],
    "main": [
     "greens",
     "rice"
@@ -1056,48 +1288,88 @@
     {
      "key": "lamb_ground",
      "name": "Lamb, ground, broiled",
+     "names": {
+      "en": "Minced lamb (cooked weight)",
+      "ar": "لحم غنم مفروم (وزن مطبوخ)",
+      "fr": "Agneau haché (poids cuit)"
+     },
      "ndb": "17225",
      "g": 60
     },
     {
      "key": "bulgur",
      "name": "Bulgur, cooked",
+     "names": {
+      "en": "Bulgur (cooked or soaked weight)",
+      "ar": "برغل (وزن مطبوخ أو منقوع)",
+      "fr": "Boulgour (poids cuit ou trempé)"
+     },
      "ndb": "20013",
      "g": 50
     },
     {
      "key": "onion",
      "name": "Onion, raw",
+     "names": {
+      "en": "Onion",
+      "ar": "بصل",
+      "fr": "Oignon"
+     },
      "ndb": "11282",
      "g": 15
     },
     {
      "key": "pine_nuts",
      "name": "Pine nuts",
+     "names": {
+      "en": "Pine nuts",
+      "ar": "صنوبر",
+      "fr": "Pignons de pin"
+     },
      "ndb": "12147",
      "g": 5
     },
     {
      "key": "olive_oil",
      "name": "Olive oil",
+     "names": {
+      "en": "Olive oil",
+      "ar": "زيت زيتون",
+      "fr": "Huile d'olive"
+     },
      "ndb": "04053",
      "g": 6
     },
     {
      "key": "allspice",
      "name": "Allspice",
+     "names": {
+      "en": "Allspice",
+      "ar": "بهار حلو",
+      "fr": "Piment de la Jamaïque"
+     },
      "ndb": "02001",
      "g": 0.5
     },
     {
      "key": "cinnamon",
      "name": "Cinnamon",
+     "names": {
+      "en": "Cinnamon",
+      "ar": "قرفة",
+      "fr": "Cannelle"
+     },
      "ndb": "02010",
      "g": 0.3
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 0.9
     }
@@ -1137,6 +1409,10 @@
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [
     "Fine bulgur is soaked, not cooked; cooked bulgur is the closest USDA entry."
+   ],
+   "note": null,
+   "contains": [
+    "meat"
    ],
    "main": [
     "lamb",
@@ -1235,54 +1511,99 @@
     {
      "key": "pita",
      "name": "Pita / flatbread, white",
+     "names": {
+      "en": "Flatbread (pita)",
+      "ar": "خبز عربي",
+      "fr": "Pain pita"
+     },
      "ndb": "18041",
      "g": 60
     },
     {
      "key": "chicken_thigh",
      "name": "Chicken thigh meat, roasted",
+     "names": {
+      "en": "Chicken thigh (cooked weight, no bone)",
+      "ar": "فخذ دجاج (وزن مطبوخ بدون عظم)",
+      "fr": "Cuisse de poulet (poids cuit, sans os)"
+     },
      "ndb": "05098",
      "g": 90
     },
     {
      "key": "yogurt",
      "name": "Yogurt, plain, whole milk",
+     "names": {
+      "en": "Plain yogurt",
+      "ar": "لبن زبادي",
+      "fr": "Yaourt nature"
+     },
      "ndb": "01116",
      "g": 10
     },
     {
      "key": "veg_oil",
      "name": "Vegetable (corn) oil",
+     "names": {
+      "en": "Vegetable oil",
+      "ar": "زيت نباتي",
+      "fr": "Huile végétale"
+     },
      "ndb": "04518",
      "g": 10
     },
     {
      "key": "garlic",
      "name": "Garlic, raw",
+     "names": {
+      "en": "Garlic",
+      "ar": "ثوم",
+      "fr": "Ail"
+     },
      "ndb": "11215",
      "g": 3
     },
     {
      "key": "lemon",
      "name": "Lemon juice",
+     "names": {
+      "en": "Lemon juice",
+      "ar": "عصير ليمون",
+      "fr": "Jus de citron"
+     },
      "ndb": "09152",
      "g": 3
     },
     {
      "key": "pickles",
      "name": "Pickled cucumber (dill)",
+     "names": {
+      "en": "Pickled cucumber",
+      "ar": "مخلل خيار",
+      "fr": "Cornichons"
+     },
      "ndb": "11937",
      "g": 20
     },
     {
      "key": "tomato",
      "name": "Tomato, raw",
+     "names": {
+      "en": "Tomato",
+      "ar": "طماطم",
+      "fr": "Tomate"
+     },
      "ndb": "11529",
      "g": 15
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 0.8
     }
@@ -1322,6 +1643,16 @@
    "recipeSourceId": "sufra-recipes-v1",
    "gaps": [
     "Garlic sauce (toum) as oil, garlic and lemon. Fries not included."
+   ],
+   "note": {
+    "en": "Fries are not included.",
+    "ar": "البطاطس المقلية غير محسوبة.",
+    "fr": "Les frites ne sont pas comprises."
+   },
+   "contains": [
+    "meat",
+    "dairy",
+    "meat_dairy"
    ],
    "main": [
     "chicken",
@@ -1405,48 +1736,88 @@
     {
      "key": "flour",
      "name": "White flour",
+     "names": {
+      "en": "White flour",
+      "ar": "طحين أبيض",
+      "fr": "Farine blanche"
+     },
      "ndb": "20081",
      "g": 70
     },
     {
      "key": "olive_oil",
      "name": "Olive oil",
+     "names": {
+      "en": "Olive oil",
+      "ar": "زيت زيتون",
+      "fr": "Huile d'olive"
+     },
      "ndb": "04053",
      "g": 15
     },
     {
      "key": "thyme",
      "name": "Dried thyme (za'atar)",
+     "names": {
+      "en": "Dried thyme (za'atar)",
+      "ar": "زعتر مجفف",
+      "fr": "Thym séché (zaatar)"
+     },
      "ndb": "02042",
      "g": 6
     },
     {
      "key": "sesame",
      "name": "Sesame seeds",
+     "names": {
+      "en": "Sesame seeds",
+      "ar": "سمسم",
+      "fr": "Graines de sésame"
+     },
      "ndb": "12023",
      "g": 3
     },
     {
      "key": "yeast",
      "name": "Dry yeast",
+     "names": {
+      "en": "Dry yeast",
+      "ar": "خميرة جافة",
+      "fr": "Levure sèche"
+     },
      "ndb": "18375",
      "g": 1
     },
     {
      "key": "sugar",
      "name": "Sugar",
+     "names": {
+      "en": "Sugar",
+      "ar": "سكر",
+      "fr": "Sucre"
+     },
      "ndb": "19335",
      "g": 1
     },
     {
      "key": "salt",
      "name": "Salt",
+     "names": {
+      "en": "Salt",
+      "ar": "ملح",
+      "fr": "Sel"
+     },
      "ndb": "02047",
      "g": 1.0
     },
     {
      "key": "water",
      "name": "Tap water",
+     "names": {
+      "en": "Water",
+      "ar": "ماء",
+      "fr": "Eau"
+     },
      "ndb": "14411",
      "g": 40
     }
@@ -1487,6 +1858,12 @@
    "gaps": [
     "Za'atar as thyme and sesame; sumac has no USDA entry. Shop-bought za'atar blends are often salted, which adds sodium."
    ],
+   "note": {
+    "en": "Shop-bought za'atar is often salted, which adds sodium.",
+    "ar": "الزعتر الجاهز غالبًا مملّح، وهذا يضيف صوديوم.",
+    "fr": "Le zaatar du commerce est souvent salé, ce qui ajoute du sodium."
+   },
+   "contains": [],
    "main": [
     "flour",
     "zaatar"
