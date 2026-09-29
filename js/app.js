@@ -1,4 +1,4 @@
-/* Sufra app v0.5.1 — onboarding, Today, fluid tracker with edit on any day. All data stays on this device. */
+/* Sufra app v0.6.1 — onboarding, Today, fluid tracker, Meals library and meal log. All data stays on this device. */
 "use strict";
 
 const LANGS = ["en", "ar", "fr"];
@@ -8,9 +8,13 @@ const MAGHREB = ["MA", "DZ", "TN", "LY"];
 const STEPS = ["lang", "disc", "country", "type", "sched", "cuis", "diet", "targets", "done"];
 const TARGETS = ["fluid", "potassium", "phosphorus", "sodium", "protein"];
 const WEEK = [6, 0, 1, 2, 3, 4, 5]; // Saturday first
+const LEVEL_NUTS = ["potassium", "phosphorus", "sodium"];
+const NUTS = [...LEVEL_NUTS, "protein"];
+const DV = { potassium: 4700, phosphorus: 1250, sodium: 2300 }; // US Daily Values (FDA), used only when no care-team limit is saved
+const SRC_NAMES = { "usda-sr28": "USDA SR28 (USDA ARS, 2015)", "ciqual-2025": "ANSES-CIQUAL 2025" };
 
 let S = load();
-let T = {}, TE = {}, OPT = { countries: [], cuisines: [] };
+let T = {}, TE = {}, OPT = { countries: [], cuisines: [] }, DISHES = [], FAMS = {};
 let view = { name: "loading", step: 0, tab: "today", page: null };
 let ice = 2, toastTimer = null, lastRemoved = null;
 const CUPS = ["small", "glass", "mug"];
@@ -42,6 +46,7 @@ function load() {
       }
       const out = { ...b, ...s, profile: { ...b.profile, ...s.profile }, targets: { ...b.targets, ...s.targets } };
       out.logs = { fluid: [], meal: [], ...(s.logs || {}) };
+      out.logs.meal = (out.logs.meal || []).filter(x => x && x.dishId && x.per);
       out.logs.fluid = out.logs.fluid.map(x => { const c = x.count || 1; return { ...x, count: c, unitMl: x.unitMl || x.ml / c }; }); // upgrade v0.4 entries
       return out;
     }
@@ -86,46 +91,65 @@ function chip(field, v, label, isNum = false) {
   const on = (getPath(field) || []).includes(isNum ? Number(v) : v);
   return `<button type="button" class="chip" aria-pressed="${on}" data-act="toggle" data-field="${field}" data-v="${esc(v)}"${isNum ? " data-num" : ""}>${esc(label)}</button>`;
 }
-function fluidOn(day) {
-  const d = day.toDateString();
-  return S.logs.fluid.filter(x => new Date(x.time).toDateString() === d);
-}
+function sameDay(x, day) { return new Date(x.time).toDateString() === day.toDateString(); }
+function fluidOn(day) { return S.logs.fluid.filter(x => sameDay(x, day)); }
+function mealsOn(day) { return S.logs.meal.filter(x => sameDay(x, day)); }
 function dayDate(off) { const d = new Date(); d.setDate(d.getDate() - off); return d; }
-function fluidTotal(day) { return fluidOn(day).reduce((a, x) => a + (x.ml || 0), 0); }
+function soupFluid(day) { return Math.round(mealsOn(day).reduce((a, x) => a + (x.per.fluid || 0) * x.count, 0)); }
+function fluidTotal(day) { return fluidOn(day).reduce((a, x) => a + (x.ml || 0), 0) + soupFluid(day); }
 function fluidToday() { return fluidTotal(new Date()); }
+function foodTotals(day) {
+  const o = { potassium: 0, phosphorus: 0, sodium: 0, protein: 0 };
+  mealsOn(day).forEach(x => NUTS.forEach(k => { o[k] += (x.per[k] || 0) * x.count; }));
+  return o;
+}
 function dayName(off, d = dayDate(off)) {
   if (off === 0) return t("next_today");
   if (off === 1) return t("yesterday");
   return new Intl.DateTimeFormat(loc(), { weekday: "long", day: "numeric", month: "long" }).format(d);
 }
 function cubeMl() { const v = S.profile.cups.ice5; return v > 0 ? Math.round((v / 5) * 10) / 10 : ICE_EST; }
-/* Every logged item follows one rule: + one more, − one less, edit amount and time, delete with Undo, on any day. */
+/* Every logged item follows one rule: + one more, − one less, edit amount and time, delete with Undo, on any day.
+   Drinks count in cups (steps of 1); meals count in portions (steps of ½). */
+function newId() { return Date.now() + "-" + Math.floor(Math.random() * 1000); }
+function whenFor(off) { const d = new Date(); d.setDate(d.getDate() - off); return d; }
 function addFluid(unitMl, container, count = 1, off = 0) {
   unitMl = Math.round(unitMl * 10) / 10;
   if (!(unitMl > 0)) return;
-  const id = Date.now() + "-" + Math.floor(Math.random() * 1000);
-  const when = new Date(); when.setDate(when.getDate() - off);
-  const ml = Math.round(unitMl * count);
-  S.logs.fluid.push({ id, time: when.toISOString(), unitMl, count, ml, container });
+  const id = newId(), ml = Math.round(unitMl * count);
+  S.logs.fluid.push({ id, time: whenFor(off).toISOString(), unitMl, count, ml, container });
   save(); render(false);
   toast(t("added", { ml: num(ml), unit: t("ml") }), "undo", id);
 }
-function entry(id) { return S.logs.fluid.find(x => x.id === id); }
-function changeCount(id, delta) {
+function addMeal(d, portions, off = 0) {
+  const per = {};
+  NUTS.forEach(k => { per[k] = d.nutrients[k].calc; });
+  if (d.fluid) per.fluid = d.fluid.calc;
+  const id = newId();
+  S.logs.meal.push({ id, time: whenFor(off).toISOString(), dishId: d.id, names: d.names, portion: d.portion, count: portions, per });
+  save(); render(false);
+  toast(t("logged", { day: dayName(off) }), "undo", id);
+}
+function listOf(id) { return S.logs.fluid.some(x => x.id === id) ? "fluid" : S.logs.meal.some(x => x.id === id) ? "meal" : null; }
+function entry(id) { const l = listOf(id); return l ? S.logs[l].find(x => x.id === id) : null; }
+function changeCount(id, dir) {
   const x = entry(id); if (!x) return;
-  x.count = Math.max(1, Math.min(99, x.count + delta)); x.ml = Math.round(x.unitMl * x.count); save(); render(false);
+  if (listOf(id) === "meal") x.count = Math.max(0.5, Math.min(20, x.count + dir * 0.5));
+  else { x.count = Math.max(1, Math.min(99, x.count + dir)); x.ml = Math.round(x.unitMl * x.count); }
+  save(); render(false);
 }
 function setEntryTime(id, hhmm) {
   const x = entry(id); if (!x || !/^\d\d:\d\d$/.test(hhmm)) return;
   const d = new Date(x.time), [h, m] = hhmm.split(":").map(Number); d.setHours(h, m, 0, 0); x.time = d.toISOString(); save();
 }
 function setEntryUnit(id, v) {
-  const x = entry(id), n = Number(v); if (!x || !(n > 0 && n <= 5000)) return;
+  const x = entry(id), n = Number(v); if (!x || listOf(id) !== "fluid" || !(n > 0 && n <= 5000)) return;
   x.unitMl = n; x.ml = Math.round(n * x.count); save();
 }
-function removeFluid(id, withUndo = true) {
-  const x = entry(id); if (!x) return;
-  S.logs.fluid = S.logs.fluid.filter(y => y.id !== id); lastRemoved = x; if (view.edit === id) view.edit = null;
+function removeEntry(id, withUndo = true) {
+  const l = listOf(id); if (!l) return;
+  const x = entry(id);
+  S.logs[l] = S.logs[l].filter(y => y.id !== id); lastRemoved = { list: l, x }; if (view.edit === id) view.edit = null;
   save(); render(false);
   if (withUndo) toast(t("removed"), "restore", id);
 }
@@ -171,6 +195,11 @@ const ICON = {
   custom: '<svg width="34" height="34" viewBox="0 0 24 24" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h10l-1 3v12a3 3 0 0 1-3 3h-2a3 3 0 0 1-3-3V6z" fill="#E4E1F4" stroke="#6A5CA8"/><path d="M8 11h3M8 14h2M8 17h3" stroke="#6A5CA8" stroke-linecap="round"/></svg>',
   pen: '<svg width="22" height="22" viewBox="0 0 24 24" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z" fill="#E1EAF1" stroke="#3F5B72"/><path d="M13.5 6.5l4 4" stroke="#3F5B72"/></svg>',
   trash: '<svg width="22" height="22" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7l1 13h10l1-13z" fill="#F6DAD5" stroke="#A4473B"/><path d="M4 7h16M9 7V4h6v3" fill="none" stroke="#A4473B"/></svg>',
+  meal: '<svg width="32" height="32" viewBox="0 0 24 24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="13" rx="9" ry="6" fill="#FBE3D3" stroke="#C0613A"/><ellipse cx="12" cy="12" rx="5.5" ry="3" fill="#F3B48F" stroke="#C0613A"/><path d="M9.5 11.5c.8-.6 1.8-.6 2.6 0M12.5 12.3c.7-.5 1.5-.5 2.1 0" fill="none" stroke="#8C3F1E"/></svg>',
+  soup: '<svg width="32" height="32" viewBox="0 0 24 24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11h18a9 9 0 0 1-18 0z" fill="#FCE3A0" stroke="#B07A1E"/><path d="M5.5 13.5c2 1 4 1 6.5 0s4.5-1 6.5 0" fill="none" stroke="#D9A43C"/><path d="M9 7.5c0-1.4 1.4-1.4 1.4-3M13.5 7.5c0-1.4 1.4-1.4 1.4-3" fill="none" stroke="#9CC3E0"/></svg>',
+  clock: '<svg width="22" height="22" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="#FCEBC9" stroke="#B07A1E"/><path d="M12 7.5V12l3 2" fill="none" stroke="#B07A1E"/></svg>',
+  timer: '<svg width="18" height="18" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13" r="7.5" fill="#E7F2FB" stroke="#2F77B0"/><path d="M12 9v4M9.5 2.8h5" fill="none" stroke="#2F77B0"/></svg>',
+  search: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5E6A6E" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>',
   x: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5E6A6E" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>'
 };
 
@@ -243,7 +272,8 @@ function fluidSummary(off = 0) {
   } else {
     fluid = `<p class="big">${t(off ? "week_total" : "fluid_used", { used: num(used), unit: u })}</p>${off ? "" : `<p class="muted">${t("fluid_nolimit")}</p>`}`;
   }
-  return fluid;
+  const sf = soupFluid(dayDate(off));
+  return fluid + (sf ? `<p class="muted small">${t("from_soups", { ml: num(sf), unit: u })}</p>` : "");
 }
 function renderToday() {
   const ns = nextSession();
@@ -254,7 +284,7 @@ function renderToday() {
     const place = S.profile.schedule.place;
     next = `<p class="big">${esc(day)}${ns.hasTime ? sep + clock(ns.d) : ""}</p>${place ? `<p class="muted">${t("place_" + place)}</p>` : ""}`;
   }
-  const cz = OPT.cuisines.filter(c => S.profile.cuisines.includes(c.id));
+  const cz = OPT.cuisines.filter(c => S.profile.cuisines.includes(c.id)), idea = ideaFor();
   return `<div class="head"><h1 tabindex="-1">${t("today")}</h1>
       <button type="button" class="icon-btn" data-act="page" data-v="settings" aria-label="${esc(t("settings"))}">${ICON.gear}</button></div>
     <p class="muted">${esc(new Intl.DateTimeFormat(loc(), { weekday: "long", day: "numeric", month: "long" }).format(new Date()))}</p>
@@ -263,7 +293,9 @@ function renderToday() {
     <button type="button" class="btn btn-secondary wide" data-act="tab" data-v="track">${ib("ice")}<span>${t("more_options")}</span></button>
     <section class="card" aria-labelledby="h-next"><h2 id="h-next" class="card-title">${t("next_title")}</h2>${next}</section>
     <section class="card" aria-labelledby="h-meal"><h2 id="h-meal" class="card-title">${t("meal_title")}</h2>
-      ${cz.length ? `<div class="chips">${cz.map(c => `<span class="tag">${esc(nm(c))}</span>`).join("")}</div>` : ""}<p class="muted">${t("meal_soon")}</p></section>
+      ${idea ? `<button type="button" class="rowbtn" data-act="dish" data-v="${esc(idea.id)}">${ib(idea.fluid ? "soup" : "meal")}<span class="grow"><strong class="big">${esc(dname(idea))}</strong><span class="badges">${LEVEL_NUTS.map(k => badge(k, idea.nutrients[k].calc)).join("")}</span></span>${ICON.fwd}</button>
+        <p class="muted small" style="margin-top:.4rem">${t(cz.length ? "idea_hint" : "idea_hint_all")}</p>` : `<p class="muted">${t("meal_soon")}</p>`}
+      <button type="button" class="btn btn-secondary wide" data-act="tab" data-v="meals">${t("see_all")}</button></section>
     <button type="button" class="btn btn-unwell" data-act="page" data-v="unwell">${ICON.heart}<span>${t("unwell_link")}</span></button>`;
 }
 function renderUnwell() {
@@ -330,13 +362,19 @@ function renderTrack() {
   const u = t("ml"), cm = cubeMl(), measured = S.profile.cups.ice5 > 0, off = view.day || 0;
   const list = fluidOn(dayDate(off)).slice().sort((a, b) => new Date(b.time) - new Date(a.time));
   const lim = S.targets.fluid.status === "set" ? S.targets.fluid.value : null;
-  return `<h1 tabindex="-1">${t("tab_track")}</h1>
+  const seg = view.seg || "drinks";
+  const head = `<h1 tabindex="-1">${t("tab_track")}</h1>
+    <div class="seg two" role="group" aria-label="${esc(t("tab_track"))}">
+      <button type="button" aria-pressed="${seg === "drinks"}" data-act="seg" data-v="drinks">${ib("glass")}<span>${t("seg_drinks")}</span></button>
+      <button type="button" aria-pressed="${seg === "food"}" data-act="seg" data-v="food">${ib("meal")}<span>${t("seg_food")}</span></button>
+    </div>
     <div class="daynav">
       <button type="button" class="icon-btn" data-act="dayprev" aria-label="${esc(t("day_prev"))}"${off >= 365 ? " disabled" : ""}>${ICON.back}</button>
       <strong class="grow center" aria-live="polite">${esc(dayName(off))}</strong>
       <button type="button" class="icon-btn" data-act="daynext" aria-label="${esc(t("day_next"))}"${off === 0 ? " disabled" : ""}>${ICON.fwd}</button>
-    </div>
-    <section class="card" aria-labelledby="h-fl"><h2 id="h-fl" class="card-title">${t("fluid_title")}</h2>${fluidSummary(off)}</section>
+    </div>`;
+  if (seg === "food") return head + renderFood(off);
+  return head + `<section class="card" aria-labelledby="h-fl"><h2 id="h-fl" class="card-title">${t("fluid_title")}</h2>${fluidSummary(off)}</section>
     <h2>${off ? t("day_list") : t("today_list")}</h2>
     ${list.length ? `<ul class="log entries">${list.map(entryRow).join("")}</ul>` : `<p class="muted">${t(off ? "none_day" : "none_yet")}</p>`}
     <h2>${t("add_drink")}</h2>
@@ -365,6 +403,179 @@ function renderTrack() {
       return `<li><button type="button" class="rowbtn" data-act="gotoday" data-v="${i}"${i === off ? ' aria-current="date"' : ""}><span class="grow">${esc(dayName(i))}</span>
       <strong>${lim ? t("week_of", { used: num(tot), limit: num(lim), unit: u }) : `${num(tot)} ${u}`}</strong></button></li>`; }).join("")}</ul>`;
 }
+/* ---------- meals ---------- */
+function dname(d) { return (d.names && (d.names[lang()] || d.names.en)) || ""; }
+function dish(id) { return DISHES.find(d => d.id === id); }
+function limitFor(k) { const g = S.targets[k]; return g && g.status === "set" && g.value > 0 ? g.value : null; }
+function level(k, v) { // 5% or less of the daily reference = low, 20% or more = high (FDA %DV rule)
+  const ref = limitFor(k) || DV[k], pct = (v / ref) * 100;
+  const c = pct <= 5 ? "low" : pct >= 20 ? "high" : "mid";
+  return { c, word: t("lvl_" + c), glyph: { low: "○", mid: "◐", high: "●" }[c] };
+}
+function badge(k, v, withName = true) {
+  const L = level(k, v);
+  return `<span class="badge ${L.c}"><span aria-hidden="true">${L.glyph}</span>${withName ? esc(t("n_" + k)) + ": " : ""}${esc(L.word)}</span>`;
+}
+function portionNum(n) { return num(n); }
+function allowed(d) { // follows "What you eat" from onboarding
+  const r = S.profile.diet.rules || [], c = d.contains || [];
+  if ((r.includes("vegetarian") || r.includes("vegan")) && (c.includes("meat") || c.includes("fish"))) return false;
+  if (r.includes("vegan") && (c.includes("dairy") || c.includes("egg") || c.includes("honey"))) return false;
+  if (r.includes("no_dairy") && c.includes("dairy")) return false;
+  if (r.includes("no_beef") && c.includes("beef")) return false;
+  if (r.includes("kosher") && c.includes("meat_dairy")) return false;
+  return true;
+}
+function cuisineOf(d) { return OPT.cuisines.find(c => c.id === d.cuisine); }
+function inCuisine(d, id) { return d.cuisine === id || (d.tags || []).includes(id); }
+function mine(d) { return S.profile.cuisines.some(c => inCuisine(d, c)); }
+function dishList() {
+  const q = (view.q || "").trim().toLowerCase();
+  let list = DISHES.filter(allowed);
+  if (view.cui && view.cui !== "all") list = list.filter(d => inCuisine(d, view.cui));
+  if (view.fam) list = list.filter(d => (d.main || []).includes(view.fam));
+  if (q) list = list.filter(d => Object.values(d.names).some(n => n.toLowerCase().includes(q)) ||
+    (d.ingredients || []).some(i => Object.values(i.names || {}).some(n => n.toLowerCase().includes(q))));
+  return list.sort((a, b) => (mine(b) - mine(a)) || dname(a).localeCompare(dname(b), lang()));
+}
+function dishRow(d) {
+  const cu = cuisineOf(d);
+  return `<li><button type="button" class="rowbtn dishrow" data-act="dish" data-v="${esc(d.id)}">
+    ${ib(d.fluid ? "soup" : "meal")}
+    <span class="grow"><strong>${esc(dname(d))}</strong>
+      <span class="muted small block">${esc(d.portion[lang()] || d.portion.en)}${cu ? " · " + esc(nm(cu)) : ""}${d.time.aheadMin >= 600 ? " · " + esc(t("ahead_night_short")) : ""}</span>
+      <span class="badges">${LEVEL_NUTS.map(k => badge(k, d.nutrients[k].calc)).join("")}</span></span>
+    ${ICON.fwd}</button></li>`;
+}
+function renderDishList() {
+  const list = dishList();
+  return list.length ? `<p class="muted small">${t("n_dishes", { n: num(list.length) })}</p><ul class="log dishes">${list.map(dishRow).join("")}</ul>`
+    : `<p class="muted">${t("no_dishes")}</p>`;
+}
+function renderMeals() {
+  const avail = OPT.cuisines.filter(c => DISHES.some(d => inCuisine(d, c.id)));
+  const fams = Object.keys(FAMS).filter(f => DISHES.some(d => allowed(d) && (d.main || []).includes(f)));
+  const hidden = DISHES.some(d => !allowed(d));
+  const off = view.logDay || 0;
+  return `<h1 tabindex="-1">${t("tab_meals")}</h1>
+    ${off ? `<div class="note-bar" role="status">${ICON.clock}<span class="grow">${t("adding_to", { day: esc(dayName(off)) })}</span><button type="button" class="btn-link" data-act="logday0">${t("next_today")}</button></div>` : ""}
+    <div class="search">${ICON.search}<input id="f-q" type="search" autocomplete="off" aria-label="${esc(t("search_ph"))}" placeholder="${esc(t("search_ph"))}" value="${esc(view.q || "")}"></div>
+    <div class="chips scroll" role="group" aria-label="${esc(t("ob_cuis_title"))}">
+      <button type="button" class="chip" aria-pressed="${!view.cui || view.cui === "all"}" data-act="cui" data-v="all">${t("cui_all")}</button>
+      ${avail.map(c => `<button type="button" class="chip" aria-pressed="${view.cui === c.id}" data-act="cui" data-v="${c.id}">${esc(nm(c))}</button>`).join("")}
+    </div>
+    <h2>${t("love_title")}</h2>
+    <p class="muted small">${t("love_hint")}</p>
+    <div class="chips scroll" role="group" aria-label="${esc(t("love_title"))}">
+      ${fams.map(f => `<button type="button" class="chip" aria-pressed="${view.fam === f}" data-act="fam" data-v="${f}">${esc(FAMS[f][lang()] || FAMS[f].en)}</button>`).join("")}
+    </div>
+    ${hidden ? `<p class="muted small">${t("diet_note")}</p>` : ""}
+    <div id="dish-list">${renderDishList()}</div>`;
+}
+function grams(g) { return g >= 10 ? num(Math.round(g / 5) * 5) : num(Math.round(g * 10) / 10); }
+function leadText(m) {
+  if (m >= 600) return t("ahead_night");
+  if (m >= 60) { const h = Math.round(m / 30) / 2; return h === 1 ? t("ahead_1h") : t("ahead_h", { h: num(h) }); }
+  return t("ahead_m", { m: num(m) });
+}
+function renderDish() {
+  const d = dish(view.dish);
+  if (!d) return `${pageHead(t("tab_meals"))}<p class="muted">${t("no_dishes")}</p>`;
+  const n = view.portions || 1, L = lang(), off = view.logDay || 0, u = t("ml");
+  const cu = cuisineOf(d), nT = LEVEL_NUTS.filter(limitFor).length;
+  const rows = NUTS.map(k => {
+    const v = Math.round(d.nutrients[k].calc * n), unit = t(d.nutrients[k].unit);
+    const shown = k === "protein" ? num(Math.round(d.nutrients[k].calc * n)) : num(v >= 140 ? Math.round(v / 10) * 10 : Math.round(v / 5) * 5);
+    const lim = limitFor(k);
+    const extra = k === "protein" ? (lim ? `<span class="muted small">${t("of_target", { pct: num(Math.round((d.nutrients[k].calc * n / lim) * 100)) })}</span>` : "")
+      : `<span class="nut-right">${badge(k, d.nutrients[k].calc * n, false)}${lim ? `<span class="muted small">${t("of_limit", { pct: num(Math.round((d.nutrients[k].calc * n / lim) * 100)) })}</span>` : ""}</span>`;
+    return `<div class="nut"><span><strong>${esc(t("n_" + k))}</strong><br><span class="big">${shown} ${unit}</span></span>${extra}</div>`;
+  }).join("");
+  const fl = d.fluid ? `<div class="nut"><span><strong>${t("n_fluid")}</strong><br><span class="big">≈ ${num(Math.round(d.fluid.calc * n / 10) * 10)} ${u}</span></span><span class="muted small">${t("fluid_counts")}</span></div>` : "";
+  const ing = d.ingredients.filter(i => i.key !== "water").map(i => `<li><span class="grow">${esc((i.names && i.names[L]) || i.name)}${i.key === "salt" ? ` <span class="muted">${t("salt_taste")}</span>` : ""}</span><strong>${grams(i.g * n)} ${t("g")}</strong></li>`).join("");
+  const water = d.ingredients.find(i => i.key === "water");
+  const ahead = d.ahead.length ? `<ul class="log">${d.ahead.map(a => `<li>${ICON.clock}<span class="grow"><strong>${esc(leadText(a.leadMin))}</strong>${a.optional ? ` <span class="muted">(${t("if_needed")})</span>` : ""}<br>${esc(a.text[L] || a.text.en)}</span></li>`).join("")}</ul>`
+    : `<p class="muted">${t("ahead_none")}</p>`;
+  const steps = `<ol class="steps">${d.steps.map(x => `<li><span>${esc(x.text[L] || x.text.en)}</span>${x.timer ? `<span class="tag timer">${ICON.timer}${t("timer_min", { m: num(Math.round(x.timer / 60)) })}</span>` : ""}</li>`).join("")}</ol>`;
+  const src = SRC_NAMES[d.nutrients.potassium.sourceId] || d.nutrients.potassium.sourceId;
+  return `${pageHead(dname(d))}
+    <p class="muted">${esc(d.portion[L] || d.portion.en)}${cu ? " · " + esc(nm(cu)) : ""}</p>
+    <p class="muted small">${t("time_line", { p: num(d.time.prepMin), c: num(d.time.cookMin) })}</p>
+    <p class="draft-tag">${t("draft")}</p>
+    <section class="card" aria-labelledby="h-val">
+      <div class="row" style="justify-content:space-between">
+        <h2 id="h-val" class="card-title" style="margin:0">${t("portions")}</h2>
+        <div class="stepper sm">
+          <button type="button" data-act="pless" aria-label="${esc(t("less_aria", { what: t("portions") }))}"${n <= 0.5 ? " disabled" : ""}>−</button>
+          <output aria-live="polite">${portionNum(n)}</output>
+          <button type="button" data-act="pmore" aria-label="${esc(t("more_aria", { what: t("portions") }))}"${n >= 10 ? " disabled" : ""}>+</button>
+        </div>
+      </div>
+      ${rows}${fl}
+      <p class="muted small" style="margin-top:.6rem">${t(nT === LEVEL_NUTS.length ? "basis_target" : nT ? "basis_mixed" : "basis_dv")}</p>
+    </section>
+    ${d.note ? `<div class="note-bar">${esc(d.note[L] || d.note.en)}</div>` : ""}
+    ${d.saltAddedG ? `<p class="muted small">${t("salt_added", { g: num(Math.round(d.saltAddedG * n * 10) / 10) })}</p>` : ""}
+    <button type="button" class="btn btn-primary wide" data-act="ate">${off ? t("ate_on", { day: esc(dayName(off)) }) : t("ate")}</button>
+    <h2>${t("ahead_title")}</h2>${ahead}
+    <h2>${t("ingredients")}</h2>
+    <p class="muted small">${n === 1 ? t("for_portion_1") : t("for_portions", { n: portionNum(n) })}</p>
+    <ul class="log ing">${ing}</ul>
+    ${water ? `<p class="muted small">${t("water_note", { ml: grams(water.g * n) })}</p>` : ""}
+    <h2>${t("steps_title")}</h2>${steps}
+    <section class="card" aria-labelledby="h-src"><h2 id="h-src" class="card-title">${t("source_title")}</h2>
+      <p class="small">${t(d.method === "direct" ? "source_direct" : "source_recipe", { src: esc(src) })}</p>
+      <p class="small muted">${t("reviewed_no")}</p></section>`;
+}
+function mealLabel(x) { return (x.names && (x.names[lang()] || x.names.en)) || ""; }
+function mealRow(x) {
+  const what = mealLabel(x), open = view.edit === x.id;
+  const hhmm = new Date(x.time).toTimeString().slice(0, 5);
+  return `<li class="entry">
+    <div class="entry-top">${ib(x.per.fluid ? "soup" : "meal")}
+      <span class="grow"><strong>${esc(what)}</strong><br><span class="muted">${esc(clock(new Date(x.time)))}</span></span>
+      <span class="small muted" style="text-align:end">${t("n_potassium")} ${num(Math.round(x.per.potassium * x.count))} ${t("mg")}<br>${t("n_sodium")} ${num(Math.round(x.per.sodium * x.count))} ${t("mg")}</span></div>
+    <div class="entry-actions">
+      <div class="stepper sm">
+        <button type="button" data-act="less" data-v="${esc(x.id)}" aria-label="${esc(t("less_half_aria", { what }))}"${x.count <= 0.5 ? " disabled" : ""}>−</button>
+        <output aria-live="polite" aria-label="${esc(t("portions"))}">${portionNum(x.count)}</output>
+        <button type="button" data-act="more" data-v="${esc(x.id)}" aria-label="${esc(t("more_half_aria", { what }))}">+</button>
+      </div>
+      <span class="muted small">${t("portions")}</span>
+      <span class="grow"></span>
+      <button type="button" class="icon-btn small-btn" data-act="editlog" data-v="${esc(x.id)}" aria-expanded="${open}" aria-label="${esc(t("edit_aria", { what }))}">${ICON.pen}</button>
+      <button type="button" class="icon-btn small-btn" data-act="rmlog" data-v="${esc(x.id)}" aria-label="${esc(t("remove_aria", { what }))}">${ICON.trash}</button>
+    </div>
+    ${open ? `<div class="entry-edit">
+      <label class="field" for="e-time">${t("time")}</label>
+      <input id="e-time" type="time" data-entry-time="${esc(x.id)}" value="${hhmm}">
+      <button type="button" class="btn btn-secondary" style="margin-top:.75rem" data-act="dish" data-v="${esc(x.dishId)}">${t("see_dish")}</button>
+      <button type="button" class="btn btn-primary" style="margin-top:.75rem" data-act="editdone">${t("done")}</button>
+    </div>` : ""}
+  </li>`;
+}
+function foodSummary(off) {
+  const tot = foodTotals(dayDate(off)), sf = soupFluid(dayDate(off));
+  return NUTS.map(k => {
+    const lim = limitFor(k), v = Math.round(tot[k]), unit = t(k === "protein" ? "g" : "mg");
+    return `<div class="nut"><strong>${t("n_" + k)}</strong><span>${lim ? t("week_of", { used: num(v), limit: num(lim), unit }) : `${num(v)} ${unit}`}</span></div>
+      ${lim ? `<div class="bar thin" aria-hidden="true"><span style="width:${Math.min(100, Math.round((v / lim) * 100))}%"></span></div>` : ""}`;
+  }).join("") + (sf ? `<p class="muted small" style="margin-top:.5rem">${t("from_soups", { ml: num(sf), unit: t("ml") })}</p>` : "");
+}
+function renderFood(off) {
+  const list = mealsOn(dayDate(off)).slice().sort((a, b) => new Date(b.time) - new Date(a.time));
+  return `<section class="card" aria-labelledby="h-food"><h2 id="h-food" class="card-title">${t(off ? "food_day" : "food_today")}</h2>${foodSummary(off)}</section>
+    <h2>${t(off ? "meals_day" : "meals_today")}</h2>
+    ${list.length ? `<ul class="log entries">${list.map(mealRow).join("")}</ul>` : `<p class="muted">${t(off ? "none_food_day" : "none_food")}</p>`}
+    <button type="button" class="btn btn-primary wide" data-act="addfood">${ib("meal")}<span>${t("add_food")}</span></button>`;
+}
+function ideaFor(date = new Date()) {
+  let list = DISHES.filter(allowed);
+  const m = list.filter(mine); if (m.length) list = m;
+  if (!list.length) return null;
+  const k = Math.floor(date.getTime() / 864e5);
+  return list[k % list.length];
+}
 function renderSoon() { return `<h1 tabindex="-1">${t("tab_" + view.tab)}</h1><div class="card"><p>${t("soon")}</p></div>`; }
 function tabs() {
   return `<nav class="tabs" aria-label="${esc(t("tabs_aria"))}">${["today", "meals", "track", "learn"].map(k =>
@@ -376,8 +587,8 @@ function render(focus = true) {
   const app = document.getElementById("app");
   if (view.name === "ob") app.innerHTML = renderOb();
   else {
-    const pages = { settings: renderSettings, unwell: renderUnwell, disclaimer: renderDisclaimer };
-    const tabView = { today: renderToday, track: renderTrack }[view.tab] || renderSoon;
+    const pages = { settings: renderSettings, unwell: renderUnwell, disclaimer: renderDisclaimer, dish: renderDish };
+    const tabView = { today: renderToday, meals: renderMeals, track: renderTrack }[view.tab] || renderSoon;
     app.innerHTML = (view.page ? pages[view.page]() : tabView()) + tabs();
   }
   if (focus) { window.scrollTo(0, 0); const h = app.querySelector("h1"); if (h) h.focus({ preventScroll: true }); }
@@ -404,15 +615,24 @@ document.addEventListener("click", async e => {
       const i = arr.indexOf(val); if (i >= 0) arr.splice(i, 1); else arr.push(val);
       save(); b.setAttribute("aria-pressed", i < 0); break;
     }
-    case "tab": view.tab = v; view.page = null; view.day = 0; view.edit = null; hideToast(); render(); break;
+    case "tab": view.tab = v; view.page = null; view.day = 0; view.edit = null; view.logDay = 0; hideToast(); render(); break;
+    case "seg": view.seg = v; view.edit = null; render(false); break;
+    case "cui": view.cui = v; render(false); break;
+    case "fam": view.fam = view.fam === v ? null : v; render(false); break;
+    case "dish": view.from = view.page ? null : view.tab; view.dish = v; view.portions = 1; view.page = "dish"; view.edit = null; hideToast(); render(); break;
+    case "pless": view.portions = Math.max(0.5, (view.portions || 1) - 0.5); render(false); break;
+    case "pmore": view.portions = Math.min(10, (view.portions || 1) + 0.5); render(false); break;
+    case "ate": { const d = dish(view.dish); if (d) addMeal(d, view.portions || 1, view.logDay || 0); break; }
+    case "addfood": view.logDay = view.day || 0; view.tab = "meals"; view.page = null; view.edit = null; hideToast(); render(); break;
+    case "logday0": view.logDay = 0; render(false); break;
     case "addcup": addFluid(S.profile.cups[v], v, 1, trackDay()); break;
     case "iceplus": if (ice < 30) { ice++; render(false); } break;
     case "iceminus": if (ice > 1) { ice--; render(false); } break;
     case "addice": addFluid(cubeMl(), "ice", ice, trackDay()); break;
     case "addcustom": { const el = document.getElementById("f-custom"); const n = Number(el && el.value); if (n > 0 && n <= 5000) addFluid(n, "custom", 1, trackDay()); else if (el) el.focus(); break; }
-    case "undo": removeFluid(v, false); hideToast(); break;
-    case "restore": if (lastRemoved) { S.logs.fluid.push(lastRemoved); lastRemoved = null; save(); render(false); } hideToast(); break;
-    case "rmlog": removeFluid(v); break;
+    case "undo": removeEntry(v, false); hideToast(); break;
+    case "restore": if (lastRemoved) { S.logs[lastRemoved.list].push(lastRemoved.x); lastRemoved = null; save(); render(false); } hideToast(); break;
+    case "rmlog": removeEntry(v); break;
     case "more": changeCount(v, 1); break;
     case "less": changeCount(v, -1); break;
     case "editlog": view.edit = view.edit === v ? null : v; render(false); if (view.edit) document.getElementById("e-time")?.focus(); break;
@@ -420,7 +640,7 @@ document.addEventListener("click", async e => {
     case "dayprev": view.day = Math.min(365, (view.day || 0) + 1); view.edit = null; render(false); break;
     case "daynext": view.day = Math.max(0, (view.day || 0) - 1); view.edit = null; render(false); break;
     case "gotoday": view.day = Number(v); view.edit = null; render(); break;
-    case "page": view.page = v || null; render(); break;
+    case "page": view.page = v || null; view.edit = null; render(); break;
     case "size": S.profile.size = Number(v); save(); await loadLang(lang()); render(false); break;
     case "edit": view = { name: "ob", step: 2, tab: "today", page: null }; render(); break;
     case "delete":
@@ -441,9 +661,10 @@ document.addEventListener("input", e => {
   if (id) { // live edit: save and refresh the row's text without redrawing the page
     if (el.dataset.entryTime) setEntryTime(id, el.value); else setEntryUnit(id, el.value);
     const x = entry(id), li = el.closest(".entry");
-    if (x && li) { li.querySelector(".entry-top .big").textContent = `${num(x.ml)} ${t("ml")}`; li.querySelector(".entry-top .muted").textContent = clock(new Date(x.time)); }
+    if (x && li) { const b = li.querySelector(".entry-top .big"); if (b && x.ml != null) b.textContent = `${num(x.ml)} ${t("ml")}`; li.querySelector(".entry-top .grow .muted").textContent = clock(new Date(x.time)); }
     return;
   }
+  if (el.id === "f-q") { view.q = el.value; const box = document.getElementById("dish-list"); if (box) box.innerHTML = renderDishList(); return; }
   if (!f) return;
   if ("target" in el.dataset) {
     const g = getPath(f), n = el.value === "" ? null : Math.max(0, Number(el.value));
@@ -464,6 +685,10 @@ document.addEventListener("keydown", e => {
 (async function init() {
   TE = (await getJSON("i18n/en.json")) || {};
   OPT = (await getJSON("data/options.json")) || OPT;
+  const [idx, fam] = await Promise.all([getJSON("data/dishes/index.json"), getJSON("data/families.json")]);
+  FAMS = (fam && fam.families) || {};
+  const files = await Promise.all(((idx && idx.files) || []).map(f => getJSON(`data/dishes/${f}.json`)));
+  DISHES = files.filter(Boolean).flatMap(f => f.dishes || []);
   await loadLang(lang());
   if (S.onboarded) view = { name: "app", step: 0, tab: "today", page: null };
   else view = { name: "ob", step: S.profile.lang ? (S.profile.disclaimerAccepted ? 2 : 1) : 0, tab: "today", page: null };
