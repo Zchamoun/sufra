@@ -1,4 +1,4 @@
-/* Sufra design system v1.6 — Mist blue (soft, calm, WCAG AA contrast) */
+/* Sufra design system v1.7 — Mist blue (soft, calm, WCAG AA contrast) */
 :root{
   --bg:#F4F6F8; --surface:#FFFFFF; --soft:#DFE8EF; --accent:#3F5B72; --line:#E1E6EB;
   --text:#2F3A3D; --muted:#5E6A6E;
@@ -181,3 +181,12 @@ h3{font-size:1.05rem;font-weight:600;}
 .chips.scroll{flex-wrap:nowrap;overflow-x:auto;padding-bottom:.35rem;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;}
 .chips.scroll .chip{flex-shrink:0;white-space:nowrap;scroll-snap-align:start;}
 .nut-right{display:flex;flex-direction:column;align-items:flex-end;gap:.25rem;text-align:end;}
+
+/* v1.7 — install card, update banner, app icons */
+.install-card p{margin:.5rem 0 .75rem;}
+.note-bar.upd{background:var(--soft);color:var(--accent);flex-wrap:wrap;}
+.upd-btn{min-height:48px;padding:0 1.1rem;border:0;border-radius:12px;background:var(--accent);color:#fff;font:inherit;font-weight:600;white-space:nowrap;cursor:pointer;}
+.ib-install{background:#E4EDF3;}
+.inline-ico{display:inline-flex;vertical-align:middle;}
+.btn.wide .ib{width:40px;height:40px;border-radius:12px;} .btn.wide .ib svg{width:26px;height:26px;}
+.note-bar.upd .grow{flex:1 1 11rem;}
