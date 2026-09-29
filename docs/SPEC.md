@@ -1,67 +1,76 @@
-# Sufra (سفرة) — Product Spec v0.2
+# Sufra (سفرة) — Product Spec v0.3
 
 ## 1. What Sufra is
 A mobile-first, offline app that helps adults on dialysis (and their caregivers) plan what to eat, how to eat, and how to manage daily life — warmly and without judgment.
 
 **Core rule:** Sufra never replaces the care team. Limits for fluid, potassium, phosphorus, sodium and protein come from the user's nephrologist or renal dietitian. If the user doesn't know them yet, Sufra shows general guidance (clearly labelled) and prompts them to ask their team. Sufra never diagnoses or changes treatment.
 
-## 2. Markets, languages, cuisines
-- **Countries at launch:** Saudi Arabia, UAE, Qatar, Kuwait, Oman, Iraq, Jordan, Lebanon, Syria, Egypt, North Africa (Morocco, Algeria, Tunisia, Libya). The country list is a data file.
-- **Languages:** English, Arabic (Modern Standard Arabic, full right-to-left), French. Ready for more.
-- **Starter cuisines (30 dishes, 10 each, DRAFT until reviewed):** Gulf, Levantine, Egyptian.
-- **Next cuisine batches (data only):** Maghrebi, Iraqi, then South Asian, Filipino, Western, East Asian.
+## 2. Markets, languages, cuisines, customs
+- **Countries at launch:** Saudi Arabia, UAE, Qatar, Kuwait, Oman, Iraq, Jordan, Lebanon, Syria, Egypt, Morocco, Algeria, Tunisia, Libya, plus "Another country".
+- **Languages:** English, Arabic (Modern Standard Arabic, full right-to-left), French. Arabic digits follow the country (Arabic-Indic in the Mashreq and Gulf, Western digits in North Africa).
+- **Cuisines to choose from:** Gulf, Lebanese, Levantine, Egyptian, Iraqi, North African, South Asian, Filipino, Western, East Asian, "A bit of everything".
+- **Starter dish data (30 dishes, DRAFT until reviewed):** Gulf, Levantine (including Lebanese), Egyptian. Next batches: Maghrebi, Iraqi, then the rest.
+- **What you eat:** Halal, Kosher, Vegetarian, Vegan, No dairy, No pork, No beef, No alcohol.
+- **Fasting observed:** Ramadan, Orthodox fasts, Coptic fasts, Catholic Lent (including Maronite and Melkite), other Christian fasts, Jewish fast days, Hindu fasting days, other fasting days. The app advises talking to the care team before fasting.
+- All of these lists live in `data/options.json`; adding one is a data change.
 
 ## 3. Screens (max 4 tabs)
 | Tab | One job |
 |---|---|
-| **Today** | Fluid used vs. limit · next dialysis session · next meal suggestion |
-| **Meals** | Meal plan from my cuisines + dish lookup |
-| **Track** | One-tap fluid logging (cups, glasses, ice cubes) + simple meal log |
-| **Learn** | Lifestyle guides · questions for my care team |
+| **Today** | Fluid used vs. limit · one-tap cups · next dialysis session · next meal idea · "Feeling unwell?" |
+| **Meals** | Meal plan from my cuisines + dish lookup (Phase 6) |
+| **Track** | Cups, ice cubes, other amounts · today's drinks with remove · last 7 days |
+| **Learn** | Lifestyle guides · thirst tips · questions for my care team (Phase 7) |
 
-Settings (language, text size, targets, ice cube size, disclaimer, export/delete data) opens from an icon on Today.
+Settings (language, text size, my cup and ice cube sizes, edit my answers, disclaimer, delete data) opens from the gear icon on Today.
 
 ## 4. Key user flows
-1. **First open:** language → short disclaimer → onboarding (under 2 min, all skippable) → Today.
-2. **Log a drink:** tap a cup size → fluid bar updates → "Undo" for 10 seconds.
-3. **Log ice cubes:** Track → Ice cubes → − / + count → Add → counted as fluid using the user's own cube size.
-4. **"Can I enjoy this dish?":** search → green/amber/red per nutrient (colour + icon + word) → "How to enjoy it" → "Why this?" shows the source.
-5. **Plan my day:** "Dialysis day / Non-dialysis day" → meals from my cuisines, within my targets.
-6. **Before an appointment:** "Questions for my care team" built from my logs → share or print.
-7. **Safety (always reachable):** "Feeling unwell?" → urgent symptoms → emergency care or dialysis center, with the emergency number for the user's country.
+1. **First open:** language → disclaimer (must accept) → country → dialysis type → days, time, place, center phone → cuisines → food customs and fasting → care-team limits → Today. Every step after the disclaimer can be skipped.
+2. **Log a drink:** tap a cup on Today or Track → fluid bar updates → "Undo" for 10 seconds.
+3. **Log ice cubes:** Track → − / + count → Add → counted as fluid using the user's measured cube size (or a placeholder labelled "estimate").
+4. **Log another amount:** Track → type ml → Add.
+5. **Fix a mistake:** Track → today's drinks → remove.
+6. **"Can I enjoy this dish?":** search → green/amber/red per nutrient (colour + icon + word) → "How to enjoy it" → "Why this?" shows the source.
+7. **Plan my day:** "Dialysis day / Non-dialysis day" and fasting days → meals from my cuisines, within my targets.
+8. **Before an appointment:** "Questions for my care team" built from my logs → share or print.
+9. **Safety (always reachable):** "Feeling unwell?" → urgent symptoms → call local emergency number or the user's dialysis center.
 
 ## 5. Evidence rules
 - Priority: (1) care-team targets → (2) KDIGO/KDOQI general ranges → (3) USDA FoodData Central + regional food tables → (4) NKF/NIDDK patient-education wording.
 - Every value and tip stores a source and a confidence level (measured / calculated / estimated).
 - Nothing medical is generated by AI alone. Missing data shows "No verified data yet — ask your dietitian" and is logged as a content gap.
 - Guidance shows "Last reviewed by [renal dietitian], [date]".
-- Emergency numbers are verified against official sources before launch.
-- Ice cube volume is measured by the user (melt 5 cubes once in a measuring cup). Until then, the app uses a placeholder labelled "estimate".
+- Country emergency numbers are added only after checking official sources (Phase 7).
+- Cup and ice cube sizes are measured by the user. Until then, defaults are shown and ice is labelled "estimate".
+- Thirst tips wait for the source registry (Phase 5) so each tip carries its source.
 
 ## 6. Not in the first version
 Photo lookup · caregiver sharing · accounts or cloud sync · push notifications.
 
-## 7. Data model (stored on the device)
-- **Profile:** language, country, text size, dialysis type, schedule {day, time, center/home}, cuisines, dietary rules (halal, vegetarian, fasting, allergies), diabetes, mlPerIceCube {value, measured by me / estimate}.
-- **Targets:** fluid, potassium, phosphorus, sodium, protein — each {value or empty, unit, set by care team / not sure yet, last updated}.
+## 7. Data model (stored on the device, key `sufra.v1`)
+- **Profile:** lang, size, country, dialysisType, schedule {days, time, place, centerPhone}, cuisines [ids], diet {rules [ids], fasts [ids], allergies}, diabetes, disclaimerAccepted, cups {small, glass, mug, ice5 = ml from 5 melted cubes}.
+- **Targets:** fluid, potassium, phosphorus, sodium, protein — each {value or empty, unit, set / unsure, lastUpdated}.
 - **Dish:** id, cuisine, names {en, ar, fr}, portion, ingredients, nutrients per portion {value, unit, confidence, sourceId}, tips {type, text en/ar/fr, sourceId}, status draft/reviewed, reviewer, date.
-- **Logs:** fluid {time, ml, container: small cup / glass / mug / ice cubes / custom, count}; meal {time, dishId, portion}.
+- **Logs:** fluid {id, time, ml, container: small / glass / mug / ice / custom, count}; meal {time, dishId, portion}.
 - **Source registry:** id, name, publisher, version, date, link, type, countries.
 - **Content gaps:** what was missing, date.
+- Older saved answers are upgraded automatically when the app loads.
 
 ## 8. Design system
-- File: `css/sufra.css` (v1).
-- Palette: **Mist blue**, soft and calm (background #F4F6F8, accent #3F5B72, soft fill #DFE8EF). All text passes WCAG AA contrast.
+- File: `css/sufra.css` (v1.3). Palette: **Mist blue** (background #F4F6F8, accent #3F5B72, soft fill #DFE8EF). All text passes WCAG AA contrast.
 - 18px base text with 3 size steps, 48px+ tap targets, colour + icon + word on every nutrient label, full right-to-left support.
 
 ## 9. Folder layout
 ```
-index.html          app shell
+index.html          app shell (loads css and js with ?v=version)
 /css/sufra.css      design system
-/js                 logic
+/js/app.js          app logic
 /i18n               en.json · ar.json · fr.json
-/data/sources.json  source registry
-/data/countries.json
-/data/dishes/       gulf.json · levantine.json · egyptian.json
+/data/options.json  countries, cuisines, food customs, fasts
+/data/sources.json  source registry (Phase 5)
+/data/dishes/       gulf.json · levantine.json · egyptian.json (Phase 5)
 /docs/SPEC.md       this document
 ```
+
+## 10. How updates are released
+- Every update raises the version number in `index.html` (`?v=0.4` and so on) so phones load the new files straight away instead of an old saved copy.
