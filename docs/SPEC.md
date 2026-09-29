@@ -74,3 +74,10 @@ index.html          app shell (loads css and js with ?v=version)
 
 ## 10. How updates are released
 - Every update raises the version number in `index.html` (`?v=0.4` and so on) so phones load the new files straight away instead of an old saved copy.
+
+  
+## 11. Editing rule (applies to every log: drinks now, meals later)
+- Every logged item shows **−  count  +** to remove or add one of the same, **Edit** (time and amount for one) and **Delete** (with Undo for 10 seconds).
+- The Track tab has a day bar (**‹ previous day · next day ›**) so any past day can be viewed and changed, up to one year back. No future days.
+- Tapping a day in "Last 7 days" opens that day.
+- Items store the amount for one, the count and the time, so changing cup sizes later never rewrites history.
