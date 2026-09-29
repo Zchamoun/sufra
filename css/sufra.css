@@ -147,3 +147,9 @@ h3{font-size:1.05rem;font-weight:600;}
 .entry-edit{margin-top:.5rem;padding-top:.5rem;border-top:1px dashed var(--line);}
 .rowbtn{display:flex;align-items:center;gap:.75rem;width:100%;min-height:48px;background:none;border:0;font:inherit;color:inherit;text-align:start;padding:0;}
 .rowbtn[aria-current="date"]{color:var(--accent);font-weight:600;}
+/* ---------- v1.5: colourful icon tiles ---------- */
+.ib{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:16px;flex-shrink:0;}
+.ib svg{width:32px;height:32px;}
+.ib-small{background:#FBF1E4;} .ib-glass{background:#E7F2FB;} .ib-mug{background:#FCECE3;}
+.ib-ice{background:#E4F5FA;} .ib-custom{background:#EFECF8;}
+.cup .ib{margin-bottom:.15rem;}
