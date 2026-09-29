@@ -1,6 +1,7 @@
-/* Sufra app v0.6.1 — onboarding, Today, fluid tracker, Meals library and meal log. All data stays on this device. */
+/* Sufra app v0.6.2 — onboarding, Today, fluid tracker, Meals library, meal log, install and updates. All data stays on this device. */
 "use strict";
 
+const APP_VERSION = "0.6.2"; // must match VERSION in sw.js
 const LANGS = ["en", "ar", "fr"];
 const LANG_NAMES = { en: "English", ar: "العربية", fr: "Français" };
 const KEY = "sufra.v1";
@@ -197,16 +198,113 @@ const ICON = {
   trash: '<svg width="22" height="22" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7l1 13h10l1-13z" fill="#F6DAD5" stroke="#A4473B"/><path d="M4 7h16M9 7V4h6v3" fill="none" stroke="#A4473B"/></svg>',
   meal: '<svg width="32" height="32" viewBox="0 0 24 24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="13" rx="9" ry="6" fill="#FBE3D3" stroke="#C0613A"/><ellipse cx="12" cy="12" rx="5.5" ry="3" fill="#F3B48F" stroke="#C0613A"/><path d="M9.5 11.5c.8-.6 1.8-.6 2.6 0M12.5 12.3c.7-.5 1.5-.5 2.1 0" fill="none" stroke="#8C3F1E"/></svg>',
   soup: '<svg width="32" height="32" viewBox="0 0 24 24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11h18a9 9 0 0 1-18 0z" fill="#FCE3A0" stroke="#B07A1E"/><path d="M5.5 13.5c2 1 4 1 6.5 0s4.5-1 6.5 0" fill="none" stroke="#D9A43C"/><path d="M9 7.5c0-1.4 1.4-1.4 1.4-3M13.5 7.5c0-1.4 1.4-1.4 1.4-3" fill="none" stroke="#9CC3E0"/></svg>',
+  install: '<svg width="26" height="26" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5" fill="#E4EDF3" stroke="#3F5B72"/><path d="M12 7v7M9 11.5l3 3 3-3" fill="none" stroke="#C48A3C"/><path d="M10.5 18.5h3" stroke="#3F5B72"/></svg>',
+  refresh: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.7" stroke="#3F5B72"/><path d="M20 4v4.5h-4.5" stroke="#C48A3C"/></svg>',
+  share: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F77B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M7 10H5v11h14V10h-2"/></svg>',
   clock: '<svg width="22" height="22" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="#FCEBC9" stroke="#B07A1E"/><path d="M12 7.5V12l3 2" fill="none" stroke="#B07A1E"/></svg>',
   timer: '<svg width="18" height="18" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13" r="7.5" fill="#E7F2FB" stroke="#2F77B0"/><path d="M12 9v4M9.5 2.8h5" fill="none" stroke="#2F77B0"/></svg>',
   search: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5E6A6E" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>',
   x: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5E6A6E" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>'
 };
 
+/* ---------- install as an app, and updates ---------- */
+let installEvt = null, swReg = null, upd = { state: "idle", version: null }, applying = false;
+const UA = navigator.userAgent || "";
+const IS_IOS = /iphone|ipad|ipod/i.test(UA) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const IS_ANDROID = /android/i.test(UA);
+function standalone() { return (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true; }
+function canOfferInstall() { return !standalone(); }
+async function install() {
+  if (installEvt) { // Android and desktop Chrome: the real install prompt
+    installEvt.prompt();
+    try { await installEvt.userChoice; } catch (e) {}
+    installEvt = null; render(false);
+  } else { view.page = "install"; render(); } // iPhone, or when the browser has no prompt: show the steps
+}
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); installEvt = e; });
+window.addEventListener("appinstalled", () => { installEvt = null; S.profile.installDismissed = true; save(); toast(t("installed_ok")); render(false); });
+function askVersion(worker) {
+  return new Promise(res => {
+    const ch = new MessageChannel(); const tm = setTimeout(() => res(null), 3000);
+    ch.port1.onmessage = e => { clearTimeout(tm); res(e.data); };
+    worker.postMessage("version", [ch.port2]);
+  });
+}
+async function markReady() { upd.state = "ready"; upd.version = swReg && swReg.waiting ? await askVersion(swReg.waiting) : null; render(false); }
+function waitInstalled(w) {
+  return new Promise(res => {
+    if (!w || w.state === "installed" || w.state === "redundant") return res();
+    const tm = setTimeout(res, 30000);
+    w.addEventListener("statechange", () => { if (w.state === "installed" || w.state === "redundant") { clearTimeout(tm); res(); } });
+  });
+}
+async function checkUpdates(quiet = false) {
+  if (!swReg) { if (!quiet) { upd.state = "unsupported"; render(false); } return; }
+  if (!quiet) { upd.state = "checking"; render(false); }
+  try {
+    if (!navigator.onLine) throw new Error("offline");
+    await Promise.race([swReg.update(), new Promise((_, no) => setTimeout(() => no(new Error("timeout")), 15000))]);
+    await waitInstalled(swReg.installing);
+    if (swReg.waiting && navigator.serviceWorker.controller) await markReady();
+    else if (!quiet) { upd.state = "latest"; render(false); }
+  } catch (e) { if (!quiet) { upd.state = "offline"; render(false); } }
+}
+function applyUpdate() {
+  if (!swReg || !swReg.waiting) return;
+  applying = true; upd.state = "applying"; render(false);
+  swReg.waiting.postMessage("skipWaiting"); // the new version takes over, then the page restarts (controllerchange below)
+}
+function setupSW() {
+  if (!("serviceWorker" in navigator)) return;
+  navigator.serviceWorker.addEventListener("controllerchange", () => { if (applying) location.reload(); });
+  navigator.serviceWorker.register("sw.js").then(reg => {
+    swReg = reg;
+    if (reg.waiting && navigator.serviceWorker.controller) markReady();
+    reg.addEventListener("updatefound", () => {
+      const w = reg.installing;
+      if (w) w.addEventListener("statechange", () => { if (w.state === "installed" && navigator.serviceWorker.controller) markReady(); });
+    });
+    setTimeout(() => checkUpdates(true), 3000); // look quietly once; the update is only applied when the person taps
+  }).catch(() => {});
+}
+function updateBanner() {
+  if (upd.state !== "ready" && upd.state !== "applying") return "";
+  return `<div class="note-bar upd" role="status">${ICON.refresh}<span class="grow">${t(upd.state === "applying" ? "upd_applying" : "upd_ready_short")}</span>
+    ${upd.state === "ready" ? `<button type="button" class="upd-btn" data-act="applyupd">${t("upd_now")}</button>` : ""}</div>`;
+}
+function installCard() {
+  if (!canOfferInstall() || S.profile.installDismissed) return "";
+  return `<section class="card install-card" aria-labelledby="h-inst"><div class="row">${ib("install")}<h2 id="h-inst" class="card-title grow" style="margin:0">${t("install_title")}</h2></div>
+    <p>${t("install_card")}</p>
+    <div class="row"><button type="button" class="btn btn-primary" data-act="install">${t("install_btn")}</button>
+    <button type="button" class="btn btn-link" data-act="installlater">${t("install_later")}</button></div></section>`;
+}
+function updateSection() {
+  const st = upd.state, msg = { checking: "upd_checking", latest: "upd_latest", offline: "upd_offline", unsupported: "upd_unsupported", applying: "upd_applying" }[st];
+  return `<h2>${t("s_app")}</h2>
+    <p class="muted">${t("app_version", { v: APP_VERSION })}</p>
+    ${canOfferInstall() ? `<button type="button" class="btn btn-secondary wide" data-act="install">${ib("install")}<span>${t("install_btn")}</span></button>` : ""}
+    <button type="button" class="btn btn-secondary wide" data-act="checkupd"${st === "checking" || st === "applying" ? " disabled" : ""}>${ICON.refresh}<span>${t("upd_check")}</span></button>
+    <p class="muted" aria-live="polite">${st === "ready" ? "" : msg ? t(msg) : ""}</p>
+    ${st === "ready" ? `<div class="note-bar upd">${ICON.refresh}<span class="grow">${upd.version ? t("upd_ready", { v: upd.version }) : t("upd_ready_short")}</span><button type="button" class="upd-btn" data-act="applyupd">${t("upd_now")}</button></div>` : ""}`;
+}
+function renderInstall() {
+  const ios = `<section class="card"><h2 class="card-title">${t("inst_ios_title")}</h2>
+      <ol class="steps"><li>${t("ios_1")} <span class="inline-ico">${ICON.share}</span></li><li>${t("ios_2")}</li><li>${t("ios_3")}</li></ol>
+      <p class="muted small">${t("ios_chrome")}</p><div class="note-bar">${t("ios_data")}</div></section>`;
+  const and = `<section class="card"><h2 class="card-title">${t("inst_and_title")}</h2>
+      <ol class="steps"><li>${t("and_1")}</li><li>${t("and_2")}</li><li>${t("and_3")}</li></ol></section>`;
+  return `${pageHead(t("install_title"))}
+    <p>${t("install_card")}</p>
+    ${IS_ANDROID ? and + ios : ios + and}`;
+}
+
 /* ---------- onboarding ---------- */
 const OB = {
   lang: () => `<h1 tabindex="-1">${LANGS.map(l => esc(({ en: "Choose your language", ar: "اختر لغتك", fr: "Choisissez votre langue" })[l])).join("<br>")}</h1>
-    <div class="choices">${LANGS.map(l => `<button type="button" class="choice" role="radio" lang="${l}" aria-checked="${S.profile.lang === l}" data-act="setlang" data-v="${l}"><strong>${LANG_NAMES[l]}</strong></button>`).join("")}</div>`,
+    <div class="choices">${LANGS.map(l => `<button type="button" class="choice" role="radio" lang="${l}" aria-checked="${S.profile.lang === l}" data-act="setlang" data-v="${l}"><strong>${LANG_NAMES[l]}</strong></button>`).join("")}</div>
+    ${canOfferInstall() ? `<button type="button" class="btn btn-secondary wide" style="margin-top:1rem" data-act="install">${ib("install")}<span>${t("install_btn")}</span></button>
+      <p class="muted small center">${t("install_hint")}</p>` : ""}`,
   disc: () => `<h1 tabindex="-1">${t("ob_disc_title")}</h1><div class="card">${paras(t("ob_disc_body"))}</div>`,
   country: () => `<h1 tabindex="-1">${t("ob_country_title")}</h1><p class="muted">${t("ob_country_hint")}</p>
     <div class="choices two" role="radiogroup">${OPT.countries.map(c => radio("profile.country", c.id, nm(c))).join("")}</div>`,
@@ -288,6 +386,7 @@ function renderToday() {
   return `<div class="head"><h1 tabindex="-1">${t("today")}</h1>
       <button type="button" class="icon-btn" data-act="page" data-v="settings" aria-label="${esc(t("settings"))}">${ICON.gear}</button></div>
     <p class="muted">${esc(new Intl.DateTimeFormat(loc(), { weekday: "long", day: "numeric", month: "long" }).format(new Date()))}</p>
+    ${updateBanner()}${installCard()}
     <section class="card" aria-labelledby="h-fluid"><h2 id="h-fluid" class="card-title">${t("fluid_title")}</h2>${fluidSummary()}</section>
     ${cupButtons()}
     <button type="button" class="btn btn-secondary wide" data-act="tab" data-v="track">${ib("ice")}<span>${t("more_options")}</span></button>
@@ -319,6 +418,7 @@ function renderSettings() {
     <label class="field" for="c-ice">${t("s_ice5")}</label>
     <div class="unit-input"><input id="c-ice" type="number" inputmode="numeric" min="1" dir="ltr" data-field="profile.cups.ice5" data-num value="${p.cups.ice5 ?? ""}"><span>${t("ml")}</span></div>
     <p class="muted" id="ice-result" aria-live="polite">${p.cups.ice5 > 0 ? t("s_ice_result", { ml: num(cubeMl()), unit: t("ml") }) : ""}</p>
+    ${updateSection()}
     <div class="stack">
       <button type="button" class="btn btn-secondary" data-act="edit">${t("s_edit")}</button>
       <button type="button" class="btn btn-secondary" data-act="page" data-v="disclaimer">${t("s_disc")}</button>
@@ -585,7 +685,8 @@ function tabs() {
 /* ---------- render + events ---------- */
 function render(focus = true) {
   const app = document.getElementById("app");
-  if (view.name === "ob") app.innerHTML = renderOb();
+  if (view.page === "install") app.innerHTML = renderInstall() + (view.name === "ob" ? "" : tabs());
+  else if (view.name === "ob") app.innerHTML = renderOb();
   else {
     const pages = { settings: renderSettings, unwell: renderUnwell, disclaimer: renderDisclaimer, dish: renderDish };
     const tabView = { today: renderToday, meals: renderMeals, track: renderTrack }[view.tab] || renderSoon;
@@ -625,6 +726,10 @@ document.addEventListener("click", async e => {
     case "ate": { const d = dish(view.dish); if (d) addMeal(d, view.portions || 1, view.logDay || 0); break; }
     case "addfood": view.logDay = view.day || 0; view.tab = "meals"; view.page = null; view.edit = null; hideToast(); render(); break;
     case "logday0": view.logDay = 0; render(false); break;
+    case "install": install(); break;
+    case "installlater": S.profile.installDismissed = true; save(); render(false); break;
+    case "checkupd": checkUpdates(); break;
+    case "applyupd": applyUpdate(); break;
     case "addcup": addFluid(S.profile.cups[v], v, 1, trackDay()); break;
     case "iceplus": if (ice < 30) { ice++; render(false); } break;
     case "iceminus": if (ice > 1) { ice--; render(false); } break;
@@ -693,4 +798,5 @@ document.addEventListener("keydown", e => {
   if (S.onboarded) view = { name: "app", step: 0, tab: "today", page: null };
   else view = { name: "ob", step: S.profile.lang ? (S.profile.disclaimerAccepted ? 2 : 1) : 0, tab: "today", page: null };
   render();
+  setupSW();
 })();
