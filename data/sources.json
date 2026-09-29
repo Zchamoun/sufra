@@ -1,0 +1,77 @@
+{
+ "schema": "sufra.sources/1",
+ "updated": "2026-09-29",
+ "sources": [
+  {
+   "id": "usda-sr28",
+   "name": "USDA National Nutrient Database for Standard Reference, Release 28",
+   "publisher": "USDA Agricultural Research Service, Nutrient Data Laboratory",
+   "version": "SR28 (September 2015). Its successor is 'SR Legacy' in FoodData Central.",
+   "date": "2015-09",
+   "link": "https://fdc.nal.usda.gov/",
+   "type": "food-composition",
+   "countries": [
+    "ALL"
+   ],
+   "usedFor": "Potassium, phosphorus, sodium, protein and water per 100 g of each ingredient.",
+   "confidence": "measured"
+  },
+  {
+   "id": "ciqual-2025",
+   "name": "ANSES-CIQUAL French food composition table 2025",
+   "publisher": "ANSES (French Agency for Food, Environmental and Occupational Health & Safety)",
+   "version": "2025 (3,484 foods, English and French names)",
+   "date": "2025",
+   "link": "https://ciqual.anses.fr/cms/en/2025-anses-ciqual-table",
+   "type": "food-composition",
+   "countries": [
+    "ALL"
+   ],
+   "usedFor": "European ingredient values (potassium, phosphorus, sodium, protein, water) for 'create your own dish' and new recipe batches. Chosen over USDA when both have the food and CIQUAL's values are complete.",
+   "licence": "2020 edition published under Licence Ouverte / Open Licence (Etalab) and CC-BY 4.0, credit ANSES. 2025 terms to be confirmed before release.",
+   "confidence": "measured"
+  },
+  {
+   "id": "sufra-recipes-v1",
+   "name": "Sufra typical home recipes, version 1",
+   "publisher": "Sufra (draft, not yet reviewed)",
+   "version": "1",
+   "date": "2026-09-29",
+   "link": null,
+   "type": "recipe-assumptions",
+   "countries": [
+    "ALL"
+   ],
+   "usedFor": "Grams of each ingredient in one portion. Real home recipes vary, so every dish value is 'calculated' and DRAFT until a renal dietitian reviews it.",
+   "confidence": "estimated"
+  },
+  {
+   "id": "fda-dv",
+   "name": "Daily Value on the Nutrition and Supplement Facts Labels; The Lows and Highs of Percent Daily Value",
+   "publisher": "U.S. Food and Drug Administration",
+   "version": "Pages updated 2024",
+   "date": "2024-03-05",
+   "link": "https://www.fda.gov/food/nutrition-facts-label/lows-and-highs-percent-daily-value-nutrition-facts-label",
+   "type": "labelling-rule",
+   "countries": [
+    "ALL"
+   ],
+   "usedFor": "Only when the user has no care-team limit yet: 5% DV or less per serving = low, 20% DV or more = high (DV: sodium 2300 mg, potassium 4700 mg, phosphorus 1250 mg). General population rule, labelled as such.",
+   "confidence": "measured"
+  },
+  {
+   "id": "kdoqi-2020",
+   "name": "KDOQI Clinical Practice Guideline for Nutrition in CKD: 2020 Update",
+   "publisher": "National Kidney Foundation / American Journal of Kidney Diseases (Ikizler TA et al.)",
+   "version": "Am J Kidney Dis. 2020;76(3 Suppl 1):S1-S107",
+   "date": "2020",
+   "link": "https://www.ajkd.org/article/S0272-6386(20)30726-5/fulltext",
+   "type": "clinical-guideline",
+   "countries": [
+    "ALL"
+   ],
+   "usedFor": "Planned (Phase 7): general guidance shown only when no care-team limit is saved.",
+   "confidence": "guideline"
+  }
+ ]
+}

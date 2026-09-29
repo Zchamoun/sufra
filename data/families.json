@@ -1,0 +1,146 @@
+{
+ "schema": "sufra.families/1",
+ "updated": "2026-09-29",
+ "families": {
+  "chicken": {
+   "en": "Chicken",
+   "ar": "دجاج",
+   "fr": "Poulet"
+  },
+  "lamb": {
+   "en": "Lamb",
+   "ar": "لحم غنم",
+   "fr": "Agneau"
+  },
+  "beef": {
+   "en": "Beef",
+   "ar": "لحم بقر",
+   "fr": "Bœuf"
+  },
+  "fish": {
+   "en": "Fish",
+   "ar": "سمك",
+   "fr": "Poisson"
+  },
+  "egg": {
+   "en": "Eggs",
+   "ar": "بيض",
+   "fr": "Œufs"
+  },
+  "rice": {
+   "en": "Rice",
+   "ar": "رز",
+   "fr": "Riz"
+  },
+  "wheat": {
+   "en": "Wheat and bulgur",
+   "ar": "قمح وبرغل",
+   "fr": "Blé et boulgour"
+  },
+  "bread": {
+   "en": "Bread",
+   "ar": "خبز",
+   "fr": "Pain"
+  },
+  "pasta": {
+   "en": "Pasta and vermicelli",
+   "ar": "معكرونة وشعيرية",
+   "fr": "Pâtes et vermicelles"
+  },
+  "flour": {
+   "en": "Dough",
+   "ar": "عجين",
+   "fr": "Pâte"
+  },
+  "lentils": {
+   "en": "Lentils",
+   "ar": "عدس",
+   "fr": "Lentilles"
+  },
+  "chickpeas": {
+   "en": "Chickpeas",
+   "ar": "حمص",
+   "fr": "Pois chiches"
+  },
+  "fava": {
+   "en": "Fava beans",
+   "ar": "فول",
+   "fr": "Fèves"
+  },
+  "okra": {
+   "en": "Okra",
+   "ar": "بامية",
+   "fr": "Gombos"
+  },
+  "eggplant": {
+   "en": "Eggplant",
+   "ar": "باذنجان",
+   "fr": "Aubergine"
+  },
+  "zucchini": {
+   "en": "Zucchini",
+   "ar": "كوسة",
+   "fr": "Courgette"
+  },
+  "potato": {
+   "en": "Potato",
+   "ar": "بطاطس",
+   "fr": "Pomme de terre"
+  },
+  "tomato": {
+   "en": "Tomato",
+   "ar": "طماطم",
+   "fr": "Tomate"
+  },
+  "herbs": {
+   "en": "Parsley and herbs",
+   "ar": "بقدونس وأعشاب",
+   "fr": "Persil et herbes"
+  },
+  "salad": {
+   "en": "Salad vegetables",
+   "ar": "خضار السلطة",
+   "fr": "Crudités"
+  },
+  "greens": {
+   "en": "Leafy greens",
+   "ar": "ورقيات",
+   "fr": "Feuilles vertes"
+  },
+  "yogurt": {
+   "en": "Yogurt",
+   "ar": "لبن زبادي",
+   "fr": "Yaourt"
+  },
+  "milk": {
+   "en": "Milk",
+   "ar": "حليب",
+   "fr": "Lait"
+  },
+  "dates": {
+   "en": "Dates",
+   "ar": "تمر",
+   "fr": "Dattes"
+  },
+  "tahini": {
+   "en": "Tahini and sesame",
+   "ar": "طحينة وسمسم",
+   "fr": "Tahini et sésame"
+  },
+  "sweet": {
+   "en": "Honey and sugar",
+   "ar": "عسل وسكر",
+   "fr": "Miel et sucre"
+  },
+  "onion": {
+   "en": "Onion",
+   "ar": "بصل",
+   "fr": "Oignon"
+  },
+  "zaatar": {
+   "en": "Za'atar and thyme",
+   "ar": "زعتر",
+   "fr": "Zaatar et thym"
+  }
+ }
+}
