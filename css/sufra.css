@@ -1,4 +1,4 @@
-/* Sufra design system v1.7 — Mist blue (soft, calm, WCAG AA contrast) */
+/* Sufra design system v1.8 — Mist blue (soft, calm, WCAG AA contrast) */
 :root{
   --bg:#F4F6F8; --surface:#FFFFFF; --soft:#DFE8EF; --accent:#3F5B72; --line:#E1E6EB;
   --text:#2F3A3D; --muted:#5E6A6E;
@@ -93,7 +93,7 @@ a.btn{text-decoration:none;justify-content:center;}
 .btn-unwell{width:100%;justify-content:center;background:var(--alert-bg);color:var(--alert-text);border-color:var(--alert-line);margin-top:.5rem;}
 /* Forms */
 .field{display:block;font-weight:600;margin:1.1rem 0 .4rem;}
-input[type=text],input[type=tel],input[type=number],input[type=time]{width:100%;min-height:var(--tap);padding:.5rem .9rem;
+input[type=text],input[type=tel],input[type=number],input[type=time],input[type=date]{width:100%;min-height:var(--tap);padding:.5rem .9rem;
   border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--text);font:inherit;}
 input::placeholder{color:var(--muted);opacity:1;}
 .unit-input{display:flex;align-items:center;gap:.6rem;}
@@ -190,3 +190,27 @@ h3{font-size:1.05rem;font-weight:600;}
 .inline-ico{display:inline-flex;vertical-align:middle;}
 .btn.wide .ib{width:40px;height:40px;border-radius:12px;} .btn.wide .ib svg{width:26px;height:26px;}
 .note-bar.upd .grow{flex:1 1 11rem;}
+
+/* v1.8 — meal plans, prep-ahead, cooking mode */
+.two-btns{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:.25rem 0 .75rem;}
+.two-btns .btn{justify-content:center;gap:.4rem;padding:0 .6rem;}
+.small-pill{min-height:44px;padding:0 .9rem;font-size:.95rem;}
+.entries.flat{border:0;background:transparent;margin:0;}
+.entries.flat li.entry{padding:.7rem 0;}
+.badge.small{font-size:.78rem;padding:.1rem .5rem;margin-top:.3rem;}
+.cook-text{font-size:1.4rem;line-height:1.55;margin:1rem 0 1.25rem;}
+.timer-card{background:#E7F2FB;border-radius:var(--radius);padding:1rem;display:grid;gap:.6rem;justify-items:center;margin:.5rem 0;}
+.timer-card.done{background:var(--low-bg);}
+.timer-big{font-size:2.6rem;font-weight:700;font-variant-numeric:tabular-nums;color:#1F5A87;}
+.timer-card.done .timer-big{color:var(--low-text);font-size:1.6rem;}
+.timer-strip{display:flex;flex-wrap:wrap;gap:.4rem;margin:.25rem 0 .75rem;}
+.timer-strip .tag{border:0;font:inherit;font-size:.85rem;padding:.35rem .7rem;min-height:40px;cursor:pointer;}
+.cook-nav{position:sticky;bottom:0;background:var(--bg);padding:.75rem 0;}
+.cook-nav .btn{flex:1;}
+.ing.check .rowbtn{min-height:52px;}
+.tick{width:26px;height:26px;border-radius:8px;border:2px solid var(--accent);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;}
+[aria-checked="true"] .tick{background:var(--accent);}
+[aria-checked="true"] .tick::after{content:"✓";color:#fff;font-weight:700;font-size:.95rem;}
+[aria-checked="true"] .grow{text-decoration:line-through;color:var(--muted);}
+.small-pill{white-space:nowrap;padding:0 .75rem;}
+.entry-actions{flex-wrap:wrap;}
