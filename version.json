@@ -1,11 +1,11 @@
 {
- "version": "0.6.4",
+ "version": "0.6.5",
  "files": [
   "./",
   "index.html",
   "manifest.webmanifest",
-  "css/sufra.css?v=0.6.4",
-  "js/app.js?v=0.6.4",
+  "css/sufra.css?v=0.6.5",
+  "js/app.js?v=0.6.5",
   "i18n/en.json",
   "i18n/ar.json",
   "i18n/fr.json",
