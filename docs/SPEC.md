@@ -115,6 +115,8 @@ sw.js               offline copy and update control
 - **Plan it** (dish page): day, meal time, portions. Sufra suggests the next lunch (13:00) or dinner (19:00) that leaves enough time for the prep, and warns when prep should already have started.
 - **Coming up** (Today): prep tasks due in the next 24 hours (or late) and meals planned for today and tomorrow. Each has **Done** (with Undo) and **Add to calendar**.
 - **Calendar app:** the first time, Sufra asks which calendar app the person uses (Android: Samsung, Google, Outlook, other; iPhone: Apple, Google, Outlook) and remembers it (Settings → My calendar app, with "Send a test"). Samsung, Apple, Outlook and other apps receive a calendar file with an alarm, which opens in that app with Save or Add. Google does not let other apps open its app with a new event, so Google opens Google's add-event page; the event then appears in the Google Calendar app.
-- **My plan** (Meals): − / + half portions, edit day and time, delete with Undo.
+- **My plan** (Meals → Dishes | My plan): a week strip (dots on days with something to do) and the chosen day's agenda in time order: prep tasks on the day they must start, "start cooking", and the meals. Each meal has − / + half portions, change day/time, delete with Undo, Cook now, I ate this and Calendar. "Plan a meal for this day" opens Dishes with that day pre-set.
+- **After saving a plan** Sufra opens that day in the planner and offers "Add all reminders" (meal + every prep step in one calendar file; Google takes one event at a time).
+- **Today** shows the next planned meals with "Open my plan".
 - **Cooking mode:** ingredients checklist, one step at a time in large text, timers (pause, +1 min, reset) that keep running across steps, a sound and vibration when done, and the screen kept awake. The last screen offers "I ate this", which also marks the plan as eaten.
 
