@@ -1,6 +1,6 @@
 /* Sufra service worker. Keeps the app working offline and installs updates only when the person taps "Update now".
    Every release changes VERSION (and the ?v= numbers in index.html), which is how phones notice a new version. */
-const VERSION = "0.6.2";
+const VERSION = "0.6.3";
 const CACHE = "sufra-" + VERSION;
 const FILES = [
   "./", "index.html", "manifest.webmanifest",
