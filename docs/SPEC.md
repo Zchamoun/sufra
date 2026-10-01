@@ -104,7 +104,7 @@ sw.js               offline copy and update control
 | Phase | What | New tools |
 |---|---|---|
 | 5 | Food data, sources, first 30 dishes with steps and prep-ahead | none |
-| 6 ✅ (6.1, 6.2) | Meals tab: library and search, dish page, cooking mode with timers, log a meal (same +/− edit rule, any day), create my own dish, "I love…", plan a meal, prep-ahead on Today + calendar | none |
+| 6 ✅ (6.1, 6.2, 6.3) | Meals tab: library and search, dish page, cooking mode with timers, log a meal (same +/− edit rule, any day), create my own dish, "I love…", plan a meal, prep-ahead on Today + calendar | none |
 | 6b | AI recipe helper | a small online helper (Cloudflare Worker), like Zahi Fit |
 | 7 | Guides, thirst tips, kidney-friendly cooking tips with sources, questions for my care team, verified emergency numbers | none |
 | 8 | Install, offline, accessibility, desktop width | none |
@@ -119,4 +119,9 @@ sw.js               offline copy and update control
 - **After saving a plan** Sufra opens that day in the planner and offers "Add all reminders" (meal + every prep step in one calendar file; Google takes one event at a time).
 - **Today** shows the next planned meals with "Open my plan".
 - **Cooking mode:** ingredients checklist, one step at a time in large text, timers (pause, +1 min, reset) that keep running across steps, a sound and vibration when done, and the screen kept awake. The last screen offers "I ate this", which also marks the plan as eaten.
+
+## 14. Create my own dish (release 6.3, v0.6.6)
+- **Meals → Create my own dish** (also offered when a search finds nothing): name, how many portions the pot makes, ingredients with grams (− / + 10 g or type), "this is a soup" (its water counts as fluid), optional steps (one per line).
+- **Ingredient database** (`data/foods/`): `foods-core.json` = 149 common ingredients with names in English, Arabic and French; `foods-more.json` = 2,321 more foods from ANSES-CIQUAL 2025 (English and French names), loaded when the person searches. Values per 100 g from CIQUAL 2025 (EU) or USDA SR28 when CIQUAL has no complete entry; "less than X" values are stored as X. Foods without potassium, phosphorus, sodium or protein are left out; a search with no match says "No verified data for this food yet".
+- Values per portion update live while typing. Saved dishes are labelled "My dish · calculated from my ingredients", can be edited, deleted (with Undo; kept hidden so plans and past meals still work), logged, planned and cooked like any dish. Meal logs keep the values from when they were eaten.
 
