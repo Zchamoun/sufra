@@ -1,7 +1,7 @@
-/* Sufra app v0.6.4 — onboarding, Today, fluid tracker, Meals library, meal log, plans, prep-ahead, cooking mode, install and updates. All data stays on this device. */
+/* Sufra app v0.6.5 — onboarding, Today, fluid tracker, Meals library, meal log, plans, prep-ahead, cooking mode, install and updates. All data stays on this device. */
 "use strict";
 
-const APP_VERSION = "0.6.4"; // must match VERSION in sw.js
+const APP_VERSION = "0.6.5"; // must match VERSION in sw.js
 const LANGS = ["en", "ar", "fr"];
 const LANG_NAMES = { en: "English", ar: "العربية", fr: "Français" };
 const KEY = "sufra.v1";
@@ -387,7 +387,7 @@ function renderToday() {
       <button type="button" class="icon-btn" data-act="page" data-v="settings" aria-label="${esc(t("settings"))}">${ICON.gear}</button></div>
     <p class="muted">${esc(new Intl.DateTimeFormat(loc(), { weekday: "long", day: "numeric", month: "long" }).format(new Date()))}</p>
     ${updateBanner()}${installCard()}
-    ${renderComingUp()}
+    ${renderComingUp()}${renderPlannedCard()}
     <section class="card" aria-labelledby="h-fluid"><h2 id="h-fluid" class="card-title">${t("fluid_title")}</h2>${fluidSummary()}</section>
     ${cupButtons()}
     <button type="button" class="btn btn-secondary wide" data-act="tab" data-v="track">${ib("ice")}<span>${t("more_options")}</span></button>
@@ -562,9 +562,14 @@ function renderMeals() {
   const fams = Object.keys(FAMS).filter(f => DISHES.some(d => allowed(d) && (d.main || []).includes(f)));
   const hidden = DISHES.some(d => !allowed(d));
   const off = view.logDay || 0;
-  return `<h1 tabindex="-1">${t("tab_meals")}</h1>
+  const mseg = view.mseg || "dishes";
+  const segBar = `<div class="seg two" role="group" aria-label="${esc(t("tab_meals"))}">
+      <button type="button" aria-pressed="${mseg === "dishes"}" data-act="mseg" data-v="dishes">${ib("meal")}<span>${t("seg_dishes")}</span></button>
+      <button type="button" aria-pressed="${mseg === "plan"}" data-act="mseg" data-v="plan">${ICON.cal}<span>${t("plan_title")}${upcomingPlans().filter(p => !eaten(p)).length ? ` (${num(upcomingPlans().filter(p => !eaten(p)).length)})` : ""}</span></button></div>`;
+  if (mseg === "plan") return `<h1 tabindex="-1">${t("tab_meals")}</h1>${segBar}${renderPlanner()}`;
+  return `<h1 tabindex="-1">${t("tab_meals")}</h1>${segBar}
+    ${view.planFor ? `<div class="note-bar" role="status">${ICON.cal}<span class="grow">${t("planning_for", { day: esc(dayWord(fromYmd(view.planFor))) })}</span><button type="button" class="btn-link" data-act="planforcancel">${t("cancel")}</button></div>` : ""}
     ${off ? `<div class="note-bar" role="status">${ICON.clock}<span class="grow">${t("adding_to", { day: esc(dayName(off)) })}</span><button type="button" class="btn-link" data-act="logday0">${t("next_today")}</button></div>` : ""}
-    ${renderMyPlan()}
     <div class="search">${ICON.search}<input id="f-q" type="search" autocomplete="off" aria-label="${esc(t("search_ph"))}" placeholder="${esc(t("search_ph"))}" value="${esc(view.q || "")}"></div>
     <div class="chips scroll" role="group" aria-label="${esc(t("ob_cuis_title"))}">
       <button type="button" class="chip" aria-pressed="${!view.cui || view.cui === "all"}" data-act="cui" data-v="all">${t("cui_all")}</button>
@@ -762,14 +767,18 @@ function addToCalendar(ev) { // asks once which calendar app the person uses, th
   if (!S.profile.calendar) { view.calPending = ev; view.calFrom = view.page; view.page = "calpick"; render(); return; }
   sendToCalendar(ev, S.profile.calendar);
 }
-function sendToCalendar(ev, app) {
-  if (app === "google") { // Google does not let other apps open its app with a new event, so this opens Google's add-event page
+function sendToCalendar(evs, app) {
+  const list = Array.isArray(evs) ? evs : [evs];
+  if (!list.length) return;
+  const ev = list[0];
+  if (app === "google") {
+    if (list.length > 1) toast(t("cal_google_each")); // Google does not let other apps open its app with a new event, so this opens Google's add-event page
     const u = "https://calendar.google.com/calendar/render?action=TEMPLATE" +
       `&text=${encodeURIComponent(ev.title)}&dates=${icsTime(ev.start)}/${icsTime(ev.end)}&details=${encodeURIComponent(ev.text)}`;
     window.open(u, "_blank");
     return;
   }
-  sendIcs(ev); // Samsung, Apple, Outlook and other calendar apps open the calendar file and offer Save or Add
+  sendIcs(list); // Samsung, Apple, Outlook and other calendar apps open the calendar file and offer Save or Add
   toast(t("cal_sent", { app: t("cal_" + app) }));
 }
 function renderCalPick() {
@@ -783,12 +792,13 @@ function calTestEvent() {
   const start = new Date(Date.now() + 60 * 60000); start.setMinutes(0, 0, 0);
   return { title: t("cal_test_title"), start, end: new Date(start.getTime() + 15 * 60000), text: t("cal_test_text") };
 }
-function sendIcs(ev) {
-  const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Sufra//EN", "CALSCALE:GREGORIAN", "BEGIN:VEVENT",
-    `UID:${newId()}@sufra`, `DTSTAMP:${icsTime(new Date())}`, `DTSTART:${icsTime(ev.start)}`, `DTEND:${icsTime(ev.end)}`,
+function sendIcs(evs) { // one calendar file can hold several reminders
+  const list = Array.isArray(evs) ? evs : [evs], lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Sufra//EN", "CALSCALE:GREGORIAN"];
+  list.forEach(ev => lines.push("BEGIN:VEVENT", `UID:${newId()}@sufra`, `DTSTAMP:${icsTime(new Date())}`, `DTSTART:${icsTime(ev.start)}`, `DTEND:${icsTime(ev.end)}`,
     `SUMMARY:${icsEsc(ev.title)}`, `DESCRIPTION:${icsEsc(ev.text)}`,
-    "BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${icsEsc(ev.title)}`, "TRIGGER:-PT0M", "END:VALARM",
-    "END:VEVENT", "END:VCALENDAR"].map(icsFold).join("\r\n");
+    "BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${icsEsc(ev.title)}`, "TRIGGER:-PT0M", "END:VALARM", "END:VEVENT"));
+  lines.push("END:VCALENDAR");
+  const ics = lines.map(icsFold).join("\r\n");
   const url = URL.createObjectURL(new Blob([ics], { type: "text/calendar" }));
   const link = document.createElement("a"); link.href = url; link.download = "sufra-reminder.ics";
   document.body.appendChild(link); link.click(); link.remove();
@@ -822,33 +832,106 @@ function renderComingUp() {
   return `<section class="card" aria-labelledby="h-up"><h2 id="h-up" class="card-title">${t("up_title")}</h2>
     <ul class="log entries flat">${items.map(x => x.kind === "prep" ? prepRow(x) : plannedMealRow(x.plan)).join("")}</ul></section>`;
 }
-function planRow(p) {
-  const what = dname(dish(p.dishId) || p), late = aheadTasks(p).filter(x => !x.done && !x.a.optional && x.due.getTime() < Date.now() && planDate(p).getTime() > Date.now());
-  return `<li class="entry">
+function planEvents(p) { // the meal plus every prep task that still lies ahead
+  const d = dish(p.dishId), out = [calEvent("meal", p)];
+  aheadTasks(p, d).forEach(x => { if (!x.done && x.due.getTime() > Date.now() - 5 * 60000) out.push(calEvent("prep", p, x.a)); });
+  return out;
+}
+function fromYmd(s) { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); }
+function dayItems(dayStr) { // everything due on one day: prep tasks (by when to start them) and meals
+  const items = [];
+  plans().forEach(p => {
+    if (ymd(planDate(p)) === dayStr) items.push({ kind: "meal", at: planDate(p), plan: p });
+    const d = dish(p.dishId);
+    if (d && !eaten(p)) { const st = new Date(planDate(p).getTime() - (d.time.prepMin + d.time.cookMin) * 60000); if (ymd(st) === dayStr) items.push({ kind: "start", at: st, plan: p, d }); }
+    if (!eaten(p)) aheadTasks(p).forEach(x => { if (ymd(x.due) === dayStr) items.push({ kind: "prep", at: x.due, ...x }); });
+  });
+  return items.sort((a, b) => a.at - b.at);
+}
+function plannerPrepRow(x) {
+  return `<li class="entry${x.done ? " is-done" : ""}">
+    <div class="entry-top">${ICON.clock}
+      <span class="grow"><strong>${esc(clock(x.due))}</strong>${x.a.optional ? ` <span class="muted small">(${t("if_needed")})</span>` : ""}
+      <br><span class="small">${esc(x.a.text[lang()] || x.a.text.en)}</span>
+      <br><span class="muted small">${t("prep_for", { dish: esc(dname(dish(x.plan.dishId) || x.plan)), when: esc(whenLabel(planDate(x.plan))) })}</span></span></div>
+    <div class="entry-actions">
+      <button type="button" class="btn btn-secondary small-pill" role="checkbox" aria-checked="${x.done}" data-act="${x.done ? "prepundo" : "prepdone"}" data-v="${esc(x.done ? x.plan.id + "|" + x.a.id : x.plan.id)}" data-a="${esc(x.a.id)}">${x.done ? "✓ " + t("prep_done") : t("prep_mark")}</button>
+      <span class="grow"></span>${calBtn("prep", x.plan, x.a.id)}</div></li>`;
+}
+function plannerStartRow(x) {
+  return `<li class="entry"><div class="entry-top">${ICON.timer}
+      <span class="grow"><strong>${esc(clock(x.at))}</strong><br><span class="small">${t("plan_start_cook", { m: num(x.d.time.prepMin + x.d.time.cookMin) })}</span>
+      <br><span class="muted small">${esc(dname(x.d))}</span></span></div>
+    <div class="entry-actions"><button type="button" class="btn btn-secondary small-pill" data-act="cook" data-v="${esc(x.d.id)}" data-plan="${esc(x.plan.id)}">${t("cook_now")}</button>
+      <span class="grow"></span>${calBtn("meal", x.plan)}</div></li>`;
+}
+function plannerMealRow(p) {
+  const what = dname(dish(p.dishId) || p);
+  return `<li class="entry meal-entry">
     <div class="entry-top">${ib("meal")}
-      <span class="grow"><strong>${esc(what)}</strong><br><span class="muted">${esc(whenLabel(planDate(p)))}</span>
-      ${eaten(p) ? `<br><span class="badge low small">✓ ${t("plan_eaten")}</span>` : late.length ? `<br><span class="badge mid small">${t("plan_late")}</span>` : ""}</span></div>
+      <span class="grow"><strong>${esc(clock(planDate(p)))} · ${esc(what)}</strong>
+      ${eaten(p) ? `<br><span class="badge low small">✓ ${t("plan_eaten")}</span>` : ""}</span></div>
     <div class="entry-actions">
       <div class="stepper sm">
         <button type="button" data-act="less" data-v="${esc(p.id)}" aria-label="${esc(t("less_half_aria", { what }))}"${p.count <= 0.5 ? " disabled" : ""}>−</button>
         <output aria-live="polite" aria-label="${esc(t("portions"))}">${num(p.count)}</output>
         <button type="button" data-act="more" data-v="${esc(p.id)}" aria-label="${esc(t("more_half_aria", { what }))}">+</button>
       </div>
+      <span class="muted small">${t("portions")}</span>
       <span class="grow"></span>
-      <button type="button" class="icon-btn small-btn" data-act="editplan" data-v="${esc(p.id)}" aria-label="${esc(t("edit_aria", { what }))}">${ICON.pen}</button>
+      <button type="button" class="icon-btn small-btn" data-act="editplan" data-v="${esc(p.id)}" aria-label="${esc(t("plan_change_aria", { what }))}">${ICON.pen}</button>
       <button type="button" class="icon-btn small-btn" data-act="rmlog" data-v="${esc(p.id)}" aria-label="${esc(t("remove_aria", { what }))}">${ICON.trash}</button>
-    </div></li>`;
+    </div>
+    ${eaten(p) ? "" : `<div class="entry-actions">
+      <button type="button" class="btn btn-secondary small-pill" data-act="cook" data-v="${esc(p.dishId)}" data-plan="${esc(p.id)}">${t("cook_now")}</button>
+      <button type="button" class="btn btn-secondary small-pill" data-act="ateplan" data-v="${esc(p.id)}">${t("ate")}</button>
+      <button type="button" class="btn btn-secondary small-pill" data-act="calall" data-v="${esc(p.id)}">${ICON.cal}<span>${t("cal_all_short")}</span></button>
+    </div>`}</li>`;
 }
-function renderMyPlan() {
-  const list = upcomingPlans();
+function renderPlanner() {
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  if (!view.pday) { const nx = upcomingPlans().find(p => !eaten(p)); view.pday = nx ? ymd(planDate(nx)) : ymd(today); }
+  const sel = fromYmd(view.pday);
+  if (!view.pstart) { const st = new Date(sel); view.pstart = ymd(st < today ? st : Math.round((sel - today) / 864e5) < 7 ? today : st); }
+  const start = fromYmd(view.pstart);
+  const days = [...Array(7)].map((_, i) => { const d = new Date(start); d.setDate(start.getDate() + i); return d; });
+  const items = dayItems(view.pday), just = view.justPlanned && plans().find(p => p.id === view.justPlanned);
+  return `<div class="row" style="justify-content:space-between;margin-top:.25rem">
+      <button type="button" class="icon-btn" data-act="pweek" data-v="-7" aria-label="${esc(t("week_prev"))}">${ICON.back}</button>
+      <strong class="grow center">${esc(new Intl.DateTimeFormat(loc(), { month: "long", year: "numeric" }).format(sel))}</strong>
+      <button type="button" class="icon-btn" data-act="pweek" data-v="7" aria-label="${esc(t("week_next"))}">${ICON.fwd}</button></div>
+    <div class="week-strip" role="group" aria-label="${esc(t("plan_title"))}">${days.map(d => { const k = ymd(d), n = dayItems(k).length;
+      return `<button type="button" class="day-chip" data-act="pday" data-v="${k}" aria-pressed="${k === view.pday}"${k === ymd(today) ? ' aria-current="date"' : ""}>
+        <span class="small">${esc(weekday(d, "short"))}</span><strong>${num(d.getDate())}</strong><span class="dots" aria-hidden="true">${n ? "●".repeat(Math.min(n, 3)) : "&nbsp;"}</span>
+        ${n ? `<span class="sr-only">${t("n_items", { n: num(n) })}</span>` : ""}</button>`; }).join("")}</div>
+    <h2>${esc(dayWord(sel))}</h2>
+    ${just ? `<div class="note-bar cal-callout"><span class="grow">${t("cal_offer", { dish: esc(dname(dish(just.dishId) || just)) })}</span>
+      <button type="button" class="upd-btn" data-act="calall" data-v="${esc(just.id)}">${t("cal_all")}</button>
+      <button type="button" class="btn-link" data-act="calnothanks">${t("install_later")}</button></div>` : ""}
+    ${items.length ? `<ul class="log entries">${items.map(x => x.kind === "prep" ? plannerPrepRow(x) : x.kind === "start" ? plannerStartRow(x) : plannerMealRow(x.plan)).join("")}</ul>`
+      : `<p class="muted">${t("plan_day_empty")}</p>`}
+    ${view.pday < ymd(today) ? "" : `<button type="button" class="btn btn-primary wide" data-act="planfor" data-v="${esc(view.pday)}">${ICON.cal}<span>${t("plan_add")}</span></button>`}`;
+}
+function renderPlannedCard() { // Today: the next few planned meals
+  const now = Date.now(), list = upcomingPlans().filter(p => !eaten(p) && planDate(p).getTime() > now - 3 * 3600e3).slice(0, 3);
   if (!list.length) return "";
-  return `<h2>${t("plan_title")}</h2><ul class="log entries">${list.map(planRow).join("")}</ul>`;
+  return `<section class="card" aria-labelledby="h-pl"><h2 id="h-pl" class="card-title">${t("plan_title")}</h2>
+    <ul class="log flat-list">${list.map(p => `<li><button type="button" class="rowbtn" data-act="openplan" data-v="${ymd(planDate(p))}">${ib("meal")}<span class="grow"><strong>${esc(dname(dish(p.dishId) || p))}</strong><br><span class="muted">${esc(whenLabel(planDate(p)))}</span></span>${ICON.fwd}</button></li>`).join("")}</ul>
+    <button type="button" class="btn btn-secondary wide" data-act="openplan" data-v="">${t("plan_open")}</button></section>`;
 }
 function renderPlan() { // new plan (from a dish) or edit an existing plan
   const p = view.planId ? plans().find(x => x.id === view.planId) : null;
   const d = dish(p ? p.dishId : view.dish);
   if (!d) return `${pageHead(t("plan_it"))}<p class="muted">${t("no_dishes")}</p>`;
-  if (!view.planWhen) view.planWhen = (p ? planDate(p) : defaultSlot(d)).toISOString();
+  if (!view.planWhen) {
+    let w = p ? planDate(p) : defaultSlot(d);
+    if (!p && view.planFor) { // planning for a chosen day: lunch, or dinner if lunch is already too close
+      w = fromYmd(view.planFor); w.setHours(13, 0, 0, 0);
+      const need = (d.time.aheadMin + d.time.prepMin + d.time.cookMin) * 60000;
+      if (w.getTime() - need < Date.now()) w.setHours(19, 0, 0, 0);
+    }
+    view.planWhen = w.toISOString();
+  }
   const when = new Date(view.planWhen), n = p ? p.count : (view.portions || 1);
   const fake = { id: "preview", dishId: d.id, time: view.planWhen, done: p ? p.done : [] };
   const tasks = aheadTasks(fake);
@@ -1001,7 +1084,7 @@ document.addEventListener("click", async e => {
       const i = arr.indexOf(val); if (i >= 0) arr.splice(i, 1); else arr.push(val);
       save(); b.setAttribute("aria-pressed", i < 0); break;
     }
-    case "tab": view.tab = v; view.page = null; view.day = 0; view.edit = null; view.logDay = 0; hideToast(); render(); break;
+    case "tab": view.tab = v; view.page = null; view.day = 0; view.edit = null; view.logDay = 0; view.planFor = null; view.justPlanned = null; if (v === "meals") { view.pday = null; view.pstart = null; } hideToast(); render(); break;
     case "seg": view.seg = v; view.edit = null; render(false); break;
     case "cui": view.cui = v; render(false); break;
     case "fam": view.fam = view.fam === v ? null : v; render(false); break;
@@ -1017,7 +1100,9 @@ document.addEventListener("click", async e => {
     case "editplan": view.planId = v; view.planWhen = null; view.page = "plan"; render(); break;
     case "saveplan": { const d = dish(view.dish); if (!d) break;
       const id = addPlan(d, new Date(view.planWhen), view.portions || 1);
-      view.page = null; view.tab = "today"; view.planWhen = null; view.logDay = 0; render();
+      const pd = ymd(new Date(view.planWhen));
+      view.page = null; view.tab = "meals"; view.mseg = "plan"; view.pday = pd; view.pstart = null; view.justPlanned = id; view.planFor = null;
+      view.planWhen = null; view.logDay = 0; render();
       toast(t("plan_saved", { when: whenLabel(new Date(plans().find(x => x.id === id).time)) }), "undo", id); break; }
     case "prepdone": { const pl = plans().find(x => x.id === v); if (pl) { pl.done = [...new Set([...(pl.done || []), b.dataset.a])]; save(); render(false); toast(t("prep_marked"), "prepundo", v + "|" + b.dataset.a); } break; }
     case "prepundo": { const [pid, aid] = v.split("|"), pl = plans().find(x => x.id === pid); if (pl) { pl.done = (pl.done || []).filter(x => x !== aid); save(); render(false); } hideToast(); break; }
@@ -1031,6 +1116,14 @@ document.addEventListener("click", async e => {
     case "calpick": { S.profile.calendar = v; save(); const ev = view.calPending; view.calPending = null;
       view.page = view.calFrom === "settings" ? "settings" : (view.calFrom || null); render();
       if (ev) sendToCalendar(ev, v); break; }
+    case "calall": { const pl = plans().find(x => x.id === v); if (!pl) break; view.justPlanned = null; addToCalendar(planEvents(pl)); break; }
+    case "calnothanks": view.justPlanned = null; render(false); break;
+    case "mseg": view.mseg = v; view.justPlanned = null; if (v === "plan") view.planFor = null; render(false); break;
+    case "pday": view.pday = v; view.justPlanned = null; render(false); break;
+    case "pweek": { const st = fromYmd(view.pstart || ymd(new Date())); st.setDate(st.getDate() + Number(v)); view.pstart = ymd(st); view.pday = ymd(st); view.justPlanned = null; render(false); break; }
+    case "planfor": view.planFor = v; view.mseg = "dishes"; render(); break;
+    case "planforcancel": view.planFor = null; render(false); break;
+    case "openplan": view.tab = "meals"; view.page = null; view.mseg = "plan"; view.pday = v || null; view.pstart = null; render(); break;
     case "calchange": view.calPending = null; view.calFrom = "settings"; view.page = "calpick"; render(); break;
     case "caltest": addToCalendar(calTestEvent()); break;
     case "cook": { const pl = b.dataset.plan && plans().find(x => x.id === b.dataset.plan);
@@ -1049,7 +1142,7 @@ document.addEventListener("click", async e => {
     case "tresume": { const tm = TIMERS[v]; if (tm) { tm.end = Date.now() + tm.left; tm.left = null; startTick(); render(false); } break; }
     case "tplus": { const tm = TIMERS[v]; if (tm) { unlockAudio(); if (tm.rang) { tm.rang = false; tm.left = null; tm.end = Date.now() + 60000; } else if (tm.left != null) tm.left += 60000; else tm.end += 60000; startTick(); render(false); } break; }
     case "treset": delete TIMERS[v]; render(false); break;
-    case "addfood": view.logDay = view.day || 0; view.tab = "meals"; view.page = null; view.edit = null; hideToast(); render(); break;
+    case "addfood": view.mseg = "dishes"; view.logDay = view.day || 0; view.tab = "meals"; view.page = null; view.edit = null; hideToast(); render(); break;
     case "logday0": view.logDay = 0; render(false); break;
     case "install": install(); break;
     case "installlater": S.profile.installDismissed = true; save(); render(false); break;
