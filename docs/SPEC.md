@@ -95,7 +95,7 @@ sw.js               offline copy and update control
 - **Every release** changes the same number in 3 places: `VERSION` in `sw.js`, `APP_VERSION` in `js/app.js`, and `?v=` in `index.html`.
 
   
-## 11. Editing rule (applies to every log: drinks now, meals later)
+## 11. Editing rule (applies to drinks, meals and meal plans)
 - Every logged item shows **−  count  +** to remove or add one of the same, **Edit** (time and amount for one) and **Delete** (with Undo for 10 seconds).
 - The Track tab has a day bar (**‹ previous day · next day ›**) so any past day can be viewed and changed, up to one year back. No future days.
 - Tapping a day in "Last 7 days" opens that day.
@@ -105,10 +105,16 @@ sw.js               offline copy and update control
 | Phase | What | New tools |
 |---|---|---|
 | 5 | Food data, sources, first 30 dishes with steps and prep-ahead | none |
-| 6 | Meals tab: library and search, dish page, cooking mode with timers, log a meal (same +/− edit rule, any day), create my own dish, "I love…", plan a meal, prep-ahead on Today + calendar | none |
+| 6 ✅ (6.1, 6.2) | Meals tab: library and search, dish page, cooking mode with timers, log a meal (same +/− edit rule, any day), create my own dish, "I love…", plan a meal, prep-ahead on Today + calendar | none |
 | 6b | AI recipe helper | a small online helper (Cloudflare Worker), like Zahi Fit |
 | 7 | Guides, thirst tips, kidney-friendly cooking tips with sources, questions for my care team, verified emergency numbers | none |
 | 8 | Install, offline, accessibility, desktop width | none |
 | 9 | Risk list and clinical review pack | none |
 | Library | Batches of about 50 dishes alongside phases 6–9 until 1,000+ | none |
+
+## 13. Meal plans and cooking mode (release 6.2, v0.6.3)
+- **Plan it** (dish page): day, meal time, portions. Sufra suggests the next lunch (13:00) or dinner (19:00) that leaves enough time for the prep, and warns when prep should already have started.
+- **Coming up** (Today): prep tasks due in the next 24 hours (or late) and meals planned for today and tomorrow. Each has **Done** (with Undo) and **Add to calendar**: Google Calendar on Android, a calendar file with an alarm on iPhone.
+- **My plan** (Meals): − / + half portions, edit day and time, delete with Undo.
+- **Cooking mode:** ingredients checklist, one step at a time in large text, timers (pause, +1 min, reset) that keep running across steps, a sound and vibration when done, and the screen kept awake. The last screen offers "I ate this", which also marks the plan as eaten.
 
