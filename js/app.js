@@ -1,7 +1,7 @@
-/* Sufra app v0.6.3 — onboarding, Today, fluid tracker, Meals library, meal log, plans, prep-ahead, cooking mode, install and updates. All data stays on this device. */
+/* Sufra app v0.6.4 — onboarding, Today, fluid tracker, Meals library, meal log, plans, prep-ahead, cooking mode, install and updates. All data stays on this device. */
 "use strict";
 
-const APP_VERSION = "0.6.3"; // must match VERSION in sw.js
+const APP_VERSION = "0.6.4"; // must match VERSION in sw.js
 const LANGS = ["en", "ar", "fr"];
 const LANG_NAMES = { en: "English", ar: "العربية", fr: "Français" };
 const KEY = "sufra.v1";
@@ -210,7 +210,7 @@ const ICON = {
 };
 
 /* ---------- install as an app, and updates ---------- */
-let installEvt = null, swReg = null, upd = { state: "idle", version: null }, applying = false;
+let installEvt = null, upd = { state: "idle", version: null };
 const UA = navigator.userAgent || "";
 const IS_IOS = /iphone|ipad|ipod/i.test(UA) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 const IS_ANDROID = /android/i.test(UA);
@@ -225,48 +225,46 @@ async function install() {
 }
 window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); installEvt = e; });
 window.addEventListener("appinstalled", () => { installEvt = null; S.profile.installDismissed = true; save(); toast(t("installed_ok")); render(false); });
-function askVersion(worker) {
-  return new Promise(res => {
-    const ch = new MessageChannel(); const tm = setTimeout(() => res(null), 3000);
-    ch.port1.onmessage = e => { clearTimeout(tm); res(e.data); };
-    worker.postMessage("version", [ch.port2]);
-  });
+function newer(a, b) { // true when version a is newer than version b, e.g. "0.6.10" > "0.6.9"
+  const x = String(a).split(".").map(Number), y = String(b).split(".").map(Number);
+  for (let i = 0; i < Math.max(x.length, y.length); i++) { if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0); }
+  return false;
 }
-async function markReady() { upd.state = "ready"; upd.version = swReg && swReg.waiting ? await askVersion(swReg.waiting) : null; render(false); }
-function waitInstalled(w) {
+function swAsk(msg, wait = 120000) { // ask the service worker something and wait for its answer
   return new Promise(res => {
-    if (!w || w.state === "installed" || w.state === "redundant") return res();
-    const tm = setTimeout(res, 30000);
-    w.addEventListener("statechange", () => { if (w.state === "installed" || w.state === "redundant") { clearTimeout(tm); res(); } });
+    const c = navigator.serviceWorker && navigator.serviceWorker.controller;
+    if (!c) return res(null);
+    const ch = new MessageChannel(), tm = setTimeout(() => res(null), wait);
+    ch.port1.onmessage = e => { clearTimeout(tm); res(e.data); };
+    c.postMessage(msg, [ch.port2]);
   });
 }
 async function checkUpdates(quiet = false) {
-  if (!swReg) { if (!quiet) { upd.state = "unsupported"; render(false); } return; }
+  if (!("serviceWorker" in navigator)) { if (!quiet) { upd.state = "unsupported"; render(false); } return; }
   if (!quiet) { upd.state = "checking"; render(false); }
   try {
     if (!navigator.onLine) throw new Error("offline");
-    await Promise.race([swReg.update(), new Promise((_, no) => setTimeout(() => no(new Error("timeout")), 15000))]);
-    await waitInstalled(swReg.installing);
-    if (swReg.waiting && navigator.serviceWorker.controller) await markReady();
+    const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
+    const r = await fetch("version.json", { cache: "no-store", signal: ctl.signal });
+    clearTimeout(tm);
+    if (!r.ok) throw new Error("status " + r.status);
+    const info = await r.json();
+    if (newer(info.version, APP_VERSION)) { upd.state = "ready"; upd.version = info.version; render(false); }
     else if (!quiet) { upd.state = "latest"; render(false); }
   } catch (e) { if (!quiet) { upd.state = "offline"; render(false); } }
 }
-function applyUpdate() {
-  if (!swReg || !swReg.waiting) return;
-  applying = true; upd.state = "applying"; render(false);
-  swReg.waiting.postMessage("skipWaiting"); // the new version takes over, then the page restarts (controllerchange below)
+async function applyUpdate() { // the only place a new version is downloaded and switched to
+  if (!navigator.onLine) { upd.state = "failed"; render(false); return; }
+  upd.state = "applying"; render(false);
+  if (!navigator.serviceWorker || !navigator.serviceWorker.controller) { location.reload(); return; }
+  const res = await swAsk("update");
+  if (res && res.ok) location.reload();
+  else { upd.state = "failed"; render(false); }
 }
 function setupSW() {
   if (!("serviceWorker" in navigator)) return;
-  navigator.serviceWorker.addEventListener("controllerchange", () => { if (applying) location.reload(); });
-  navigator.serviceWorker.register("sw.js").then(reg => {
-    swReg = reg;
-    if (reg.waiting && navigator.serviceWorker.controller) markReady();
-    reg.addEventListener("updatefound", () => {
-      const w = reg.installing;
-      if (w) w.addEventListener("statechange", () => { if (w.state === "installed" && navigator.serviceWorker.controller) markReady(); });
-    });
-    setTimeout(() => checkUpdates(true), 3000); // look quietly once; the update is only applied when the person taps
+  navigator.serviceWorker.register("sw.js").then(() => {
+    setTimeout(() => checkUpdates(true), 3000); // look quietly once; nothing changes until "Update now" is tapped
   }).catch(() => {});
 }
 function updateBanner() {
@@ -282,7 +280,7 @@ function installCard() {
     <button type="button" class="btn btn-link" data-act="installlater">${t("install_later")}</button></div></section>`;
 }
 function updateSection() {
-  const st = upd.state, msg = { checking: "upd_checking", latest: "upd_latest", offline: "upd_offline", unsupported: "upd_unsupported", applying: "upd_applying" }[st];
+  const st = upd.state, msg = { checking: "upd_checking", latest: "upd_latest", offline: "upd_offline", unsupported: "upd_unsupported", applying: "upd_applying", failed: "upd_failed" }[st];
   return `<h2>${t("s_app")}</h2>
     <p class="muted">${t("app_version", { v: APP_VERSION })}</p>
     ${canOfferInstall() ? `<button type="button" class="btn btn-secondary wide" data-act="install">${ib("install")}<span>${t("install_btn")}</span></button>` : ""}
@@ -421,6 +419,10 @@ function renderSettings() {
     <label class="field" for="c-ice">${t("s_ice5")}</label>
     <div class="unit-input"><input id="c-ice" type="number" inputmode="numeric" min="1" dir="ltr" data-field="profile.cups.ice5" data-num value="${p.cups.ice5 ?? ""}"><span>${t("ml")}</span></div>
     <p class="muted" id="ice-result" aria-live="polite">${p.cups.ice5 > 0 ? t("s_ice_result", { ml: num(cubeMl()), unit: t("ml") }) : ""}</p>
+    <h2>${t("s_cal")}</h2>
+    <p class="muted">${S.profile.calendar ? esc(t("cal_" + S.profile.calendar)) : t("s_cal_none")}</p>
+    <div class="two-btns"><button type="button" class="btn btn-secondary" data-act="calchange">${t("cal_change")}</button>
+      <button type="button" class="btn btn-secondary" data-act="caltest">${ICON.cal}<span>${t("cal_test")}</span></button></div>
     ${updateSection()}
     <div class="stack">
       <button type="button" class="btn btn-secondary" data-act="edit">${t("s_edit")}</button>
@@ -755,13 +757,33 @@ function calEvent(kind, p, a) {
   const start = new Date(planDate(p).getTime() - (((d && d.time.prepMin) || 0) + ((d && d.time.cookMin) || 0)) * 60000);
   return { title: t("cal_cook", { dish: name }), start, end: planDate(p), text: t("cal_cook_text", { time: clock(planDate(p)) }) };
 }
-function addToCalendar(ev) {
-  if (IS_ANDROID) {
+const CAL_APPS = () => IS_IOS ? ["apple", "google", "outlook"] : IS_ANDROID ? ["samsung", "google", "outlook", "other"] : ["google", "apple", "outlook", "other"];
+function addToCalendar(ev) { // asks once which calendar app the person uses, then sends every reminder there
+  if (!S.profile.calendar) { view.calPending = ev; view.calFrom = view.page; view.page = "calpick"; render(); return; }
+  sendToCalendar(ev, S.profile.calendar);
+}
+function sendToCalendar(ev, app) {
+  if (app === "google") { // Google does not let other apps open its app with a new event, so this opens Google's add-event page
     const u = "https://calendar.google.com/calendar/render?action=TEMPLATE" +
       `&text=${encodeURIComponent(ev.title)}&dates=${icsTime(ev.start)}/${icsTime(ev.end)}&details=${encodeURIComponent(ev.text)}`;
     window.open(u, "_blank");
     return;
   }
+  sendIcs(ev); // Samsung, Apple, Outlook and other calendar apps open the calendar file and offer Save or Add
+  toast(t("cal_sent", { app: t("cal_" + app) }));
+}
+function renderCalPick() {
+  const cur = S.profile.calendar;
+  return `${pageHead(t("cal_pick_title"))}
+    <p class="muted">${t("cal_pick_hint")}</p>
+    <div class="choices" role="radiogroup">${CAL_APPS().map(a => `<button type="button" class="choice" role="radio" aria-checked="${cur === a}" data-act="calpick" data-v="${a}"><strong>${t("cal_" + a)}</strong><small>${t(a === "google" ? "cal_google_note" : "cal_file_note")}</small></button>`).join("")}</div>
+    ${IS_ANDROID ? `<p class="muted small">${t("cal_samsung_tip")}</p>` : ""}`;
+}
+function calTestEvent() {
+  const start = new Date(Date.now() + 60 * 60000); start.setMinutes(0, 0, 0);
+  return { title: t("cal_test_title"), start, end: new Date(start.getTime() + 15 * 60000), text: t("cal_test_text") };
+}
+function sendIcs(ev) {
   const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Sufra//EN", "CALSCALE:GREGORIAN", "BEGIN:VEVENT",
     `UID:${newId()}@sufra`, `DTSTAMP:${icsTime(new Date())}`, `DTSTART:${icsTime(ev.start)}`, `DTEND:${icsTime(ev.end)}`,
     `SUMMARY:${icsEsc(ev.title)}`, `DESCRIPTION:${icsEsc(ev.text)}`,
@@ -951,7 +973,7 @@ function render(focus = true) {
   if (view.page === "install") app.innerHTML = renderInstall() + (view.name === "ob" ? "" : tabs());
   else if (view.name === "ob") app.innerHTML = renderOb();
   else {
-    const pages = { settings: renderSettings, unwell: renderUnwell, disclaimer: renderDisclaimer, dish: renderDish, plan: renderPlan, cook: renderCook };
+    const pages = { settings: renderSettings, unwell: renderUnwell, disclaimer: renderDisclaimer, dish: renderDish, plan: renderPlan, cook: renderCook, calpick: renderCalPick };
     const tabView = { today: renderToday, meals: renderMeals, track: renderTrack }[view.tab] || renderSoon;
     app.innerHTML = (view.page ? pages[view.page]() : tabView()) + (view.page === "cook" ? "" : tabs());
   }
@@ -1006,6 +1028,11 @@ document.addEventListener("click", async e => {
     case "cal": { const pl = plans().find(x => x.id === v); if (!pl) break;
       const a = b.dataset.a && (dish(pl.dishId) || { ahead: [] }).ahead.find(x => x.id === b.dataset.a);
       addToCalendar(calEvent(b.dataset.kind, pl, a)); break; }
+    case "calpick": { S.profile.calendar = v; save(); const ev = view.calPending; view.calPending = null;
+      view.page = view.calFrom === "settings" ? "settings" : (view.calFrom || null); render();
+      if (ev) sendToCalendar(ev, v); break; }
+    case "calchange": view.calPending = null; view.calFrom = "settings"; view.page = "calpick"; render(); break;
+    case "caltest": addToCalendar(calTestEvent()); break;
     case "cook": { const pl = b.dataset.plan && plans().find(x => x.id === b.dataset.plan);
       view.dish = v; view.cookPlan = pl ? pl.id : null; if (pl) view.portions = pl.count; else if (view.page !== "dish") view.portions = 1;
       Object.keys(TIMERS).forEach(k => { if (!k.startsWith(v + ":")) delete TIMERS[k]; });
