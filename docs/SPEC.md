@@ -90,11 +90,10 @@ sw.js               offline copy and update control
 ## 10. Install and updates
 - **Install:** the first screen, Today (until "Not now") and Settings offer "Install Sufra as an app". Android and desktop Chrome show the real install prompt; iPhone shows the 2-tap "Add to Home Screen" steps. On iPhone the installed app keeps its own data, so people are told to install first.
 - **Icon:** "Sufra tray" (brass tray with three small dishes on mist blue), `icons/`.
-- **Offline:** `sw.js` saves every app file and every dish file listed in `data/dishes/index.json`, so Sufra works without internet.
-- **Updates only when the person chooses:** Sufra checks quietly on start and with Settings → "Check for updates". A new version waits and shows "A new version of Sufra is ready · Update now". Only that tap installs it and restarts the app.
-- **Every release** changes the same number in 3 places: `VERSION` in `sw.js`, `APP_VERSION` in `js/app.js`, and `?v=` in `index.html`.
+- **Offline:** `sw.js` keeps a saved copy of every app file listed in `version.json`, so Sufra works without internet.
+- **Updates only when the person chooses:** Sufra looks at `version.json` quietly on start and with Settings → "Check for updates". When a newer version exists it shows "A new version of Sufra is ready · Update now". Only that tap downloads the new files and restarts the app. Closing or reopening the app never changes the version, because `sw.js` itself never changes between releases (the browser would otherwise switch versions on its own).
+- **Every release:** run `python3 release.py <version>`. It sets the version in `js/app.js` and `index.html` and writes `version.json` with the list of files. Upload `version.json` last.
 
-  
 ## 11. Editing rule (applies to drinks, meals and meal plans)
 - Every logged item shows **−  count  +** to remove or add one of the same, **Edit** (time and amount for one) and **Delete** (with Undo for 10 seconds).
 - The Track tab has a day bar (**‹ previous day · next day ›**) so any past day can be viewed and changed, up to one year back. No future days.
@@ -114,7 +113,8 @@ sw.js               offline copy and update control
 
 ## 13. Meal plans and cooking mode (release 6.2, v0.6.3)
 - **Plan it** (dish page): day, meal time, portions. Sufra suggests the next lunch (13:00) or dinner (19:00) that leaves enough time for the prep, and warns when prep should already have started.
-- **Coming up** (Today): prep tasks due in the next 24 hours (or late) and meals planned for today and tomorrow. Each has **Done** (with Undo) and **Add to calendar**: Google Calendar on Android, a calendar file with an alarm on iPhone.
+- **Coming up** (Today): prep tasks due in the next 24 hours (or late) and meals planned for today and tomorrow. Each has **Done** (with Undo) and **Add to calendar**.
+- **Calendar app:** the first time, Sufra asks which calendar app the person uses (Android: Samsung, Google, Outlook, other; iPhone: Apple, Google, Outlook) and remembers it (Settings → My calendar app, with "Send a test"). Samsung, Apple, Outlook and other apps receive a calendar file with an alarm, which opens in that app with Save or Add. Google does not let other apps open its app with a new event, so Google opens Google's add-event page; the event then appears in the Google Calendar app.
 - **My plan** (Meals): − / + half portions, edit day and time, delete with Undo.
 - **Cooking mode:** ingredients checklist, one step at a time in large text, timers (pause, +1 min, reset) that keep running across steps, a sound and vibration when done, and the screen kept awake. The last screen offers "I ate this", which also marks the plan as eaten.
 
