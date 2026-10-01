@@ -1,11 +1,11 @@
 {
- "version": "0.6.5",
+ "version": "0.6.6",
  "files": [
   "./",
   "index.html",
   "manifest.webmanifest",
-  "css/sufra.css?v=0.6.5",
-  "js/app.js?v=0.6.5",
+  "css/sufra.css?v=0.6.6",
+  "js/app.js?v=0.6.6",
   "i18n/en.json",
   "i18n/ar.json",
   "i18n/fr.json",
@@ -13,6 +13,8 @@
   "data/families.json",
   "data/sources.json",
   "data/dishes/index.json",
+  "data/foods/foods-core.json",
+  "data/foods/foods-more.json",
   "data/dishes/gulf.json",
   "data/dishes/levantine.json",
   "data/dishes/egyptian.json",
