@@ -1,7 +1,7 @@
-/* Sufra app v0.6.5 — onboarding, Today, fluid tracker, Meals library, meal log, plans, prep-ahead, cooking mode, install and updates. All data stays on this device. */
+/* Sufra app v0.6.6 — onboarding, Today, fluid tracker, Meals library, meal log, plans, prep-ahead, cooking mode, install and updates. All data stays on this device. */
 "use strict";
 
-const APP_VERSION = "0.6.5"; // must match VERSION in sw.js
+const APP_VERSION = "0.6.6"; // must match VERSION in sw.js
 const LANGS = ["en", "ar", "fr"];
 const LANG_NAMES = { en: "English", ar: "العربية", fr: "Français" };
 const KEY = "sufra.v1";
@@ -15,7 +15,7 @@ const DV = { potassium: 4700, phosphorus: 1250, sodium: 2300 }; // US Daily Valu
 const SRC_NAMES = { "usda-sr28": "USDA SR28 (USDA ARS, 2015)", "ciqual-2025": "ANSES-CIQUAL 2025" };
 
 let S = load();
-let T = {}, TE = {}, OPT = { countries: [], cuisines: [] }, DISHES = [], FAMS = {};
+let T = {}, TE = {}, OPT = { countries: [], cuisines: [] }, DISHES = [], LIB = [], FAMS = {};
 let view = { name: "loading", step: 0, tab: "today", page: null };
 let ice = 2, toastTimer = null, lastRemoved = null;
 const CUPS = ["small", "glass", "mug"];
@@ -34,7 +34,8 @@ function blank() {
       cups: { small: 100, glass: 200, mug: 250, ice5: null } // ice5 = ml from 5 melted cubes
     },
     targets: { fluid: tgt("ml"), potassium: tgt("mg"), phosphorus: tgt("mg"), sodium: tgt("mg"), protein: tgt("g") },
-    logs: { fluid: [], meal: [], plan: [] }
+    logs: { fluid: [], meal: [], plan: [] },
+    mydishes: []
   };
 }
 function load() {
@@ -48,6 +49,7 @@ function load() {
       const out = { ...b, ...s, profile: { ...b.profile, ...s.profile }, targets: { ...b.targets, ...s.targets } };
       out.logs = { fluid: [], meal: [], plan: [], ...(s.logs || {}) };
       if (!Array.isArray(out.logs.plan)) out.logs.plan = [];
+      out.mydishes = Array.isArray(s.mydishes) ? s.mydishes : [];
       out.logs.meal = (out.logs.meal || []).filter(x => x && x.dishId && x.per);
       out.logs.fluid = out.logs.fluid.map(x => { const c = x.count || 1; return { ...x, count: c, unitMl: x.unitMl || x.ml / c }; }); // upgrade v0.4 entries
       return out;
@@ -536,7 +538,7 @@ function inCuisine(d, id) { return d.cuisine === id || (d.tags || []).includes(i
 function mine(d) { return S.profile.cuisines.some(c => inCuisine(d, c)); }
 function dishList() {
   const q = (view.q || "").trim().toLowerCase();
-  let list = DISHES.filter(allowed);
+  let list = DISHES.filter(d => allowed(d) && !d.hidden);
   if (view.cui && view.cui !== "all") list = list.filter(d => inCuisine(d, view.cui));
   if (view.fam) list = list.filter(d => (d.main || []).includes(view.fam));
   if (q) list = list.filter(d => Object.values(d.names).some(n => n.toLowerCase().includes(q)) ||
@@ -548,14 +550,14 @@ function dishRow(d) {
   return `<li><button type="button" class="rowbtn dishrow" data-act="dish" data-v="${esc(d.id)}">
     ${ib(d.fluid ? "soup" : "meal")}
     <span class="grow"><strong>${esc(dname(d))}</strong>
-      <span class="muted small block">${esc(d.portion[lang()] || d.portion.en)}${cu ? " · " + esc(nm(cu)) : ""}${d.time.aheadMin >= 600 ? " · " + esc(t("ahead_night_short")) : ""}</span>
+      <span class="muted small block">${esc(ptext(d))}${cu ? " · " + esc(nm(cu)) : isMine(d) ? " · " + t("my_dish") : ""}${d.time.aheadMin >= 600 ? " · " + esc(t("ahead_night_short")) : ""}</span>
       <span class="badges">${LEVEL_NUTS.map(k => badge(k, d.nutrients[k].calc)).join("")}</span></span>
     ${ICON.fwd}</button></li>`;
 }
 function renderDishList() {
   const list = dishList();
   return list.length ? `<p class="muted small">${t("n_dishes", { n: num(list.length) })}</p><ul class="log dishes">${list.map(dishRow).join("")}</ul>`
-    : `<p class="muted">${t("no_dishes")}</p>`;
+    : `<p class="muted">${t("no_dishes")}</p><button type="button" class="btn btn-secondary wide" data-act="create">${t("create_cant_find")}</button>`;
 }
 function renderMeals() {
   const avail = OPT.cuisines.filter(c => DISHES.some(d => inCuisine(d, c.id)));
@@ -570,9 +572,11 @@ function renderMeals() {
   return `<h1 tabindex="-1">${t("tab_meals")}</h1>${segBar}
     ${view.planFor ? `<div class="note-bar" role="status">${ICON.cal}<span class="grow">${t("planning_for", { day: esc(dayWord(fromYmd(view.planFor))) })}</span><button type="button" class="btn-link" data-act="planforcancel">${t("cancel")}</button></div>` : ""}
     ${off ? `<div class="note-bar" role="status">${ICON.clock}<span class="grow">${t("adding_to", { day: esc(dayName(off)) })}</span><button type="button" class="btn-link" data-act="logday0">${t("next_today")}</button></div>` : ""}
+    <button type="button" class="btn btn-secondary wide" data-act="create">${ICON.pen}<span>${t("create_title")}</span></button>
     <div class="search">${ICON.search}<input id="f-q" type="search" autocomplete="off" aria-label="${esc(t("search_ph"))}" placeholder="${esc(t("search_ph"))}" value="${esc(view.q || "")}"></div>
     <div class="chips scroll" role="group" aria-label="${esc(t("ob_cuis_title"))}">
       <button type="button" class="chip" aria-pressed="${!view.cui || view.cui === "all"}" data-act="cui" data-v="all">${t("cui_all")}</button>
+      ${S.mydishes.some(x => !x.hidden) ? `<button type="button" class="chip" aria-pressed="${view.cui === "mine"}" data-act="cui" data-v="mine">${t("my_dishes")}</button>` : ""}
       ${avail.map(c => `<button type="button" class="chip" aria-pressed="${view.cui === c.id}" data-act="cui" data-v="${c.id}">${esc(nm(c))}</button>`).join("")}
     </div>
     <h2>${t("love_title")}</h2>
@@ -610,9 +614,11 @@ function renderDish() {
   const steps = `<ol class="steps">${d.steps.map(x => `<li><span>${esc(x.text[L] || x.text.en)}</span>${x.timer ? `<span class="tag timer">${ICON.timer}${t("timer_min", { m: num(Math.round(x.timer / 60)) })}</span>` : ""}</li>`).join("")}</ol>`;
   const src = SRC_NAMES[d.nutrients.potassium.sourceId] || d.nutrients.potassium.sourceId;
   return `${pageHead(dname(d))}
-    <p class="muted">${esc(d.portion[L] || d.portion.en)}${cu ? " · " + esc(nm(cu)) : ""}</p>
+    <p class="muted">${esc(ptext(d))}${cu ? " · " + esc(nm(cu)) : ""}</p>
     <p class="muted small">${t("time_line", { p: num(d.time.prepMin), c: num(d.time.cookMin) })}</p>
-    <p class="draft-tag">${t("draft")}</p>
+    ${isMine(d) ? `<p class="draft-tag mine">${t("my_dish_tag")}</p>
+      <div class="two-btns"><button type="button" class="btn btn-secondary" data-act="editdish" data-v="${esc(d.id)}">${ICON.pen}<span>${t("create_edit")}</span></button>
+      <button type="button" class="btn btn-danger" data-act="deldish" data-v="${esc(d.id)}">${ICON.trash}<span>${t("delete_dish")}</span></button></div>` : `<p class="draft-tag">${t("draft")}</p>`}
     <section class="card" aria-labelledby="h-val">
       <div class="row" style="justify-content:space-between">
         <h2 id="h-val" class="card-title" style="margin:0">${t("portions")}</h2>
@@ -637,8 +643,8 @@ function renderDish() {
     ${water ? `<p class="muted small">${t("water_note", { ml: grams(water.g * n) })}</p>` : ""}
     <h2>${t("steps_title")}</h2>${steps}
     <section class="card" aria-labelledby="h-src"><h2 id="h-src" class="card-title">${t("source_title")}</h2>
-      <p class="small">${t(d.method === "direct" ? "source_direct" : "source_recipe", { src: esc(src) })}</p>
-      <p class="small muted">${t("reviewed_no")}</p></section>`;
+      <p class="small">${isMine(d) ? t("create_source") : t(d.method === "direct" ? "source_direct" : "source_recipe", { src: esc(src) })}</p>
+      <p class="small muted">${t(isMine(d) ? "mine_reviewed" : "reviewed_no")}</p></section>`;
 }
 function mealLabel(x) { return (x.names && (x.names[lang()] || x.names.en)) || ""; }
 function mealRow(x) {
@@ -683,7 +689,7 @@ function renderFood(off) {
     <button type="button" class="btn btn-primary wide" data-act="addfood">${ib("meal")}<span>${t("add_food")}</span></button>`;
 }
 function ideaFor(date = new Date()) {
-  let list = DISHES.filter(allowed);
+  let list = DISHES.filter(d => allowed(d) && !d.hidden);
   const m = list.filter(mine); if (m.length) list = m;
   if (!list.length) return null;
   const k = Math.floor(date.getTime() / 864e5);
@@ -1044,6 +1050,103 @@ function renderCook() {
       ${i <= total ? `<button type="button" class="btn btn-primary" data-act="cooknext">${i === 0 ? t("cook_start") : t("next")}</button>` : ""}
     </div>`;
 }
+/* ---------- my own dishes ---------- */
+let FOODS = [], FOODMAP = {}, moreLoaded = false;
+function addFoods(list) { list.forEach(f => { if (!FOODMAP[f.id]) { FOODMAP[f.id] = f; FOODS.push(f); } }); }
+let moreLoading = null;
+async function loadMoreFoods() {
+  if (moreLoaded) return;
+  if (!moreLoading) moreLoading = getJSON("data/foods/foods-more.json").then(m => { if (m && m.foods) { addFoods(m.foods); moreLoaded = true; } moreLoading = null; });
+  await moreLoading;
+}
+function fname(f) { return (f.n && (f.n[lang()] || f.n.en)) || f.id; }
+function refreshDishes() { DISHES = [...LIB, ...S.mydishes]; }
+function isMine(d) { return d && d.cuisine === "mine"; }
+function ptext(d) { return isMine(d) ? t("one_portion") : (d.portion[lang()] || d.portion.en); }
+function blankDraft() { return { id: null, name: "", portions: 2, items: [], soup: false, steps: "" }; }
+function draftTotals(dr) { // per portion, from the food tables (values per 100 g)
+  const t0 = { potassium: 0, phosphorus: 0, sodium: 0, protein: 0, water: 0, g: 0, salt: 0 };
+  dr.items.forEach(it => {
+    const f = FOODMAP[it.id], g = Number(it.g) || 0; if (!f) return;
+    t0.potassium += f.k * g / 100; t0.phosphorus += f.p * g / 100; t0.sodium += f.na * g / 100;
+    t0.protein += f.pr * g / 100; t0.water += (f.w || 0) * g / 100; t0.g += g;
+    if (it.id === "u:02047") t0.salt += g;
+  });
+  const n = Math.max(1, dr.portions || 1);
+  Object.keys(t0).forEach(k => { t0[k] = t0[k] / n; });
+  return t0;
+}
+function draftSummary(dr) {
+  const tt = draftTotals(dr);
+  if (!dr.items.length) return `<p class="muted">${t("create_empty")}</p>`;
+  return NUTS.map(k => `<div class="nut"><span><strong>${t("n_" + k)}</strong><br><span class="big">${num(Math.round(tt[k]))} ${t(k === "protein" ? "g" : "mg")}</span></span>${k === "protein" ? "" : badge(k, tt[k], false)}</div>`).join("")
+    + (dr.soup ? `<div class="nut"><span><strong>${t("n_fluid")}</strong><br><span class="big">≈ ${num(Math.round(tt.water / 10) * 10)} ${t("ml")}</span></span><span class="muted small">${t("fluid_counts")}</span></div>` : "")
+    + `<p class="muted small" style="margin-top:.5rem">${t("create_per", { g: num(Math.round(tt.g)) })}</p>`;
+}
+function foodResults(q) {
+  q = (q || "").trim().toLowerCase();
+  if (q.length < 2) return "";
+  const hits = FOODS.filter(f => Object.values(f.n).some(n => n && n.toLowerCase().includes(q))).slice(0, 15);
+  if (!hits.length) return `<p class="muted small">${moreLoaded ? t("food_none") : t("food_loading")}</p>`;
+  return `<ul class="log food-hits">${hits.map(f => `<li><button type="button" class="rowbtn" data-act="addfood1" data-v="${esc(f.id)}"><span class="grow">${esc(fname(f))}${f.n[lang()] ? "" : ` <span class="muted small">(${esc(f.n.en)})</span>`}</span><span class="muted small">${t("add")}</span></button></li>`).join("")}</ul>`;
+}
+function renderCreate() {
+  const dr = view.draft || (view.draft = blankDraft());
+  return `${pageHead(t(dr.id ? "create_edit" : "create_title"))}
+    <p class="muted">${t("create_hint")}</p>
+    <label class="field" for="c-name">${t("create_name")}</label>
+    <input id="c-name" type="text" data-draft="name" value="${esc(dr.name)}" placeholder="${esc(t("create_name_ph"))}" maxlength="60">
+    <div class="row" style="justify-content:space-between;margin-top:1rem"><strong>${t("create_makes")}</strong>
+      <div class="stepper sm">
+        <button type="button" data-act="dportions" data-v="-1" aria-label="${esc(t("less_aria", { what: t("portions") }))}"${dr.portions <= 1 ? " disabled" : ""}>−</button>
+        <output aria-live="polite">${num(dr.portions)}</output>
+        <button type="button" data-act="dportions" data-v="1" aria-label="${esc(t("more_aria", { what: t("portions") }))}"${dr.portions >= 20 ? " disabled" : ""}>+</button>
+      </div></div>
+    <h2>${t("ingredients")}</h2>
+    <p class="muted small">${t("create_ing_hint")}</p>
+    ${dr.items.length ? `<ul class="log entries">${dr.items.map((it, i) => { const f = FOODMAP[it.id]; return `<li class="entry">
+      <div class="entry-top"><span class="grow"><strong>${esc(f ? fname(f) : it.id)}</strong></span>
+        <button type="button" class="icon-btn small-btn" data-act="dremove" data-v="${i}" aria-label="${esc(t("remove_aria", { what: f ? fname(f) : "" }))}">${ICON.trash}</button></div>
+      <div class="entry-actions">
+        <div class="stepper sm"><button type="button" data-act="dgrams" data-v="${i}" data-d="-10" aria-label="${esc(t("less_10g"))}">−</button></div>
+        <div class="unit-input grams"><input type="number" inputmode="decimal" min="0" max="5000" dir="ltr" data-draft-g="${i}" value="${esc(it.g)}" aria-label="${esc(t("grams_of", { what: f ? fname(f) : "" }))}"><span>${t("g")}</span></div>
+        <div class="stepper sm"><button type="button" data-act="dgrams" data-v="${i}" data-d="10" aria-label="${esc(t("more_10g"))}">+</button></div>
+      </div></li>`; }).join("")}</ul>` : ""}
+    <div class="search">${ICON.search}<input id="f-food" type="search" autocomplete="off" placeholder="${esc(t("food_search_ph"))}" aria-label="${esc(t("food_search_ph"))}"></div>
+    <div id="food-hits"></div>
+    <button type="button" class="choice toggle" role="checkbox" aria-checked="${dr.soup}" data-act="dsoup"><strong>${t("create_soup")}</strong><small>${t("create_soup_hint")}</small></button>
+    <section class="card" aria-labelledby="h-dsum"><h2 id="h-dsum" class="card-title">${t("create_per_title")}</h2><div id="draft-sum">${draftSummary(dr)}</div></section>
+    <label class="field" for="c-steps">${t("create_steps")}</label>
+    <textarea id="c-steps" data-draft="steps" rows="4" placeholder="${esc(t("create_steps_ph"))}">${esc(dr.steps)}</textarea>
+    <p class="muted small" id="create-msg" aria-live="polite"></p>
+    <button type="button" class="btn btn-primary wide" data-act="dsave">${t("create_save")}</button>
+    <p class="muted small">${t("create_source")}</p>`;
+}
+function saveDraft() {
+  const dr = view.draft, msg = document.getElementById("create-msg");
+  const items = dr.items.filter(it => FOODMAP[it.id] && Number(it.g) > 0);
+  if (!dr.name.trim()) { if (msg) msg.textContent = t("create_need_name"); document.getElementById("c-name")?.focus(); return null; }
+  if (!items.length) { if (msg) msg.textContent = t("create_need_ing"); document.getElementById("f-food")?.focus(); return null; }
+  const n = dr.portions, tt = draftTotals({ ...dr, items }), name = dr.name.trim();
+  const mk = (v, unit) => ({ value: Math.round(v), unit, calc: Math.round(v * 10) / 10, confidence: "calculated", sourceId: "mine" });
+  const d = {
+    id: dr.id || "my-" + newId(), cuisine: "mine", tags: ["mine"],
+    names: { en: name, ar: name, fr: name },
+    portion: { en: t("one_portion"), ar: t("one_portion"), fr: t("one_portion") }, portionGrams: Math.round(tt.g),
+    ingredients: items.map(it => ({ key: it.id, name: FOODMAP[it.id].n.en, names: FOODMAP[it.id].n, g: Math.round((Number(it.g) / n) * 10) / 10 })),
+    nutrients: { potassium: mk(tt.potassium, "mg"), phosphorus: mk(tt.phosphorus, "mg"), sodium: mk(tt.sodium, "mg"), protein: mk(tt.protein, "g") },
+    saltAddedG: Math.round(tt.salt * 10) / 10, method: "mine", main: [], contains: [],
+    time: { prepMin: 0, cookMin: 0, aheadMin: 0 }, ahead: [],
+    steps: dr.steps.split("\n").map(x => x.trim()).filter(Boolean).map(x => ({ text: { en: x, ar: x, fr: x } })),
+    recipe: { portions: n, items: items.map(it => ({ id: it.id, g: Number(it.g) })), soup: dr.soup, steps: dr.steps },
+    gaps: [], note: null, tips: [], status: "mine", created: new Date().toISOString()
+  };
+  if (dr.soup) d.fluid = { value: Math.round(tt.water / 10) * 10, unit: "ml", calc: Math.round(tt.water * 10) / 10, confidence: "estimated", sourceId: "mine" };
+  const i = S.mydishes.findIndex(x => x.id === d.id);
+  if (i >= 0) S.mydishes[i] = d; else S.mydishes.push(d);
+  save(); refreshDishes();
+  return d;
+}
 function renderSoon() { return `<h1 tabindex="-1">${t("tab_" + view.tab)}</h1><div class="card"><p>${t("soon")}</p></div>`; }
 function tabs() {
   return `<nav class="tabs" aria-label="${esc(t("tabs_aria"))}">${["today", "meals", "track", "learn"].map(k =>
@@ -1056,7 +1159,7 @@ function render(focus = true) {
   if (view.page === "install") app.innerHTML = renderInstall() + (view.name === "ob" ? "" : tabs());
   else if (view.name === "ob") app.innerHTML = renderOb();
   else {
-    const pages = { settings: renderSettings, unwell: renderUnwell, disclaimer: renderDisclaimer, dish: renderDish, plan: renderPlan, cook: renderCook, calpick: renderCalPick };
+    const pages = { settings: renderSettings, unwell: renderUnwell, disclaimer: renderDisclaimer, dish: renderDish, plan: renderPlan, cook: renderCook, calpick: renderCalPick, create: renderCreate };
     const tabView = { today: renderToday, meals: renderMeals, track: renderTrack }[view.tab] || renderSoon;
     app.innerHTML = (view.page ? pages[view.page]() : tabView()) + (view.page === "cook" ? "" : tabs());
   }
@@ -1124,6 +1227,21 @@ document.addEventListener("click", async e => {
     case "planfor": view.planFor = v; view.mseg = "dishes"; render(); break;
     case "planforcancel": view.planFor = null; render(false); break;
     case "openplan": view.tab = "meals"; view.page = null; view.mseg = "plan"; view.pday = v || null; view.pstart = null; render(); break;
+    case "create": view.draft = blankDraft(); view.page = "create"; render(); break;
+    case "editdish": { const d = dish(v); if (!d || !d.recipe) break;
+      if (d.recipe.items.some(x => !FOODMAP[x.id])) await loadMoreFoods();
+      view.draft = { id: d.id, name: d.names.en, portions: d.recipe.portions, items: d.recipe.items.map(x => ({ ...x })), soup: !!d.recipe.soup, steps: d.recipe.steps || "" };
+      view.page = "create"; render(); break; }
+    case "deldish": { const d = S.mydishes.find(x => x.id === v); if (!d) break; // kept hidden so plans and past meals still work
+      d.hidden = true; save(); refreshDishes(); if (!S.mydishes.some(x => !x.hidden) && view.cui === "mine") view.cui = "all";
+      view.page = null; render(); toast(t("dish_deleted"), "restoredish", v); break; }
+    case "restoredish": { const d = S.mydishes.find(x => x.id === v); if (d) { d.hidden = false; save(); refreshDishes(); render(false); } hideToast(); break; }
+    case "dportions": view.draft.portions = Math.max(1, Math.min(20, view.draft.portions + Number(v))); render(false); break;
+    case "dremove": view.draft.items.splice(Number(v), 1); render(false); break;
+    case "dgrams": { const it = view.draft.items[Number(v)]; if (it) { it.g = Math.max(0, Math.round((Number(it.g) || 0) + Number(b.dataset.d))); render(false); } break; }
+    case "dsoup": view.draft.soup = !view.draft.soup; render(false); break;
+    case "addfood1": view.draft.items.push({ id: v, g: 100 }); render(false); document.querySelector(`[data-draft-g="${view.draft.items.length - 1}"]`)?.focus(); break;
+    case "dsave": { const d = saveDraft(); if (d) { view.draft = null; view.dish = d.id; view.portions = 1; view.page = "dish"; render(); toast(t("dish_saved")); } break; }
     case "calchange": view.calPending = null; view.calFrom = "settings"; view.page = "calpick"; render(); break;
     case "caltest": addToCalendar(calTestEvent()); break;
     case "cook": { const pl = b.dataset.plan && plans().find(x => x.id === b.dataset.plan);
@@ -1169,7 +1287,7 @@ document.addEventListener("click", async e => {
     case "delete":
       if (b.dataset.armed) {
         try { localStorage.removeItem(KEY); } catch (err) {}
-        S = blank(); view = { name: "ob", step: 0, tab: "today", page: null };
+        S = blank(); refreshDishes(); view = { name: "ob", step: 0, tab: "today", page: null };
         await loadLang("en"); render();
       } else {
         b.dataset.armed = "1"; b.textContent = t("s_delete_confirm");
@@ -1188,6 +1306,16 @@ document.addEventListener("input", e => {
     return;
   }
   if ("planDate" in el.dataset || "planTime" in el.dataset) return; // saved on "change", once the picker is closed
+  if (el.dataset.draft && view.draft) { view.draft[el.dataset.draft] = el.value; if (el.dataset.draft === "name") { const m = document.getElementById("create-msg"); if (m) m.textContent = ""; } return; }
+  if (el.dataset.draftG != null && view.draft) {
+    const it = view.draft.items[Number(el.dataset.draftG)]; if (it) { it.g = el.value === "" ? 0 : Math.max(0, Math.min(5000, Number(el.value) || 0)); }
+    const box = document.getElementById("draft-sum"); if (box) box.innerHTML = draftSummary(view.draft); return;
+  }
+  if (el.id === "f-food") {
+    const box = document.getElementById("food-hits"); if (box) box.innerHTML = foodResults(el.value);
+    if (!moreLoaded && el.value.trim().length >= 2) loadMoreFoods().then(() => { const b2 = document.getElementById("food-hits"), q = document.getElementById("f-food"); if (b2 && q) b2.innerHTML = foodResults(q.value); });
+    return;
+  }
   if (el.id === "f-q") { view.q = el.value; const box = document.getElementById("dish-list"); if (box) box.innerHTML = renderDishList(); return; }
   if (!f) return;
   if ("target" in el.dataset) {
@@ -1227,7 +1355,9 @@ document.addEventListener("visibilitychange", () => {
   const [idx, fam] = await Promise.all([getJSON("data/dishes/index.json"), getJSON("data/families.json")]);
   FAMS = (fam && fam.families) || {};
   const files = await Promise.all(((idx && idx.files) || []).map(f => getJSON(`data/dishes/${f}.json`)));
-  DISHES = files.filter(Boolean).flatMap(f => f.dishes || []);
+  LIB = files.filter(Boolean).flatMap(f => f.dishes || []);
+  refreshDishes();
+  const core = await getJSON("data/foods/foods-core.json"); if (core && core.foods) addFoods(core.foods);
   await loadLang(lang());
   if (S.onboarded) view = { name: "app", step: 0, tab: "today", page: null };
   else view = { name: "ob", step: S.profile.lang ? (S.profile.disclaimerAccepted ? 2 : 1) : 0, tab: "today", page: null };
