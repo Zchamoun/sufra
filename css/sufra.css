@@ -1,4 +1,4 @@
-/* Sufra design system v1.8 — Mist blue (soft, calm, WCAG AA contrast) */
+/* Sufra design system v1.9 — Mist blue (soft, calm, WCAG AA contrast) */
 :root{
   --bg:#F4F6F8; --surface:#FFFFFF; --soft:#DFE8EF; --accent:#3F5B72; --line:#E1E6EB;
   --text:#2F3A3D; --muted:#5E6A6E;
@@ -214,3 +214,21 @@ h3{font-size:1.05rem;font-weight:600;}
 [aria-checked="true"] .grow{text-decoration:line-through;color:var(--muted);}
 .small-pill{white-space:nowrap;padding:0 .75rem;}
 .entry-actions{flex-wrap:wrap;}
+
+/* v1.9 — planner week strip and day agenda */
+.week-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:.3rem;margin:.6rem 0 .25rem;}
+.day-chip{display:flex;flex-direction:column;align-items:center;gap:.05rem;min-height:64px;padding:.35rem 0;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit;cursor:pointer;min-width:0;}
+.day-chip strong{font-size:1.1rem;}
+.day-chip .small{font-size:.72rem;color:var(--muted);}
+.day-chip .dots{font-size:.5rem;letter-spacing:.1rem;color:#C48A3C;line-height:1;}
+.day-chip[aria-current="date"]{border-color:var(--accent);}
+.day-chip[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent);}
+.day-chip[aria-pressed="true"] .small,.day-chip[aria-pressed="true"] .dots{color:#fff;}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+.entry.is-done .grow{opacity:.6;}
+.entry.is-done .small-pill{background:var(--low-bg);color:var(--low-text);border-color:var(--low-bg);}
+.meal-entry{background:#FFF8F1;}
+.cal-callout{flex-wrap:wrap;}
+.flat-list{border:0;background:transparent;margin:0;}
+.flat-list li{padding:.4rem 0;}
+.small-pill svg{width:18px;height:18px;margin-inline-end:.25rem;vertical-align:-3px;}
